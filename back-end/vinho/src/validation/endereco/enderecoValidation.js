@@ -1,0 +1,57 @@
+
+export function validarEntradaParaBuscaPorEndereco(entrada) {
+    if(!entrada)
+        throw new Error("O campo para busca deve estar preenchido");
+}
+
+export function validarCamposObrigatoriosEndereco(endereco) {
+    if (!endereco.logradouro)
+        throw new Error("O logradouro é obrigatório");
+
+    if(!endereco.numero)
+        throw new Error("O número do endereço é obrigátorio");
+
+    if(!endereco.complemento)
+        throw new Error("O complemento é obrigatório");
+
+    if(!endereco.bairro)
+        throw new Error("O nome do bairro é obrigatório");
+
+    if(!endereco.cidade)
+        throw new Error("O nome da cidade é obrigatória");
+
+    if(!endereco.uf_estado)
+        throw new Error("A UF (Unidade Federativa) é obrigatória");
+
+
+    if(!endereco.cep)
+        throw new Error("O cep é obrigatório e deve ser único");
+}
+
+export function validarBuscaEndereco(registros) {
+    if(registros.length === 0)
+        throw new Error("Não foram encontrado registros para o endereço");
+}
+
+export function verificarSeEnderecoFoiInserido(insertId) {
+    if(insertId === 0)
+        throw new Error("O endereço não foi inserido");
+}
+
+export function verificarSeEnderecoFoiAlterado(linhasAfetadas) {
+    if(linhasAfetadas === 0)
+        throw new Error("O endereço não foi alterado");
+}
+
+export function verificarSeEnderecoFoiRemovido(linhasAfetadas) {
+    if(linhasAfetadas === 0)
+        throw new Error("O endereço não foi removido");
+}
+
+export function verificarSeEnderecosSãoIguais(registro, enderecoAtual) {
+    registro.forEach(itens => {
+        if(itens.cep === enderecoAtual.cep) {
+            throw new Error("Esse endereço já foi inserido");
+        }
+    });
+}

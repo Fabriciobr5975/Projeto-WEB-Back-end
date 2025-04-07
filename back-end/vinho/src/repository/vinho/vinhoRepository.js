@@ -2,7 +2,8 @@ import connection from "../connection.js";
 
 export async function inserirVinho(vinho) {
     const comando = `
-        INSERT INTO vinho (nome,
+        INSERT INTO vinho (imagem_vinho,
+                           nome,
                            uva,
                            vinicola_fk,
                            teor_alcolico,
@@ -11,11 +12,13 @@ export async function inserirVinho(vinho) {
                            safra,
                            temperatura_servir,
                            pais_fk,
-                           preco)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)    
+                           preco,
+                           descricao)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)    
     `;
 
     const [resposta] = await connection.query(comando, [
+        vinho.imagem_vinho,
         vinho.nome,
         vinho.uva,
         vinho.vinicola,
@@ -25,7 +28,8 @@ export async function inserirVinho(vinho) {
         vinho.safra,
         vinho.temperatura_servir,
         vinho.pais,
-        vinho.preco
+        vinho.preco,
+        vinho.descricao
     ]);
 
     return resposta.insertId;   
@@ -34,7 +38,8 @@ export async function inserirVinho(vinho) {
 export async function alterarVinho(idVinho, vinho) {
     const comando = `
         UPDATE vinho 
-            SET nome = ?,
+            SET imagem_vinho = ?,
+                nome = ?,
                 uva = ?,
                 vinicola_fk = ?,
                 teor_alcolico = ?,
@@ -43,21 +48,24 @@ export async function alterarVinho(idVinho, vinho) {
                 safra = ?,
                 temperatura_servir = ?,
                 pais_fk = ?,
-                preco = ?
+                preco = ?,
+                descricao = ?
         WHERE id_vinho = ?    
 `;
 
 const [resposta] = await connection.query(comando, [
+    vinho.imagem_vinho,
     vinho.nome,
     vinho.uva,
-    vinho.vinicola_fk,
+    vinho.vinicola,
     vinho.teor_alcolico,
     vinho.classificacao,
     vinho.volume,
     vinho.safra,
     vinho.temperatura_servir,
-    vinho.pais_fk,
+    vinho.pais,
     vinho.preco,
+    vinho.descricao,
     idVinho
 ]);
 

@@ -56,6 +56,7 @@ export async function buscarCarrinhoPorId(idCarrinho) {
     return registro;
 }
 
+
 export async function buscarCarrinhoPeloCliente(cpfCliente) {
     const comando = `SELECT * FROM view_listagem_carrinho 
                      WHERE cpf = ?`;

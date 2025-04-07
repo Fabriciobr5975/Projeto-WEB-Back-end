@@ -1,5 +1,5 @@
 import { buscarVinicolaPorId } from '../../repository/vinho/vinicolaRepository.js'
-import { validarEntradaParaBuscaPorVinicola, validarBuscaVinicola } from '../../validation/vinicola/vinicolaValidation.js'
+import { validarEntradaParaBuscaPorVinicola, validarBuscaVinicola } from '../../validation/vinho/vinicolaValidation.js'
 
 export default async function buscarVinicolaPorIdService (idVinicola) {
     validarEntradaParaBuscaPorVinicola(idVinicola);

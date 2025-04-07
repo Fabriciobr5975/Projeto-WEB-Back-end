@@ -1,20 +1,24 @@
 import connection from "../connection.js";
 
 export async function inserirVinicola(vinicola) {
-    const comando = `INSERT INTO vinicola (vinicola) VALUES (?)`;
+    const comando = `INSERT INTO vinicola (vinicola, rotulo) VALUES (?, ?)`;
 
-    const [resposta] = await connection.query(comando, [vinicola.vinicola]);
+    const [resposta] = await connection.query(comando, [vinicola.vinicola, vinicola.rotulo]);
     return resposta.insertId;
 }
 
 export async function alterarVinicola(idVinicola, vinicola) {
     const comando = `
         UPDATE viniciola 
-            SET vinicola = ?
+            SET vinicola = ?,
+                rotulo = ?
         WHERE id_vinicola = ?
     `;
 
-    const [resposta] = await connection.query(comando, [vinicola.vinicola, idVinicola]);
+    const [resposta] = await connection.query(comando, [
+        vinicola.vinicola, 
+        vinicola.rotulo, 
+        idVinicola]);
     return resposta.affectedRows;
 }
 

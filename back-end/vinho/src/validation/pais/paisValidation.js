@@ -1,7 +1,7 @@
 
 export function validarEntradaParaBuscaPorPais(entrada) {
     if(!entrada)
-        throw new Error("O campo para busca devem estar preenchido");
+        throw new Error("O campo para busca deve estar preenchido");
 }
 
 export function validarCamposObrigatoriosPais(pais) {

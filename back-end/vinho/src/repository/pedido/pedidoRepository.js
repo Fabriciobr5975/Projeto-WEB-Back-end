@@ -11,8 +11,8 @@ export async function inserirPedido(pedido) {
         `;
 
     const [resposta] = await connection.query(comando, [
-        pedido.itens_carrinho_fk,
-        pedido.endereco_entrega_fk,
+        pedido.itens_carrinho,
+        pedido.endereco_entrega,
         pedido.valor_total,
         pedido.status_pedido,
         pedido.data_pedido
@@ -33,8 +33,8 @@ export async function alterarPedido(idPedido, pedido) {
     `;
 
     const [resposta] = await connection.query(comando, [
-        pedido.itens_carrinho_fk,
-        pedido.endereco_entrega_fk,
+        pedido.itens_carrinho,
+        pedido.endereco_entrega,
         pedido.valor_total,
         pedido.status_pedido,
         pedido.data_pedido,

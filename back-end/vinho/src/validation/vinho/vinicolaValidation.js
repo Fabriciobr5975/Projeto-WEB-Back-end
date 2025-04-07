@@ -1,12 +1,15 @@
 
 export function validarEntradaParaBuscaPorVinicola(entrada) {
     if(!entrada)
-        throw new Error("O campo para busca devem estar preenchido");
+        throw new Error("O campo para busca deve estar preenchido");
 }
 
 export function validarCamposObrigatoriosVinicola(vinicola) {
     if (!vinicola.vinicola)
         throw new Error("O nome da vinícola é obrigatório e deve ser único");
+
+    if(!vinicola.rotulo)
+        throw new Error("O nome da rótulo da vinícola é obrigatório");
 }
 
 export function validarBuscaVinicola(registros) {

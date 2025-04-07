@@ -1,7 +1,8 @@
 import { buscarVinicolaPorId, alterarVinicola } from '../../repository/vinho/vinicolaRepository.js'
-import { validarCamposObrigatoriosVinicola, verificarSeVinicolasSãoIguais, verificarSeVinicolaFoiAlterada } from '../../validation/vinicola/vinicolaValidation.js'
+import { validarEntradaParaBuscaPorVinicola, validarCamposObrigatoriosVinicola, verificarSeVinicolasSãoIguais, verificarSeVinicolaFoiAlterada } from '../../validation/vinho/vinicolaValidation.js'
 
 export default async function alterarVinicolaService (idVinicola, vinicola) {
+    validarEntradaParaBuscaPorVinicola(idVinicola);
     validarCamposObrigatoriosVinicola(idVinicola);
     
     const registro = await buscarVinicolaPorId(idVinicola);
