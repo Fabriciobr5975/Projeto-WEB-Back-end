@@ -6,7 +6,7 @@ export function validarEntradaParaBuscaPorPedido(entrada) {
 
 export function validarCamposObrigatoriosPedido(pedido) {
     if (!pedido.itens_carrinho)
-        throw new Error("A identificação doos itens do carrinho vinho é obrigátoria é deve ser única");
+        throw new Error("A identificação dos itens do carrinho vinho é obrigátoria é deve ser única");
 
     if (!pedido.endereco_entrega)
         throw new Error("O endereço da entrega é obrigatório");
