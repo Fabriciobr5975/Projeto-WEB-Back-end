@@ -58,7 +58,7 @@ export async function listarPedido() {
     return registros;
 }
 
-export async function buscarPedidoPorId(idCarrinho) {
+export async function listarPedidoPorId(idCarrinho) {
     const comando = `SELECT * FROM view_listagem_pedidos 
                      WHERE id_itens_carrinho = ?`;
 
@@ -66,7 +66,7 @@ export async function buscarPedidoPorId(idCarrinho) {
     return registro;
 }
 
-export async function buscarPedidoPeloCliente(cpfCliente) {
+export async function listarPedidoPeloCliente(cpfCliente) {
     const comando = `SELECT * FROM view_listagem_pedidos 
                      WHERE cpf = ?`;
 
@@ -74,7 +74,8 @@ export async function buscarPedidoPeloCliente(cpfCliente) {
     return registros;
 }
 
-export async function buscarPedidoPorVinho(idVinho) {
+/*
+export async function listarPedidoPorVinho(idVinho) {
     const comando = `SELECT * FROM view_listagem_pedidos
                      WHERE id_vinho = ?`;
 
@@ -82,10 +83,11 @@ export async function buscarPedidoPorVinho(idVinho) {
     return registros;
 }
 
-export async function buscarPedidoPorPrecoTotal(quantidade) {
+export async function listarPedidoPorPrecoTotal(quantidade) {
     const comando = `SELECT * FROM view_listagem_pedidos
                      WHERE preco_total_pedido = ?`;
 
     const[registro] = await connection.query(comando, [quantidade]);
     return registro;
 }
+    */

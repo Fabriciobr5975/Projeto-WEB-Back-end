@@ -38,3 +38,4 @@ endpoints.get("/vinho/preco", async (req, resp) => {
 
 }); 
 
+export default endpoints;

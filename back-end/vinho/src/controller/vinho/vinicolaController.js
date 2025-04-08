@@ -25,3 +25,5 @@ endpoints.get("/estoque/:id", async (req, resp) => {
 endpoints.get("/vinicola/nome", async (req, resp) => {
 
 }); 
+
+export default endpoints;
