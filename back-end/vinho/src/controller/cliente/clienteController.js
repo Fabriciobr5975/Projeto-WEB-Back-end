@@ -35,3 +35,4 @@ endpoints.get("/cliente/email", async (req, resp) => {
 }); 
 
 
+export default endpoints;
