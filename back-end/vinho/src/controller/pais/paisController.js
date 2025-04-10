@@ -13,7 +13,7 @@ const endpoints = Router();
 endpoints.post("/pais", async (req, resp) => {
     try {
         const pais = req.body;
-        const resposta = await inserirPaisService(pedido);
+        const resposta = await inserirPaisService(pais);
 
         resp.send({
             id_inserido: resposta
@@ -92,7 +92,7 @@ endpoints.get("/pais/:nome", async (req, resp) => {
 
 endpoints.get("/pais/:sigla", async (req, resp) => {
     try {
-        const sigla = req.params.nome;
+        const sigla = req.params.sigla;
         const registro = await buscarPaisPorSiglaService(sigla);
 
         resp.send(registro);

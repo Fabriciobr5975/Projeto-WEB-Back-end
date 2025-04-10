@@ -1,38 +1,134 @@
+import alterarClienteService from '../../service/cliente/alterarClienteService.js';
+import inserirClienteService from '../../service/cliente/inserirClienteService.js';
+import removerClienteService from '../../service/cliente/removerClienteService.js';
+import listarClientesService from '../../service/cliente/listarClientesService.js';
+import buscarClientePorCepService from '../../service/cliente/buscarClientePorCepService.js';
+import buscarClientePorCpfService from '../../service/cliente/buscarClientePorCpfService.js';
+import buscarClientePorEmailService from '../../service/cliente/buscarClientePorEmailService.js';
+import buscarClientePorIdService from '../../service/cliente/buscarClientePorIdService.js';
+import buscarClientePorNomeService from '../../service/cliente/buscarClientePorNomeService.js';
+
 import { Router } from "express";
 
 const endpoints = Router();
 
 endpoints.post("/cliente", async (req, resp) => {
+    try {
+        const cliente = req.body;
+        const resposta = await inserirClienteService(cliente);
 
+        resp.send({
+            id_inserido: resposta
+        });
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
 endpoints.put("/cliente/:id", async (req, resp) => {
+    try {
+        const idCliente = req.params.id;
+        const cliente = req.body;
+        const resposta = await alterarClienteService(idCliente, cliente);
 
+        resp.send({resposta});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
 endpoints.delete("/cliente/:id", async (req, resp) => {
+    try {
+        const idCliente = req.params.id;
+        const resposta = await removerClienteService(idCliente);
 
+        resp.send({resposta});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
 endpoints.get("/cliente", async (req, resp) => {
+    try {
+        const registros = await listarClientesService();
 
+        resp.send(registros);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
 endpoints.get("/cliente/:id", async (req, resp) => {
+    try {
+        const idCliente = req.params.id;
+        const registro = await buscarClientePorIdService(idCliente);
 
+        resp.send({registro});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
-endpoints.get("/cliente/nome", async (req, resp) => {
+endpoints.get("/cliente/:nome", async (req, resp) => {
+    try {
+        const nomeCliente = req.params.nome;
+        const registro = await buscarClientePorNomeService(nomeCliente);
 
+        resp.send({registro});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
-endpoints.get("/cliente/cpf", async (req, resp) => {
+endpoints.get("/cliente/:cpf", async (req, resp) => {
+    try {
+        const cpfCliente = req.params.cpf;
+        const registro = await buscarClientePorCpfService(cpfCliente);
 
+        resp.send({registro});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
-endpoints.get("/cliente/email", async (req, resp) => {
+endpoints.get("/cliente/:email", async (req, resp) => {
+    try {
+        const emailCliente = req.params.email;
+        const registro = await buscarClientePorEmailService(emailCliente);
 
+        resp.send({registro});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
 }); 
 
+endpoints.get("/cliente/:cep", async (req, resp) => {
+    try {
+        const cepCliente = req.params.cep;
+        const registro = await buscarClientePorCepService(cepCliente);
+
+        resp.send({registro});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
 
 export default endpoints;

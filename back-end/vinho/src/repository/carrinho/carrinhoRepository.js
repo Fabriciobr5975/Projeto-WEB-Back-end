@@ -73,10 +73,11 @@ export async function buscarCarrinhoPorVinho(idVinho) {
     return registros;
 }
 
+/*
 export async function buscarCarrinhoPorQuantidade(quantidade) {
     const comando = `SELECT * FROM view_listagem_carrinho
                      WHERE quantidade = ?`;
 
     const[registro] = await connection.query(comando, [quantidade]);
     return registro;
-}
+}*/

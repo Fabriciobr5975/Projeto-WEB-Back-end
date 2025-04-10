@@ -74,7 +74,7 @@ export async function listarPedidoPeloCliente(cpfCliente) {
     return registros;
 }
 
-/*
+
 export async function listarPedidoPorVinho(idVinho) {
     const comando = `SELECT * FROM view_listagem_pedidos
                      WHERE id_vinho = ?`;
@@ -90,4 +90,3 @@ export async function listarPedidoPorPrecoTotal(quantidade) {
     const[registro] = await connection.query(comando, [quantidade]);
     return registro;
 }
-    */

@@ -1,11 +1,11 @@
-import {} from '../../repository/carrinho/itensCarrinhoRepository.js'
-import { validarEntradaParaBuscaPorItensCarrinho, verificarSeItensCarrinhoFoiRemovido } from '../../validation/carrinho/itensCarrinhoValidation.js'
+import {buscarItensCarrinhoPorId} from '../../repository/carrinho/itensCarrinhoRepository.js'
+import { validarEntradaParaBuscaPorItensCarrinho, validarBuscaItensCarrinho } from '../../validation/carrinho/itensCarrinhoValidation.js'
 
-export default async function removerItensCarrinhoService(idItensCarrinho) {
+export default async function buscarItensCarrinhoPorIdService(idItensCarrinho) {
     validarEntradaParaBuscaPorItensCarrinho(idItensCarrinho);
 
-    const resposta = await removerItensCarrinho(idItensCarrinho);
-    verificarSeItensCarrinhoFoiRemovido(resposta);
+    const resposta = await buscarItensCarrinhoPorId(idItensCarrinho);
+    validarBuscaItensCarrinho(resposta);
 
     return resposta;
 }

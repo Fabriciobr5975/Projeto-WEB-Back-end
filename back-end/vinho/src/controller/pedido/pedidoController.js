@@ -3,6 +3,8 @@ import alterarPedidoService from '../../service/pedido/alterarPedidoService.js';
 import removerPedidoService from '../../service/pedido/removerPedidoService.js';
 import listarPedidoService from '../../service/pedido/listarPedidoService.js';
 import buscarPedidoPorIdService from '../../service/pedido/buscarPedidoPorIdService.js';
+import buscarPedidoPorVinhoService from '../../service/pedido/buscarPedidoPorVinhoService.js';
+import buscarPedidoPeloClienteService from '../../service/pedido/buscarPedidoPeloClienteService.js';
 
 import { Router } from "express";
 
@@ -64,10 +66,36 @@ endpoints.get("/pedido", async (req, resp) => {
 
 endpoints.get("/pedido/:id", async (req, resp) => {
     try {
-        const idPedido = req.params.id;
-        const registro = await buscarPedidoPorIdService(idPedido);
+        const idCarrinho = req.params.id;
+        const registro = await buscarPedidoPorIdService(idCarrinho);
 
-        resp.send(registro);
+        resp.send({registro});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
+
+endpoints.get("/pedido/:vinho", async (req, resp) => {
+    try {
+        const idVinho = req.params.vinho;
+        const registro = await buscarPedidoPorVinhoService(idVinho);
+
+        resp.send({registro});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
+
+endpoints.get("/pedido/:cliente", async (req, resp) => {
+    try {
+        const cpfCliente = req.params.cliente;
+        const registro = await buscarPedidoPeloClienteService(cpfCliente);
+
+        resp.send({registro});
     } catch (err) {
         resp.status(404).send({
             erro: err.message
