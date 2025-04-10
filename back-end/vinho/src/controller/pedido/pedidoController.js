@@ -1,62 +1,78 @@
+import inserirPedidoService from '../../service/pedido/inserirPedidoService.js';
+import alterarPedidoService from '../../service/pedido/alterarPedidoService.js';
+import removerPedidoService from '../../service/pedido/removerPedidoService.js';
+import listarPedidoService from '../../service/pedido/listarPedidoService.js';
+import buscarPedidoPorIdService from '../../service/pedido/buscarPedidoPorIdService.js';
+
 import { Router } from "express";
-import { alterarPedido, listarPedido, listarPedidoPorId, removerPedido, inserirPedido, listarPedidoPeloCliente } from "../../repository/pedido/pedidoRepository";
 
 const endpoints = Router();
 
 endpoints.post("/pedido", async (req, resp) => {
-    let pedido = req.body;
-    let novoId = await inserirPedido(pedido);
-    resp.status(202).send({novoId});
-}); 
+    try {
+        const pedido = req.body;
+        const resposta = await inserirPedidoService(pedido);
+
+        resp.send({
+            id_inserido: resposta
+        });
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
 
 endpoints.put("/pedido/:id", async (req, resp) => {
-    let id = req.params.id;
-    let pedido = req.body;
-    let linhasAfetadas = await alterarPedido(id, pedido);
+    try {
+        const idPedido = req.params.id;
+        const pedido = req.body;
+        const resposta = await alterarPedidoService(idPedido, pedido);
 
-    if (linhasAfetadas == 0) {
-        resp.status(404).send({erro: "O pedido não foi alterado."});
-    } else {
-        resp.status(202).send({linhasAfetadas});
+        resp.send({resposta});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
     }
-}); 
+});
 
 endpoints.delete("/pedido/:id", async (req, resp) => {
-    let id = req.params.id;
-    let linhasAfetadas = await removerPedido(id);
+    try {
+        const idPedido = req.params.id;
+        const resposta = await removerPedidoService(idPedido);
 
-    if (linhasAfetadas == 0) {
-        resp.status(404).send({erro: "O pedido não foi removido."});
-    } else {
-        resp.status(202).send({linhasAfetadas});
+        resp.send({resposta});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
     }
-}); 
+});
 
 endpoints.get("/pedido", async (req, resp) => {
-    let registros = await listarPedido();
-    resp.send(registros);
-}); 
+    try {
+        const registros = await listarPedidoService();
+
+        resp.send(registros);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
 
 endpoints.get("/pedido/:id", async (req, resp) => {
-    let id = req.query.idCaarrinho;
-    let registro = await listarPedidoPorId(id);
+    try {
+        const idPedido = req.params.id;
+        const registro = await buscarPedidoPorIdService(idPedido);
 
-    if (registro.length === 0) {
-        return resp.status(404).send({erro: "Nenhuma produto encontrado."});
-    } else {
         resp.send(registro);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
     }
-}); 
-
-endpoints.get("/pedido/cpf", async (req, resp) => {
-    let cpf = req.query.cpfCliente;
-    let registro = await listarPedidoPeloCliente(cpf);
-
-    if (registro.length === 0) {
-        return resp.status(404).send({erro: "Nenhuma cliente encontrado."});
-    } else {
-        resp.send(registro);
-    }
-}); 
+});
 
 export default endpoints;
