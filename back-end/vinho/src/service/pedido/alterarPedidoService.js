@@ -7,6 +7,7 @@ export default async function alterarPedidoService(idPedido, pedido) {
 
     const registro = await buscarPedidoPorId(idPedido);
     buscarPedidoPorId(registro);
+    validarBuscaPedido(registro);
 
     const resposta = await alterarPedido(idPedido, pedido);
     verificarSePedidoFoiAlterado(resposta);

@@ -1,8 +1,7 @@
-import 'dotenv/config'
-
-import express from 'express'
-import cors from 'cors'
-import adicionarRotas from './routers';
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import adicionarRotas from './routers.js';
 
 const servidor = express();
 
@@ -12,7 +11,7 @@ servidor.use(cors());
 // Adicionando as rotas dos end-points
 adicionarRotas(servidor);
 
-PORT = process.env.PORT;
+const PORTA = process.env.PORT;
 servidor.listen(
-    PORT,
-    () => console.log(`API subiu na porta ${PORT} com sucesso`));
+    PORTA,
+    () => console.log(`API subiu na porta ${PORTA} com sucesso`));

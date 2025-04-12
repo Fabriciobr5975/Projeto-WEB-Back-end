@@ -1,8 +1,8 @@
 import inserirPaisService from '../../service/pais/inserirPaisService.js';
-import alterarPaisService from '../../service/pais/alterarPedidoService.js';
-import removerPaisService from '../../service/pais/removerPedidoService.js';
-import listarPaisesService from '../../service/pais/listarPedidoService.js';
-import buscarPaisPorId from '../../service/pais/buscarPedidoPorIdService.js';
+import alterarPaisService from '../../service/pais/alterarPaisService.js';
+import removerPaisService from '../../service/pais/removerPaisService.js';
+import listarPaisesService from '../../service/pais/listarPaisesService.js';
+import buscarPaisPorId from '../../service/pais/buscarPaisPorIdService.js';
 import buscarPaisPorNomeService from '../../service/pais/buscarPaisPorNomeService.js';
 import buscarPaisPorSiglaService from '../../service/pais/buscarPaisPorSiglaService.js';
 

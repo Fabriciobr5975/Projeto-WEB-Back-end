@@ -2,10 +2,10 @@ import mysql from 'mysql2/promise'
 
 const connection = await mysql.createConnection({
     host: process.env.MYSQL_HOST,
-    database: process.MYSQL_DATABASE,
-    user: process.MYSQL_USER,
-    password: process.MYSQL_PASSWORD,
-    typecast: function(field, next) {
+    database: process.env.MYSQL_DATABASE,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    typeCast: function (field, next) {
         if(field.type === 'DATE') {
             const date = new Date(field.string());
             
@@ -18,6 +18,7 @@ const connection = await mysql.createConnection({
             return next();
         }
     }
+
 });
 
 console.log(`--> Conexão ao Banco de dados realizada com sucesso`);

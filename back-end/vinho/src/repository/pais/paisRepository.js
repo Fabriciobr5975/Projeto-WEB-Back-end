@@ -2,7 +2,8 @@ import connection from '../connection.js'
 
 /**
  * Função que deve inserir um novo pais no banco de dados
- * @param {JSON} pais - Objeto pais que terá os atributos necessários para inserção do pais
+ * 
+ * @param {JSON} pais - Objeto que terá os atributos necessários para inserção do pais
  * 
  * @returns Retorna o id do pais, caso ele seja inserido
  */
@@ -20,7 +21,7 @@ export async function inserirPais(pais) {
  * Função para alterar um pais que já tenha sido inserido no banco de dados
  * 
  * @param {Number} idPais - ID (PK) do pais que será alterado
- * @param {JSON} pais - Objeto pais com os dados necessários para alterar um pais
+ * @param {JSON} pais - Objeto com os dados necessários para alterar um pais
  * 
  * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do pais
  */
@@ -53,7 +54,7 @@ export async function removerPais(idPais) {
 /**
  * Função para listar todos os paises que foram criados e estão salvos no banco de dados
  * 
- * @returns Retorna um objeto JSON contendo todos os pais que foram encontrados no banco de dados
+ * @returns Retorna um objeto JSON contendo todos os pais que foram encontrados
  */
 export async function listarPaises() {
     const comando = `SELECT * FROM pais WHERE id_pais = ?`;

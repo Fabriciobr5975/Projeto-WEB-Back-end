@@ -1,5 +1,5 @@
 import { buscarVinicolaPorNome, inserirVinicola } from '../../repository/vinho/vinicolaRepository.js'
-import { validarCamposObrigatoriosVinicola, verificarSeVinicolasSãoIguais, verificarSeVinicolaFoiInserida } from '../../validation/vinicola/vinicolaValidation.js'
+import { validarCamposObrigatoriosVinicola, verificarSeVinicolasSãoIguais, verificarSeVinicolaFoiInserida } from '../../validation/vinho/vinicolaValidation.js'
 
 export default async function inserirVinicolaService(vinicola) {
     validarCamposObrigatoriosVinicola(vinicola);

@@ -1,5 +1,12 @@
 import connection from "../connection.js";
 
+/**
+ * Função para inserir um novo vinho no banco de dados
+ * 
+ * @param {JSON} vinho - Objeto que terá os atributos necessários para a inserção do estoque
+ *  
+ * @returns Retorna o id do vinho, caso ele seja inserido 
+ */
 export async function inserirVinho(vinho) {
     const comando = `
         INSERT INTO vinho (imagem_vinho,
@@ -35,6 +42,14 @@ export async function inserirVinho(vinho) {
     return resposta.insertId;   
 }
 
+/**
+ * Função para alterar um vinho que já tenha sido inserido no banco de dados
+ * 
+ * @param {Number} idVinho - Recebe o id do vinho que será alterado
+ * @param {JSON} vinho - Objeto que terá os atributos necessários para a alteração do estoque
+ * 
+ * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do estoque
+ */
 export async function alterarVinho(idVinho, vinho) {
     const comando = `
         UPDATE vinho 
@@ -72,6 +87,13 @@ const [resposta] = await connection.query(comando, [
 return resposta.affectedRows;   
 }
 
+/**
+ * Função para remover um estoque salvo no banco de dados
+ * 
+ * @param {Number} idVinho - Recebe o id do vinho que será removido
+ * 
+ * @returns Retorna a quantidade de linhas que foram alteradas após a remoção do vinho
+ */
 export async function removerVinho(idVinho) {
     const comando = `DELETE FROM vinho WHERE id_vinho = ?`;
 
@@ -79,6 +101,11 @@ export async function removerVinho(idVinho) {
     return resposta.affectedRows;
 }
 
+/**
+ * Função para listar todos os vinhos que estão salvos no banco de dados
+ * 
+ * @returns Retorna todos os vinhos que foram encontrados
+ */
 export async function listarVinhos() {
     const comando = `SELECT * FROM view_listagem_vinho`;
 
@@ -86,6 +113,13 @@ export async function listarVinhos() {
     return registros;
 }
 
+/**
+ * Função para buscar um estoque pelo seu id
+ * 
+ * @param {Number} idVinho - Recebe o id do vinho que será buscado
+ * 
+ * @returns Retorna um objeto JSON, contendo o vinho que foi buscado
+ */
 export async function buscarVinhoPorId(idVinho) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE id_vinho = ?`;
 
@@ -93,6 +127,13 @@ export async function buscarVinhoPorId(idVinho) {
     return registro;
 }
 
+/**
+ * Função para buscar um estoque pelo seu nome
+ * 
+ * @param {String} nomeVinho - Recebe o nome do vinho que será buscado 
+ * 
+ * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
+ */
 export async function buscarVinhoPorNome(nomeVinho) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE nome_vinho LIKE % ?`;
 
@@ -100,6 +141,13 @@ export async function buscarVinhoPorNome(nomeVinho) {
     return registros;
 }
 
+/**
+ * Função para buscar um estoque pelo sua uva
+ * 
+ * @param {String} uva - Recebe a uva do vinho que será buscado 
+ * 
+ * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
+ */
 export async function buscarVinhoPorUva(uva) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE uva_vinho LIKE % ?`;
 
@@ -107,13 +155,27 @@ export async function buscarVinhoPorUva(uva) {
     return registros;
 }
 
+/**
+ * Função para buscar um estoque pelo seu teor alcoólico
+ * 
+ * @param {String} teorAlcoolico - Recebe o teor alcoólico do vinho que será buscado
+ * 
+ * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
+ */
 export async function buscarVinhoPorTeorAlcoolico(teorAlcoolico) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE teor_alcolico = ? `;
 
-    const [registro] = await connection(comando, [teorAlcoolico]);
-    return registro;
+    const [registros] = await connection(comando, [teorAlcoolico]);
+    return registros;
 }
 
+/**
+ * Função para buscar um estoque pela sua classificação
+ * 
+ * @param {String} classificaoVinho - Recebe a classificação do vinho que será buscado
+ *  
+ * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
+ */
 export async function buscarVinhoPorClassificacao(classificaoVinho) {
     const comando = `SELECT * FROM view_listagem_vinho 
                      WHERE classificacao_vinho LIKE % ?`;
@@ -122,13 +184,27 @@ export async function buscarVinhoPorClassificacao(classificaoVinho) {
     return registros;
 }
 
+/**
+ * Função para buscar um estoque pela sua safra
+ * 
+ * @param {String} safra - Recebe a safra do vinho que será buscado 
+ * 
+ * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
+ */
 export async function buscarVinhoPorSafra(safra) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE safra_vinho = ?`;
 
-    const [registro] = await connection(comando, [safra]);
-    return registro;
+    const [registros] = await connection(comando, [safra]);
+    return registros;
 }
 
+/**
+ * Função para buscar um estoque pelo seu pais
+ * 
+ * @param {String} pais - Recebe o pais do vinho que será buscado
+ * 
+ * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
+ */
 export async function buscarVinhoPorPais(pais) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE pais LIKE % ?`;
 
@@ -136,6 +212,13 @@ export async function buscarVinhoPorPais(pais) {
     return registros;
 }
 
+/**
+ * Função para buscar um estoque pelo seu preço
+ * 
+ * @param {Number} precoVinho - Recebe o preço do vinho que será buscado
+ * 
+ * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
+ */
 export async function buscarVinhoPorPreco(precoVinho) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE preco_vinho = ?`;
 
