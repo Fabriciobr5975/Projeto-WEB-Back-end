@@ -7,5 +7,5 @@ export default async function buscarPedidoPorVinhoService(idVinho) {
     const registro = await buscarPedidoPorVinho(idVinho);
     validarBuscaPedido(registro);
 
-    return resposta;
+    return registro;
 }

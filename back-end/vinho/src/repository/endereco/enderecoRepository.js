@@ -24,8 +24,8 @@ export async function inserirEndereco(endereco) {
         endereco.numero,
         endereco.complemento,
         endereco.bairro,
-        endereco.cidade,
-        endereco.uf_estado,
+        endereco.localidade,
+        endereco.uf,
         endereco.cep
     ]);
 
@@ -58,8 +58,8 @@ export async function alterarEndereco(idEndereco, endereco) {
         endereco.numero,
         endereco.complemento,
         endereco.bairro,
-        endereco.cidade,
-        endereco.uf_estado,
+        endereco.localidade,
+        endereco.uf,
         endereco.cep,
         idEndereco
     ]);
@@ -145,23 +145,23 @@ export async function buscarEnderecoPorCidade(cidade) {
  * seja válido 
  */
 export async function buscarEnderecoPorLogradouro(logradouro) {
-    const comando = `SELECT * FROM endereco WHERE logradouro LIKE % ?`;
+    const comando = `SELECT * FROM endereco WHERE logradouro LIKE ?`;
 
-    const [registros] = await connection.query(comando, [logradouro]);
+    const [registros] = await connection.query(comando, [`%${logradouro}%`]);
     return registros;
 }
 
 /**
  * Função para buscar um ou mais endereços pela UF do estado
  * 
- * @param {String} ufEstado - Recebe a UF do estado para a busca do endereço
+ * @param {String} uf - Recebe a UF do estado para a busca do endereço
  * 
  * @returns Retorna um objeto JSON contendo um ou mais endereços que foram buscados, caso a UF do estado
  * seja válido 
  */
-export async function buscarEnderecoPorUF(ufEstado) {
-    const comando = `SELECT * FROM endereco WHERE uf = ?`;
+export async function buscarEnderecoPorUF(uf) {
+    const comando = `SELECT * FROM endereco WHERE uf_estado = ?`;
 
-    const [registro] = await connection.query(comando, [ufEstado]);
+    const [registro] = await connection.query(comando, [uf]);
     return registro;
 }

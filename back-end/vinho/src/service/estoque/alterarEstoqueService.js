@@ -5,11 +5,11 @@ export default async function alterarEstoqueService(idEstoque, estoque) {
     validarEntradaParaBuscaPorEstoque(idEstoque);
     validarCamposObrigatoriosEstoque(estoque);
 
-    const registro = await buscarEstoquePorId(idService);
+    const registro = await buscarEstoquePorId(idEstoque);
     validarBuscaEstoque(registro)
-    verificarSeEstoqueSãoIguais(registro, estoque);
+    //verificarSeEstoqueSãoIguais(registro, estoque);
 
-    const resposta = await alterarEstoque(estoque);
+    const resposta = await alterarEstoque(idEstoque, estoque);
     verificarSeEstoqueFoiAlterado(resposta);
 
     return resposta;

@@ -69,7 +69,7 @@ endpoints.get("/pedido/:id", async (req, resp) => {
         const idCarrinho = req.params.id;
         const registro = await buscarPedidoPorIdService(idCarrinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -77,12 +77,12 @@ endpoints.get("/pedido/:id", async (req, resp) => {
     }
 });
 
-endpoints.get("/pedido/:vinho", async (req, resp) => {
+endpoints.get("/pedido/vinho/:vinho", async (req, resp) => {
     try {
         const idVinho = req.params.vinho;
         const registro = await buscarPedidoPorVinhoService(idVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -90,12 +90,12 @@ endpoints.get("/pedido/:vinho", async (req, resp) => {
     }
 });
 
-endpoints.get("/pedido/:cliente", async (req, resp) => {
+endpoints.get("/pedido/cliente/:cliente", async (req, resp) => {
     try {
         const cpfCliente = req.params.cliente;
         const registro = await buscarPedidoPeloClienteService(cpfCliente);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message

@@ -77,7 +77,7 @@ endpoints.get("/itenscarrinho/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/itenscarrinho/:cliente", async (req, resp) => {
+endpoints.get("/itenscarrinho/cliente/:cliente", async (req, resp) => {
     try {
         const clienteItensCarrinho = req.params.cliente;
         const registro = await buscarItensCarrinhoPeloClienteService(clienteItensCarrinho);
@@ -90,7 +90,7 @@ endpoints.get("/itenscarrinho/:cliente", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/itenscarrinho/:vinho", async (req, resp) => {
+endpoints.get("/itenscarrinho/vinho/:vinho", async (req, resp) => {
     try {
         const vinhoItensCarrinho = req.params.vinho;
         const registro = await buscarItensCarrinhoPorVinhoService(vinhoItensCarrinho);

@@ -3,6 +3,7 @@ import { validarEntradaParaBuscaPorVinicola, validarBuscaVinicola } from '../../
 
 export default async function buscarVinicolaPorIdService (idVinicola) {
     validarEntradaParaBuscaPorVinicola(idVinicola);
+    
     const registro = await buscarVinicolaPorId(idVinicola);
     validarBuscaVinicola(registro);
 

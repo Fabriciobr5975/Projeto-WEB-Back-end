@@ -10,7 +10,7 @@ import connection from "../connection.js";
 export async function inserirCarrinho(carrinho) {
     const comando = `
         INSERT INTO carrinho (vinho_fk, cliente_fk, quantidade)
-            VALUES (?, ?, ?)
+            VALUES (?, (SELECT id_cliente FROM cliente WHERE cpf = ?), ?)
     `;
 
     const [resposta] = await connection.query(comando, [
@@ -34,7 +34,7 @@ export async function alterarCarrinho(idCarrinho, carrinho) {
     const comando = `
         UPDATE carrinho 
             SET vinho_fk = ?,
-                cliente_fk = ?,
+                cliente_fk = (SELECT id_cliente FROM cliente WHERE cpf = ?),
                 quantidade = ?
         WHERE id_carrinho = ?
     `;

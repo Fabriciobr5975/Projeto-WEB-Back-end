@@ -1,7 +1,7 @@
-import inserirPaisService from '../../service/vinicola/inserirVinicolaService.js';
-import alterarPaisService from '../../service/vinicola/alterarVinicolaService.js';
-import removerPaisService from '../../service/vinicola/removerVinicolaService.js';
-import listarPaisesService from '../../service/vinicola/listarVinicolaService.js';
+import inserirVinicolaService from '../../service/vinicola/inserirVinicolaService.js';
+import alterarVinicolaService from '../../service/vinicola/alterarVinicolaService.js';
+import removerVinicolaService from '../../service/vinicola/removerVinicolaService.js';
+import listarVinicolaService from '../../service/vinicola/listarVinicolaService.js';
 import buscarVinicolaPorIdService from '../../service/vinicola/buscarVinicolaPorIdService.js';
 import buscarVinicolaPorNomeService from '../../service/vinicola/buscarVinicolaPorNomeService.js';
 
@@ -12,7 +12,7 @@ const endpoints = Router();
 endpoints.post("/vinicola", async (req, resp) => {
     try {
         const vinicola = req.body;
-        const resposta = await inserirPaisService(vinicola);
+        const resposta = await inserirVinicolaService(vinicola);
 
         resp.send({
             id_inserido: resposta
@@ -28,7 +28,7 @@ endpoints.put("/vinicola/:id", async (req, resp) => {
     try {
         const idVinicola = req.params.id;
         const vinicola = req.body;
-        const resposta = await alterarPaisService(idVinicola, vinicola);
+        const resposta = await alterarVinicolaService(idVinicola, vinicola);
 
         resp.send({resposta});
     } catch (err) {
@@ -41,7 +41,7 @@ endpoints.put("/vinicola/:id", async (req, resp) => {
 endpoints.delete("/vinicola/:id", async (req, resp) => {
     try {
         const idVinicola = req.params.id;
-        const resposta = await removerPaisService(idVinicola);
+        const resposta = await removerVinicolaService(idVinicola);
 
         resp.send({resposta});
     } catch (err) {
@@ -53,7 +53,7 @@ endpoints.delete("/vinicola/:id", async (req, resp) => {
 
 endpoints.get("/vinicola", async (req, resp) => {
     try {
-        const registros = await listarPaisesService();
+        const registros = await listarVinicolaService();
 
         resp.send(registros);
     } catch (err) {
@@ -63,7 +63,7 @@ endpoints.get("/vinicola", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/:id", async (req, resp) => {
+endpoints.get("/vinicola/:id", async (req, resp) => {
     try {
         const idVinicola = req.params.id;
         const registro = await buscarVinicolaPorIdService(idVinicola);
@@ -76,9 +76,9 @@ endpoints.get("/estoque/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/vinicola/:nome", async (req, resp) => {
+endpoints.get("/vinicola/nome/:nome", async (req, resp) => {
     try {
-        const nome = req.params.id;
+        const nome = req.params.nome;
         const registros = await buscarVinicolaPorNomeService(nome);
 
         resp.send(registros);

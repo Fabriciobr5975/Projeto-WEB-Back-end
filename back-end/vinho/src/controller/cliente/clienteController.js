@@ -71,7 +71,7 @@ endpoints.get("/cliente/:id", async (req, resp) => {
         const idCliente = req.params.id;
         const registro = await buscarClientePorIdService(idCliente);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -79,12 +79,12 @@ endpoints.get("/cliente/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/:nome", async (req, resp) => {
+endpoints.get("/cliente/nome/:nome", async (req, resp) => {
     try {
         const nomeCliente = req.params.nome;
         const registro = await buscarClientePorNomeService(nomeCliente);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -92,12 +92,12 @@ endpoints.get("/cliente/:nome", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/:cpf", async (req, resp) => {
+endpoints.get("/cliente/cpf/:cpf", async (req, resp) => {
     try {
         const cpfCliente = req.params.cpf;
         const registro = await buscarClientePorCpfService(cpfCliente);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -105,12 +105,12 @@ endpoints.get("/cliente/:cpf", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/:email", async (req, resp) => {
+endpoints.get("/cliente/email/:email", async (req, resp) => {
     try {
         const emailCliente = req.params.email;
         const registro = await buscarClientePorEmailService(emailCliente);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -118,12 +118,12 @@ endpoints.get("/cliente/:email", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/:cep", async (req, resp) => {
+endpoints.get("/cliente/cep/:cep", async (req, resp) => {
     try {
         const cepCliente = req.params.cep;
         const registro = await buscarClientePorCepService(cepCliente);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message

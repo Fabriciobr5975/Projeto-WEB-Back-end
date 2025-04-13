@@ -36,7 +36,7 @@ export async function alterarEstoque(idEstoque, estoque) {
             SET vinho_fk = ?, 
                 quantidade = ?, 
                 status_estoque = ? 
-        WHERE id_endereco = ?
+        WHERE id_estoque = ?
     `;
 
     const [resposta] = await connection.query(comando, [
@@ -111,9 +111,9 @@ export async function buscarEstoquePorStatus(status) {
  * @returns Retorna um objeto JSON, contendo um ou vários estoques que foram buscados
  */
 export async function buscarEstoquePorVinho(vinho) {
-    const comando = `SELECT * FROM view_listagem_estoque WHERE vinho LIKE % ?`;
+    const comando = `SELECT * FROM view_listagem_estoque WHERE vinho LIKE ?`;
 
-    const [registros] = await connection.query(comando, [vinho]);
+    const [registros] = await connection.query(comando, [`%${vinho}%`]);
     return registros;
 }
 

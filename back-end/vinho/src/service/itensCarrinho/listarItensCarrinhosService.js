@@ -5,5 +5,5 @@ export default async function listarItensCarrinhoService() {
     const registros = await listarItensCarrinhos();
     validarBuscaItensCarrinho(registros);
 
-    return resposta;
+    return registros;
 }

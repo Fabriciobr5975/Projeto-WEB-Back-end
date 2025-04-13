@@ -8,8 +8,9 @@ import connection from "../connection.js";
  * @returns Retorna o id do vinho, caso ele seja inserido 
  */
 export async function inserirVinho(vinho) {
+    // imagem_vinho,
     const comando = `
-        INSERT INTO vinho (imagem_vinho,
+        INSERT INTO vinho (
                            nome,
                            uva,
                            vinicola_fk,
@@ -21,11 +22,12 @@ export async function inserirVinho(vinho) {
                            pais_fk,
                            preco,
                            descricao)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)    
+            VALUES (?, ?, (SELECT id_vinicola FROM vinicola WHERE vinicola = ?), ?, ?, ?, ?, ?,
+                    (SELECT id_pais FROM pais WHERE pais = ?), ?, ?)    
     `;
 
     const [resposta] = await connection.query(comando, [
-        vinho.imagem_vinho,
+        //vinho.imagem_vinho,
         vinho.nome,
         vinho.uva,
         vinho.vinicola,
@@ -51,25 +53,26 @@ export async function inserirVinho(vinho) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do estoque
  */
 export async function alterarVinho(idVinho, vinho) {
+    // imagem_vinho = ?,
     const comando = `
         UPDATE vinho 
-            SET imagem_vinho = ?,
+            SET 
                 nome = ?,
                 uva = ?,
-                vinicola_fk = ?,
+                vinicola_fk = (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
                 teor_alcolico = ?,
                 classificacao = ?,
                 volume = ?,
                 safra = ?,
                 temperatura_servir = ?,
-                pais_fk = ?,
+                pais_fk = (SELECT id_pais FROM pais WHERE pais = ?),
                 preco = ?,
                 descricao = ?
         WHERE id_vinho = ?    
 `;
 
 const [resposta] = await connection.query(comando, [
-    vinho.imagem_vinho,
+    //vinho.imagem_vinho,
     vinho.nome,
     vinho.uva,
     vinho.vinicola,
@@ -97,7 +100,7 @@ return resposta.affectedRows;
 export async function removerVinho(idVinho) {
     const comando = `DELETE FROM vinho WHERE id_vinho = ?`;
 
-    const [resposta] = await connection(comando, [idVinho]);
+    const [resposta] = await connection.query(comando, [idVinho]);
     return resposta.affectedRows;
 }
 
@@ -109,7 +112,7 @@ export async function removerVinho(idVinho) {
 export async function listarVinhos() {
     const comando = `SELECT * FROM view_listagem_vinho`;
 
-    const [registros] = await connection(comando);
+    const [registros] = await connection.query(comando);
     return registros;
 }
 
@@ -123,7 +126,7 @@ export async function listarVinhos() {
 export async function buscarVinhoPorId(idVinho) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE id_vinho = ?`;
 
-    const [registro] = await connection(comando, [idVinho]);
+    const [registro] = await connection.query(comando, [idVinho]);
     return registro;
 }
 
@@ -135,9 +138,9 @@ export async function buscarVinhoPorId(idVinho) {
  * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
  */
 export async function buscarVinhoPorNome(nomeVinho) {
-    const comando = `SELECT * FROM view_listagem_vinho WHERE nome_vinho LIKE % ?`;
+    const comando = `SELECT * FROM view_listagem_vinho WHERE nome_vinho LIKE ?`;
 
-    const [registros] = await connection(comando, [nomeVinho]);
+    const [registros] = await connection.query(comando, [`%${nomeVinho}%`]);
     return registros;
 }
 
@@ -149,9 +152,9 @@ export async function buscarVinhoPorNome(nomeVinho) {
  * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
  */
 export async function buscarVinhoPorUva(uva) {
-    const comando = `SELECT * FROM view_listagem_vinho WHERE uva_vinho LIKE % ?`;
+    const comando = `SELECT * FROM view_listagem_vinho WHERE uva_vinho LIKE ?`;
 
-    const [registros] = await connection(comando, [uva]);
+    const [registros] = await connection.query(comando, [`%${uva}%`]);
     return registros;
 }
 
@@ -165,7 +168,7 @@ export async function buscarVinhoPorUva(uva) {
 export async function buscarVinhoPorTeorAlcoolico(teorAlcoolico) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE teor_alcolico = ? `;
 
-    const [registros] = await connection(comando, [teorAlcoolico]);
+    const [registros] = await connection.query(comando, [teorAlcoolico]);
     return registros;
 }
 
@@ -178,9 +181,9 @@ export async function buscarVinhoPorTeorAlcoolico(teorAlcoolico) {
  */
 export async function buscarVinhoPorClassificacao(classificaoVinho) {
     const comando = `SELECT * FROM view_listagem_vinho 
-                     WHERE classificacao_vinho LIKE % ?`;
+                     WHERE classificacao_vinho LIKE ?`;
 
-    const [registros] = await connection(comando, [classificaoVinho]);
+    const [registros] = await connection.query(comando, [`%${classificaoVinho}%`]);
     return registros;
 }
 
@@ -194,7 +197,7 @@ export async function buscarVinhoPorClassificacao(classificaoVinho) {
 export async function buscarVinhoPorSafra(safra) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE safra_vinho = ?`;
 
-    const [registros] = await connection(comando, [safra]);
+    const [registros] = await connection.query(comando, [safra]);
     return registros;
 }
 
@@ -206,9 +209,9 @@ export async function buscarVinhoPorSafra(safra) {
  * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
  */
 export async function buscarVinhoPorPais(pais) {
-    const comando = `SELECT * FROM view_listagem_vinho WHERE pais LIKE % ?`;
+    const comando = `SELECT * FROM view_listagem_vinho WHERE pais LIKE ?`;
 
-    const [registros] = await connection(comando, [pais]);
+    const [registros] = await connection.query(comando, [`%${pais}%`]);
     return registros;
 }
 
@@ -222,6 +225,6 @@ export async function buscarVinhoPorPais(pais) {
 export async function buscarVinhoPorPreco(precoVinho) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE preco_vinho = ?`;
 
-    const [registro] = await connection(comando, [precoVinho]);
+    const [registro] = await connection.query(comando, [precoVinho]);
     return registro;
 }

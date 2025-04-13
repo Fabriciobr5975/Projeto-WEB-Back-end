@@ -5,5 +5,5 @@ export default async function listarEnderecoService() {
     const registros = await listarEnderecos();
     validarBuscaEndereco(registros);
 
-    return resposta;
+    return registros;
 }

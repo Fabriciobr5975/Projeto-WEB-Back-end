@@ -11,10 +11,14 @@ import buscarVinhoPorSafraService from '../../service/vinho/buscarVinhoPorSafraS
 import buscarVinhoPorTeorAlcoolicoService from '../../service/vinho/buscarVinhoPorTeorAlcoolicoService.js';
 import buscarVinhoPorUvaService from '../../service/vinho/buscarVinhoPorUvaService.js';
 
-
 import { Router } from "express";
+import multer from 'multer';
 
 const endpoints = Router();
+
+// const armazenmento = multer.memoryStorage();
+// const upload = multer({armazenmento});
+
 
 endpoints.post("/vinho", async (req, resp) => {
     try {
@@ -29,7 +33,7 @@ endpoints.post("/vinho", async (req, resp) => {
             erro: err.message
         });
     }
-}); 
+});
 
 endpoints.put("/vinho/:id", async (req, resp) => {
     try {
@@ -37,26 +41,26 @@ endpoints.put("/vinho/:id", async (req, resp) => {
         const vinho = req.body;
         const resposta = await alterarVinhoService(idVinho, vinho);
 
-        resp.send({resposta});
+        resp.send({ resposta });
     } catch (err) {
         resp.status(404).send({
             erro: err.message
         });
     }
-}); 
+});
 
 endpoints.delete("/vinho/:id", async (req, resp) => {
     try {
         const idVinho = req.params.id;
         const resposta = await removerVinhoService(idVinho);
 
-        resp.send({resposta});
+        resp.send({ resposta });
     } catch (err) {
         resp.status(404).send({
             erro: err.message
         });
     }
-}); 
+});
 
 endpoints.get("/vinho", async (req, resp) => {
     try {
@@ -68,79 +72,79 @@ endpoints.get("/vinho", async (req, resp) => {
             erro: err.message
         });
     }
-}); 
+});
 
 endpoints.get("/vinho/:id", async (req, resp) => {
     try {
         const idVinho = req.params.id;
         const registro = await buscarVinhoPorIdService(idVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
         });
     }
-}); 
+});
 
-endpoints.get("/vinho/:nome", async (req, resp) => {
+endpoints.get("/vinho/nome/:nome", async (req, resp) => {
     try {
         const nomeVinho = req.params.nome;
         const registro = await buscarVinhoPorNomeService(nomeVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
         });
     }
-}); 
+});
 
-endpoints.get("/vinho/:classificacao", async (req, resp) => {
+endpoints.get("/vinho/classificacao/:classificacao", async (req, resp) => {
     try {
         const classificaoVinho = req.params.classificacao;
         const registro = await buscarVinhoPorClassificacaoService(classificaoVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
         });
     }
-}); 
+});
 
-endpoints.get("/vinho/:safra", async (req, resp) => {
+endpoints.get("/vinho/safra/:safra", async (req, resp) => {
     try {
         const safraVinho = req.params.safra;
         const registro = await buscarVinhoPorSafraService(safraVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
         });
     }
-}); 
+});
 
-endpoints.get("/vinho/:preco", async (req, resp) => {
+endpoints.get("/vinho/preco/:preco", async (req, resp) => {
     try {
         const precoVinho = req.params.preco;
         const registro = await buscarVinhoPorPrecoService(precoVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
         });
     }
-}); 
+});
 
-endpoints.get("/vinho/:pais", async (req, resp) => {
+endpoints.get("/vinho/pais/:pais", async (req, resp) => {
     try {
         const paisVinho = req.params.pais;
         const registro = await buscarVinhoPorPais(paisVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -148,12 +152,12 @@ endpoints.get("/vinho/:pais", async (req, resp) => {
     }
 });
 
-endpoints.get("/vinho/:uva", async (req, resp) => {
+endpoints.get("/vinho/uva/:uva", async (req, resp) => {
     try {
         const uvaVinho = req.params.uva;
         const registro = await buscarVinhoPorUvaService(uvaVinho);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -161,12 +165,12 @@ endpoints.get("/vinho/:uva", async (req, resp) => {
     }
 });
 
-endpoints.get("/vinho/:teoralcoolico", async (req, resp) => {
+endpoints.get("/vinho/teoralcoolico/:teoralcoolico", async (req, resp) => {
     try {
         const teoralcoolico = req.params.teoralcoolico;
         const registro = await buscarVinhoPorTeorAlcoolicoService(teoralcoolico);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message

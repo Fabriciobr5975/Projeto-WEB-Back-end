@@ -57,7 +57,7 @@ export async function removerPais(idPais) {
  * @returns Retorna um objeto JSON contendo todos os pais que foram encontrados
  */
 export async function listarPaises() {
-    const comando = `SELECT * FROM pais WHERE id_pais = ?`;
+    const comando = `SELECT * FROM pais`;
 
     const [registros] = await connection.query(comando);
     return registros;
@@ -85,9 +85,9 @@ export async function buscarPaisPorId(idPais) {
  * @returns Retorna um objeto JSON contendo um ou mais paises, caso o nome passado faça referencia a um pais
  */
 export async function buscarPaisPorNome(nomePais) {
-    const comando = `SELECT * FROM pais WHERE pais LIKE % ?`;
+    const comando = `SELECT * FROM pais WHERE pais LIKE ?`;
 
-    const [registros] = await connection.query(comando, [nomePais]);
+    const [registros] = await connection.query(comando, [`%${nomePais}%`]);
     return registros;
 }
 

@@ -7,5 +7,5 @@ export default async function buscarEnderecoPorCepService(idEndereco) {
     const registros = await buscarEnderecoPorCep(idEndereco);
     validarBuscaEndereco(registros);
 
-    return resposta;
+    return registros;
 }

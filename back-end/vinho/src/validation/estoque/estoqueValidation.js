@@ -8,8 +8,8 @@ export function validarCamposObrigatoriosEstoque(estoque) {
     if (!estoque.vinho)
         throw new Error("A identificação dos vinhos é obrigatório e deve ser único");
 
-    if(!estoque.quantidade)
-        throw new Error("A quantidade é obrigatório");
+    if(!estoque.quantidade || isNaN(estoque.quantidade))
+        throw new Error("A quantidade é obrigatória");
 
     if(!estoque.status_estoque)
         throw new Error("O status do estoque é obrigatório");

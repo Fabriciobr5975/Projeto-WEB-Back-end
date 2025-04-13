@@ -71,7 +71,7 @@ endpoints.get("/estoque/:id", async (req, resp) => {
         const idEstoque = req.params.id;
         const registro = await buscarEstoquePorIdService(idEstoque);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -79,12 +79,12 @@ endpoints.get("/estoque/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/:vinho", async (req, resp) => {
+endpoints.get("/estoque/vinho/:vinho", async (req, resp) => {
     try {
         const vinhoEstoque = req.params.vinho;
         const registro = await buscarEstoquePorVinhoService(vinhoEstoque);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -92,12 +92,12 @@ endpoints.get("/estoque/:vinho", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/:safra", async (req, resp) => {
+endpoints.get("/estoque/safra/:safra", async (req, resp) => {
     try {
         const safraEstoque = req.params.safra;
         const registro = await buscarEstoquePorSafraService(safraEstoque);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -105,12 +105,12 @@ endpoints.get("/estoque/:safra", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/:status", async (req, resp) => {
+endpoints.get("/estoque/status/:status", async (req, resp) => {
     try {
         const statusEstoque = req.params.status;
         const registro = await buscarEstoquePorStatusService(statusEstoque);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -118,12 +118,12 @@ endpoints.get("/estoque/:status", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/:quantidade", async (req, resp) => {
+endpoints.get("/estoque/quantidade/:quantidade", async (req, resp) => {
     try {
         const quantidadeEstoque = req.params.quantidade;
         const registro = await buscarEstoquePorQuantidadeService(quantidadeEstoque);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message

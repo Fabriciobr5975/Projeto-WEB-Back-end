@@ -14,7 +14,7 @@ export async function inserirPedido(pedido) {
                             valor_total, 
                             status_pedido, 
                             data_pedido) 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, (SELECT id_endereco FROM endereco WHERE cep = ?), ?, ?, ?)
         `;
 
     const [resposta] = await connection.query(comando, [
@@ -40,7 +40,7 @@ export async function alterarPedido(idPedido, pedido) {
     const comando = `
         UPDATE pedido 
             SET itens_carrinho_fk = ?, 
-                endereco_entrega_fk = ?, 
+                endereco_entrega_fk = (SELECT id_endereco FROM endereco WHERE cep = ?), 
                 valor_total = ?, 
                 status_pedido = ?, 
                 data_pedido = ?
@@ -94,7 +94,7 @@ export async function listarPedido() {
  */
 export async function buscarPedidoPorId(idCarrinho) {
     const comando = `SELECT * FROM view_listagem_pedidos 
-                     WHERE id_itens_carrinho = ?`;
+                     WHERE id_pedido = ?`;
 
     const [registro] = await connection.query(comando, [idCarrinho]);
     return registro;

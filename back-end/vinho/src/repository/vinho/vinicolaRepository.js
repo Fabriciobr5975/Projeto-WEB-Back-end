@@ -24,7 +24,7 @@ export async function inserirVinicola(vinicola) {
  */
 export async function alterarVinicola(idVinicola, vinicola) {
     const comando = `
-        UPDATE viniciola 
+        UPDATE vinicola 
             SET vinicola = ?,
                 rotulo = ?
         WHERE id_vinicola = ?
@@ -59,7 +59,7 @@ export async function removerVinicola(idVinicola) {
 export async function listaVinicolas() {
     const comando = `SELECT * FROM vinicola`;
 
-    cont [registros] = await connection.query(comando);
+    const [registros] = await connection.query(comando);
     return registros;
 }
 
@@ -73,7 +73,7 @@ export async function listaVinicolas() {
 export async function buscarVinicolaPorId(idVinicola) {
     const comando = `SELECT * FROM vinicola WHERE id_vinicola = ?`;
 
-    cont [registro] = await connection.query(comando, [idVinicola]);
+    const [registro] = await connection.query(comando, [idVinicola]);
     return registro;   
 }
 
@@ -85,8 +85,8 @@ export async function buscarVinicolaPorId(idVinicola) {
  * @returns Retorna um objeto JSON contendo a vinícola que foi buscado, caso o nome seja válido 
  */
 export async function buscarVinicolaPorNome(nomeVinicola) {
-    const comando = `SELECT * FROM vinicola WHERE vinicola LIKE % ?`;
+    const comando = `SELECT * FROM vinicola WHERE vinicola LIKE ?`;
 
-    cont [registro] = await connection.query(comando, [nomeVinicola]);
+    const [registro] = await connection.query(comando, [`%${nomeVinicola}%`]);
     return registro;   
 }

@@ -17,7 +17,7 @@ export async function inserirCliente(cliente) {
                              email,
                              senha,
                              celular)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, (SELECT id_endereco FROM endereco WHERE cep = ?), ?, ?, ?)
     `;
 
     const [resposta] = await connection.query(comando, [
@@ -25,7 +25,7 @@ export async function inserirCliente(cliente) {
         cliente.sobrenome,
         cliente.cpf,
         cliente.data_nascimento,
-        cliente.endereco,
+        cliente.cep_endereco,
         cliente.email,
         cliente.senha,
         cliente.celular 
@@ -49,7 +49,7 @@ export async function alterarCliente(idCliente, cliente) {
                 sobrenome = ?,
                 cpf = ?,
                 data_nascimento = ?,
-                endereco_fk = ?,
+                endereco_fk = (SELECT id_endereco FROM endereco WHERE cep = ?),
                 email = ?,
                 senha = ?,
                 celular = ?
@@ -61,7 +61,7 @@ export async function alterarCliente(idCliente, cliente) {
         cliente.sobrenome,
         cliente.cpf,
         cliente.data_nascimento,
-        cliente.endereco,
+        cliente.cep_endereco,
         cliente.email,
         cliente.senha,
         cliente.celular,
@@ -119,9 +119,9 @@ export async function buscarClientesPorId(idCliente) {
  * @returns Retorna um objeto JSON, contendo um ou mais clientes que foram buscado 
  */
 export async function buscarClientesPorNome(nome) {
-    const comando = `SELECT * FROM view_listagem_cliente WHERE nome_completo LIKE % ?`;
+    const comando = `SELECT * FROM view_listagem_cliente WHERE nome_completo LIKE ?`;
  
-    const[registros] = await connection.query(comando, [nome]);
+    const[registros] = await connection.query(comando, [`%${nome}%`]);
     return registros;
 }
 

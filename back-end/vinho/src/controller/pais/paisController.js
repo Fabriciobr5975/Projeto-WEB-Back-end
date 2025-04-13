@@ -69,7 +69,7 @@ endpoints.get("/pais/:id", async (req, resp) => {
         const idPais = req.params.id;
         const registro = await buscarPaisPorId(idPais);
 
-        resp.send({registro});
+        resp.send(registro);
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -77,7 +77,7 @@ endpoints.get("/pais/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/pais/:nome", async (req, resp) => {
+endpoints.get("/pais/nome/:nome", async (req, resp) => {
     try {
         const nomePais = req.params.nome;
         const registros = await buscarPaisPorNomeService(nomePais);
@@ -90,7 +90,7 @@ endpoints.get("/pais/:nome", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/pais/:sigla", async (req, resp) => {
+endpoints.get("/pais/sigla/:sigla", async (req, resp) => {
     try {
         const sigla = req.params.sigla;
         const registro = await buscarPaisPorSiglaService(sigla);

@@ -4,6 +4,15 @@ export function validarEntradaParaBuscaPorEndereco(entrada) {
         throw new Error("O campo para busca deve estar preenchido");
 }
 
+export function validarCamposObrigatoriosEnderecoParaInsercao(endereco) {
+    if(!endereco.cep)
+        throw new Error("O cep é obrigatório e deve ser único");
+
+    if(!endereco.numero)
+        throw new Error("O numero é obrigatório");
+}
+
+
 export function validarCamposObrigatoriosEndereco(endereco) {
     if (!endereco.logradouro)
         throw new Error("O logradouro é obrigatório");
@@ -11,18 +20,14 @@ export function validarCamposObrigatoriosEndereco(endereco) {
     if(!endereco.numero)
         throw new Error("O número do endereço é obrigátorio");
 
-    if(!endereco.complemento)
-        throw new Error("O complemento é obrigatório");
-
     if(!endereco.bairro)
         throw new Error("O nome do bairro é obrigatório");
 
-    if(!endereco.cidade)
+    if(!endereco.localidade)
         throw new Error("O nome da cidade é obrigatória");
 
-    if(!endereco.uf_estado)
+    if(!endereco.uf)
         throw new Error("A UF (Unidade Federativa) é obrigatória");
-
 
     if(!endereco.cep)
         throw new Error("O cep é obrigatório e deve ser único");

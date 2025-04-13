@@ -17,7 +17,7 @@ export function validarCamposObrigatoriosCliente(cliente) {
     if(!cliente.data_nascimento)
         throw new Error("A data de nascimento é obrigatório");
 
-    if(!cliente.endereco)
+    if(!cliente.cep_endereco)
         throw new Error("O endereço é obrigatório");
 
     if(!cliente.email)
@@ -48,9 +48,9 @@ export function verificarSeClienteFoiRemovido(linhasAfetadas) {
 }
 
 export function verificarSeClientesSãoIguais(registro, clienteAtual) {
-    registro.forEach(itens => {
-        if(itens.cpf === clienteAtual.cpf) {
+    for (const key in registro) {
+        if (registro[key].cpf === clienteAtual.cpf) {
             throw new Error("Esse cliente já foi inserido");
         }
-    });
+    }
 }

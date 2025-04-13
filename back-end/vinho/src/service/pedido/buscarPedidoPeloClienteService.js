@@ -7,5 +7,5 @@ export default async function buscarPedidoPeloClienteService(cpfCliente) {
     const registro = await buscarPedidoPeloCliente(cpfCliente);
     validarBuscaPedido(registro);
 
-    return resposta;
+    return registro;
 }
