@@ -9,12 +9,11 @@ import connection from "../connection.js";
  */
 export async function inserirCarrinho(carrinho) {
     const comando = `
-        INSERT INTO carrinho (vinho_fk, cliente_fk, quantidade)
-            VALUES (?, (SELECT id_cliente FROM cliente WHERE cpf = ?), ?)
+        INSERT INTO carrinho (cliente_fk, quantidade)
+            VALUES ((SELECT id_cliente FROM cliente WHERE cpf = ?), ?)
     `;
 
     const [resposta] = await connection.query(comando, [
-        carrinho.vinho,
         carrinho.cliente,
         carrinho.quantidade
     ]);
@@ -33,14 +32,12 @@ export async function inserirCarrinho(carrinho) {
 export async function alterarCarrinho(idCarrinho, carrinho) {
     const comando = `
         UPDATE carrinho 
-            SET vinho_fk = ?,
-                cliente_fk = (SELECT id_cliente FROM cliente WHERE cpf = ?),
+            SET cliente_fk = (SELECT id_cliente FROM cliente WHERE cpf = ?),
                 quantidade = ?
         WHERE id_carrinho = ?
     `;
 
     const [resposta] = await connection.query(comando, [
-        carrinho.vinho,
         carrinho.cliente,
         carrinho.quantidade,
         idCarrinho

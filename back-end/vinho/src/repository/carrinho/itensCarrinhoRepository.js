@@ -9,9 +9,13 @@ import connection from "../connection.js";
  * @returns Retorna o id do itens no carrinho, caso ele seja inserido
  */
 export async function inserirItensCarrinho(itens_carrinho) {
-    const comando = ` INSERT INTO itens_carrinho (carrinho_fk) VALUES (?)`;
+    const comando = ` INSERT INTO itens_carrinho (carrinho_fk, vinho_fk) 
+                        VALUES (?, ?)`;
 
-    const [resposta] = await connection.query(comando, [itens_carrinho.carrinho]);
+    const [resposta] = await connection.query(comando, [
+        itens_carrinho.carrinho,
+        itens_carrinho.vinho
+    ]);
     return resposta.insertId;
 }
 
@@ -26,11 +30,15 @@ export async function inserirItensCarrinho(itens_carrinho) {
 export async function alterarItensCarrinho(idItensCarrinho, itens_carrinho) {
     const comando = `
         UPDATE itens_carrinho 
-            SET carrinho_fk = ?
+            SET carrinho_fk = ?,
+                vinho_fk
         WHERE id_itens_carrinho = ?
     `;
 
-    const [resposta] = await connection.query(comando, [itens_carrinho.carrinho, idItensCarrinho]);
+    const [resposta] = await connection.query(comando, [
+        itens_carrinho.carrinho,
+        itens_carrinho.vinho, 
+        idItensCarrinho]);
     return resposta.affectedRows;
 }
 
