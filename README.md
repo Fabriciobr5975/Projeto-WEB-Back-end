@@ -1,7 +1,13 @@
-## Projeto Vinho (Back-End) 🧑‍💻
+## Projeto Viana Vinhos (Back-End) 🧑‍💻
 <p align="justify">Repositório para os arquivos referentes ao Back-End do projeto <strong>Vinho</strong>. O projeto está vendo construido em NodeJs, usando o Framework ReactJs, com um sistema de gerenciamente de banco de dados MySQL.</p>
 
 ## Objetivo 🎯 
+<p align="justify">O objetivo principal é armazenar os arquivos necessários para a contrução da parte do Back-End do nosso projeto, <b>Viana Vinhos</b>. Quando o projeto estiver quase pronto, com as telas validadas e o Back-End funcionando bem, iremos integrar o Front ao Back, e assim finalizar esse projeto. </p>
+
+## Uma Breve Explicação Sobre a Nossa Aplicação 📕
+
+## Informações Complementares 🧩
+> Os arquivos do Front-End se encontra neste repositório: [`Repositório do Front-End`](https://github.com/Ruanlv/Projeto-WEB-Front-end)  
 
 ## Ferramentas e Tecnologias Usadas ⚒️
 <div align="center" > 
