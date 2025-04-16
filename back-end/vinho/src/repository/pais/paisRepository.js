@@ -8,13 +8,18 @@ import connection from '../connection.js'
  * @returns Retorna o id do pais, caso ele seja inserido
  */
 export async function inserirPais(pais) {
-    const comando = `
+    try {
+        const comando = `
         INSERT INTO pais (pais, sigla)
             VALUES (?, ?);
     `;
 
-    const [resposta] = await connection.query(comando, [pais.pais, pais.sigla]);
-    return resposta.insertId;
+        const [resposta] = await connection.query(comando, [pais.pais, pais.sigla]);
+        return resposta.insertId;
+
+    } catch (err) {
+
+    }
 }
 
 /**
@@ -26,15 +31,20 @@ export async function inserirPais(pais) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do pais
  */
 export async function alterarPais(idPais, pais) {
-    const comando = `
+    try {
+        const comando = `
         UPDATE pais 
             SET pais = ?,
             sigla = ?
         WHERE id_pais = ?
     `;
 
-    const [resposta] = await connection.query(comando, [pais.pais, pais.sigla, idPais]);
-    return resposta.affectedRows;
+        const [resposta] = await connection.query(comando, [pais.pais, pais.sigla, idPais]);
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
