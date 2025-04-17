@@ -1,7 +1,7 @@
 import { buscarEnderecoPorId, alterarEndereco } from '../../repository/endereco/enderecoRepository.js'
 import { pegarEnderecoDoViaCep, construirJSONIEndereco } from './buscarEnderecoViaCepService.js'
 
-import { validarEntradaParaBuscaPorEndereco, validarCamposObrigatoriosEndereco, validarBuscaEndereco, verificarSeEnderecosSãoIguais, verificarSeEnderecoFoiAlterado} from '../../validation/endereco/enderecoValidation.js'
+import { validarEntradaParaBuscaPorEndereco, validarCamposObrigatoriosEndereco, validarBuscaEndereco, verificarSeEnderecoFoiAlterado} from '../../validation/endereco/enderecoValidation.js'
 
 export default async function alterarEnderecoService(idEndereco, endereco) {
     validarEntradaParaBuscaPorEndereco(idEndereco);
@@ -9,8 +9,7 @@ export default async function alterarEnderecoService(idEndereco, endereco) {
     
     const registro = await buscarEnderecoPorId(idEndereco);
     validarBuscaEndereco(registro);
-    //verificarSeEnderecosSãoIguais(registro, endereco);
-
+    
     // Pegando as informações do CEP da API do viacep
     const enderecoViaCep = await pegarEnderecoDoViaCep(endereco.cep);
 

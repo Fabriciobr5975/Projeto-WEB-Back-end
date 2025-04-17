@@ -9,7 +9,7 @@ export function validarCamposObrigatoriosVinicola(vinicola) {
         throw new Error("O nome da vinícola é obrigatório e deve ser único");
 
     if (!vinicola.rotulo)
-        throw new Error("O nome da rótulo da vinícola é obrigatório");
+        throw new Error("O nome do rótulo da vinícola é obrigatório");
 }
 
 export function validarBuscaVinicola(registros) {

@@ -8,10 +8,15 @@ import connection from "../connection.js";
  * @returns Retorna o id da vinícola, caso ele seja inserido 
  */
 export async function inserirVinicola(vinicola) {
-    const comando = `INSERT INTO vinicola (vinicola, rotulo) VALUES (?, ?)`;
+    try {
+        const comando = `INSERT INTO vinicola (vinicola, rotulo) VALUES (?, ?)`;
 
-    const [resposta] = await connection.query(comando, [vinicola.vinicola, vinicola.rotulo]);
-    return resposta.insertId;
+        const [resposta] = await connection.query(comando, [vinicola.vinicola, vinicola.rotulo]);
+        return resposta.insertId;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -23,18 +28,23 @@ export async function inserirVinicola(vinicola) {
  * @returns Retorna a quantidade de linhas que forma alteradas após a alteração do pais
  */
 export async function alterarVinicola(idVinicola, vinicola) {
-    const comando = `
+    try {
+        const comando = `
         UPDATE vinicola 
             SET vinicola = ?,
                 rotulo = ?
         WHERE id_vinicola = ?
     `;
 
-    const [resposta] = await connection.query(comando, [
-        vinicola.vinicola, 
-        vinicola.rotulo, 
-        idVinicola]);
-    return resposta.affectedRows;
+        const [resposta] = await connection.query(comando, [
+            vinicola.vinicola,
+            vinicola.rotulo,
+            idVinicola]);
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -45,10 +55,15 @@ export async function alterarVinicola(idVinicola, vinicola) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a remoção da vinícola
  */
 export async function removerVinicola(idVinicola) {
-    const comando = `DELETE FROM vinicola WHERE id_vinicola = ?`;
+    try {
+        const comando = `DELETE FROM vinicola WHERE id_vinicola = ?`;
 
-    const [resposta] = await connection.query(comando, [idVinicola]);
-    return resposta.affectedRows;
+        const [resposta] = await connection.query(comando, [idVinicola]);
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -57,10 +72,15 @@ export async function removerVinicola(idVinicola) {
  * @returns Retorna um objeto JSON contendo todas as vinícolas que foram encontradas
  */
 export async function listaVinicolas() {
-    const comando = `SELECT * FROM vinicola`;
+    try {
+        const comando = `SELECT * FROM vinicola`;
 
-    const [registros] = await connection.query(comando);
-    return registros;
+        const [registros] = await connection.query(comando);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -71,10 +91,15 @@ export async function listaVinicolas() {
  * @returns Retorna um objeto JSON contendo a vinícola que foi buscado, caso o id seja válido 
  */
 export async function buscarVinicolaPorId(idVinicola) {
-    const comando = `SELECT * FROM vinicola WHERE id_vinicola = ?`;
+    try {
+        const comando = `SELECT * FROM vinicola WHERE id_vinicola = ?`;
 
-    const [registro] = await connection.query(comando, [idVinicola]);
-    return registro;   
+        const [registro] = await connection.query(comando, [idVinicola]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -85,8 +110,13 @@ export async function buscarVinicolaPorId(idVinicola) {
  * @returns Retorna um objeto JSON contendo a vinícola que foi buscado, caso o nome seja válido 
  */
 export async function buscarVinicolaPorNome(nomeVinicola) {
-    const comando = `SELECT * FROM vinicola WHERE vinicola LIKE ?`;
+    try {
+        const comando = `SELECT * FROM vinicola WHERE vinicola LIKE ?`;
 
-    const [registro] = await connection.query(comando, [`%${nomeVinicola}%`]);
-    return registro;   
+        const [registro] = await connection.query(comando, [`%${nomeVinicola}%`]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }

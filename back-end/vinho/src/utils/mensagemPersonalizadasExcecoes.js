@@ -5,7 +5,11 @@
  * 
  * @returns Retorna uma mensagem de erro sobre "Duplicate entry" formatada
  */
-export function mensagemCampoUnicoDuplicado() {
+export function mensagemCampoUnicoDuplicado(erro) {
     return "Não é possível realizar a operação, esse elemento já existe"; 
+}
+
+export function mensagemCampoReferencialInexistente(erro) {
+    return "Teste";
 }
 

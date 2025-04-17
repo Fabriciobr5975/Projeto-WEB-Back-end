@@ -8,7 +8,8 @@ import connection from "../connection.js";
  * @returns Retorna o id do endereço, caso ele seja inserido
  */
 export async function inserirEndereco(endereco) {
-    const comando = `
+    try {
+        const comando = `
         INSERT INTO endereco (logradouro,
                               numero,
                               complemento, 
@@ -19,17 +20,21 @@ export async function inserirEndereco(endereco) {
             VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
 
-    const [resposta] = await connection.query(comando, [
-        endereco.logradouro,
-        endereco.numero,
-        endereco.complemento,
-        endereco.bairro,
-        endereco.localidade,
-        endereco.uf,
-        endereco.cep
-    ]);
+        const [resposta] = await connection.query(comando, [
+            endereco.logradouro,
+            endereco.numero,
+            endereco.complemento,
+            endereco.bairro,
+            endereco.localidade,
+            endereco.uf,
+            endereco.cep
+        ]);
 
-    return resposta.insertId;
+        return resposta.insertId;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -41,7 +46,8 @@ export async function inserirEndereco(endereco) {
  * @returns Retorna a quantidade de linhas que foram alterados após a alterações do endereço
  */
 export async function alterarEndereco(idEndereco, endereco) {
-    const comando = `
+    try {
+        const comando = `
         UPDATE endereco 
             SET logradouro = ?,
                 numero = ?,
@@ -53,18 +59,22 @@ export async function alterarEndereco(idEndereco, endereco) {
         WHERE id_endereco = ?
     `;
 
-    const [resposta] = await connection.query(comando, [
-        endereco.logradouro,
-        endereco.numero,
-        endereco.complemento,
-        endereco.bairro,
-        endereco.localidade,
-        endereco.uf,
-        endereco.cep,
-        idEndereco
-    ]);
+        const [resposta] = await connection.query(comando, [
+            endereco.logradouro,
+            endereco.numero,
+            endereco.complemento,
+            endereco.bairro,
+            endereco.localidade,
+            endereco.uf,
+            endereco.cep,
+            idEndereco
+        ]);
 
-    return resposta.affectedRows;
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -75,10 +85,15 @@ export async function alterarEndereco(idEndereco, endereco) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a remoção do endereço
  */
 export async function removerEndereco(idEndereco) {
-    const comando = `DELETE FROM endereco WHERE id_endereco = ?`;
+    try {
+        const comando = `DELETE FROM endereco WHERE id_endereco = ?`;
 
-    const [resposta] = await connection.query(comando, [idEndereco]);
-    return resposta.affectedRows;
+        const [resposta] = await connection.query(comando, [idEndereco]);
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -87,10 +102,15 @@ export async function removerEndereco(idEndereco) {
  * @returns Retorna um objeto JSON contendo todos os endereço que foram encontrado
  */
 export async function listarEnderecos() {
-    const comando = `SELECT * FROM endereco`;
+    try {
+        const comando = `SELECT * FROM endereco`;
 
-    const [registros] = await connection.query(comando);
-    return registros;
+        const [registros] = await connection.query(comando);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -101,10 +121,15 @@ export async function listarEnderecos() {
  * @returns Retorna um objeto JSON contendo o endereço que foi buscado, caso o id seja válido 
  */
 export async function buscarEnderecoPorId(idEndereco) {
-    const comando = `SELECT * FROM endereco WHERE id_endereco = ?`;
+    try {
+        const comando = `SELECT * FROM endereco WHERE id_endereco = ?`;
 
-    const [registro] = await connection.query(comando, [idEndereco]);
-    return registro;
+        const [registro] = await connection.query(comando, [idEndereco]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -115,10 +140,15 @@ export async function buscarEnderecoPorId(idEndereco) {
  * @returns Retorna um objeto JSON contendo o endereço que foi buscado, caso o cep seja válido 
  */
 export async function buscarEnderecoPorCep(cep) {
-    const comando = `SELECT * FROM endereco WHERE cep = ?`;
+    try {
+        const comando = `SELECT * FROM endereco WHERE cep = ?`;
 
-    const [registro] = await connection.query(comando, [cep]);
-    return registro;
+        const [registro] = await connection.query(comando, [cep]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -130,10 +160,15 @@ export async function buscarEnderecoPorCep(cep) {
  * seja válida
  */
 export async function buscarEnderecoPorCidade(cidade) {
-    const comando = `SELECT * FROM endereco WHERE cidade = ?`;
+    try {
+        const comando = `SELECT * FROM endereco WHERE cidade = ?`;
 
-    const [registros] = await connection.query(comando, [cidade]);
-    return registros;
+        const [registros] = await connection.query(comando, [cidade]);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -145,10 +180,15 @@ export async function buscarEnderecoPorCidade(cidade) {
  * seja válido 
  */
 export async function buscarEnderecoPorLogradouro(logradouro) {
-    const comando = `SELECT * FROM endereco WHERE logradouro LIKE ?`;
+    try {
+        const comando = `SELECT * FROM endereco WHERE logradouro LIKE ?`;
 
-    const [registros] = await connection.query(comando, [`%${logradouro}%`]);
-    return registros;
+        const [registros] = await connection.query(comando, [`%${logradouro}%`]);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -160,8 +200,13 @@ export async function buscarEnderecoPorLogradouro(logradouro) {
  * seja válido 
  */
 export async function buscarEnderecoPorUF(uf) {
-    const comando = `SELECT * FROM endereco WHERE uf_estado = ?`;
+    try {
+        const comando = `SELECT * FROM endereco WHERE uf_estado = ?`;
 
-    const [registro] = await connection.query(comando, [uf]);
-    return registro;
+        const [registro] = await connection.query(comando, [uf]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }

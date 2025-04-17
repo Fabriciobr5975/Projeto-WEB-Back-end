@@ -34,8 +34,8 @@ export function verificarSePaisFoiRemovido(linhasAfetadas) {
 
 export function verificarSePaisesSãoIguais(registro, paisAtual) {
     registro.forEach(itens => {
-        if(itens.pais === paisAtual.nome && itens.sigla === paisAtual.sigla) {
-            throw new Error("Esse não pode ser inserido, pois ele já existe");
+        if(itens.pais === paisAtual.nome || itens.sigla === paisAtual.sigla) {
+            throw new Error("Esse pais não pode ser inserido, pois ela já existe");
         }
     });
 }

@@ -18,7 +18,7 @@ export async function inserirPais(pais) {
         return resposta.insertId;
 
     } catch (err) {
-
+        throw new Error(criarErro(err.message));
     }
 }
 
@@ -55,10 +55,16 @@ export async function alterarPais(idPais, pais) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a remoção do pais
  */
 export async function removerPais(idPais) {
-    const comando = `DELETE FROM pais WHERE id_pais = ?`;
+    try {
+        const comando = `DELETE FROM pais WHERE id_pais = ?`;
 
-    const [resposta] = await connection.query(comando, [idPais]);
-    return resposta.affectedRows;
+        const [resposta] = await connection.query(comando, [idPais]);
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
+
 }
 
 /**
@@ -67,10 +73,17 @@ export async function removerPais(idPais) {
  * @returns Retorna um objeto JSON contendo todos os pais que foram encontrados
  */
 export async function listarPaises() {
-    const comando = `SELECT * FROM pais`;
+    try {
+        const comando = `SELECT * FROM pais`;
 
-    const [registros] = await connection.query(comando);
-    return registros;
+        const [registros] = await connection.query(comando);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
+
+
 }
 
 /**
@@ -81,10 +94,15 @@ export async function listarPaises() {
  * @returns Retorna um objeto JSON contendo o pais que foi buscado, caso o id seja válido 
  */
 export async function buscarPaisPorId(idPais) {
-    const comando = `SELECT * FROM pais WHERE id_pais = ?`;
+    try {
+        const comando = `SELECT * FROM pais WHERE id_pais = ?`;
 
-    const [registro] = await connection.query(comando, [idPais]);
-    return registro;
+        const [registro] = await connection.query(comando, [idPais]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -95,10 +113,15 @@ export async function buscarPaisPorId(idPais) {
  * @returns Retorna um objeto JSON contendo um ou mais paises, caso o nome passado faça referencia a um pais
  */
 export async function buscarPaisPorNome(nomePais) {
-    const comando = `SELECT * FROM pais WHERE pais LIKE ?`;
+    try {
+        const comando = `SELECT * FROM pais WHERE pais LIKE ?`;
 
-    const [registros] = await connection.query(comando, [`%${nomePais}%`]);
-    return registros;
+        const [registros] = await connection.query(comando, [`%${nomePais}%`]);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -109,8 +132,13 @@ export async function buscarPaisPorNome(nomePais) {
  * @returns Retorna um objeto JSON contendo o pais, caso a sigla passada seja válida e esteja presente em algum pais
  */
 export async function buscarPaisPorSigla(siglaPais) {
-    const comando = `SELECT * FROM pais WHERE sigla = ?`;
+    try {
+        const comando = `SELECT * FROM pais WHERE sigla = ?`;
 
-    const [registro] = await connection.query(comando, [siglaPais]);
-    return registro;
+        const [registro] = await connection.query(comando, [siglaPais]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }

@@ -8,7 +8,23 @@
  */
 export const pegarEnderecoDoViaCep = async cep => {
     const request = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    return await request.json();
+
+    const endereco = await request.json();
+    validarSeCepFoiEncontrado(endereco, cep);
+
+    return endereco;
+}
+
+/**
+ * Função para verificar se o CEP buscado retornou um endereço. Se ele não tiver retornado
+ * um endereço, lança uma exceção
+ * 
+ * @param {JSON} endereco - Recebe o objeto do endereço 
+ */
+const validarSeCepFoiEncontrado = (endereco, cep) => {
+    if (Object.keys(endereco).length === 1) {
+        throw new Error(`O endereço não foi encontrado, pois o CEP ${cep} foi encontrado`);
+    }
 }
 
 /**
@@ -19,7 +35,7 @@ export const pegarEnderecoDoViaCep = async cep => {
  *  
  * @returns Retorna um JSON contendo somente as informações relevantes para a inserção dos endereços  
  */
-export const construirJSONIEndereco = ({ logradouro, bairro, localidade, uf, cep }, { numero, complemento}) => {
+export const construirJSONIEndereco = ({ logradouro, bairro, localidade, uf, cep }, { numero, complemento }) => {
     return {
         logradouro,
         numero,

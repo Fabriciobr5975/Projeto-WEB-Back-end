@@ -1,4 +1,4 @@
-import { mensagemCampoUnicoDuplicado } from './mensagemPersonalizadasExcecoes.js'
+import { mensagemCampoUnicoDuplicado, mensagemCampoReferencialInexistente } from './mensagemPersonalizadasExcecoes.js'
 
 /**
  * Função global que tem como objetivo criar as mensagens de erros que vem do banco  
@@ -24,6 +24,9 @@ global.criarErro = function criarErro(mensagem) {
 const tratarErro = erro => {
     if (erro.includes("Duplicate entry")) {
         return mensagemCampoUnicoDuplicado(erro);
+    
+    } else if (erro.includes("")) {
+        return mensagemCampoReferencialInexistente(erro);
     }
 
     return "Não foi possível identificar o erro";
