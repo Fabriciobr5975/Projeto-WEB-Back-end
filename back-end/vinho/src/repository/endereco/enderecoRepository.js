@@ -9,15 +9,14 @@ import connection from "../connection.js";
  */
 export async function inserirEndereco(endereco) {
     try {
-        const comando = `
-        INSERT INTO endereco (logradouro,
-                              numero,
-                              complemento, 
-                              bairro, 
-                              cidade, 
-                              uf_estado, 
-                              cep)
-            VALUES (?, ?, ?, ?, ?, ?, ?);
+        const comando = `INSERT INTO endereco (logradouro,
+                                               numero,
+                                               complemento, 
+                                               bairro, 
+                                               cidade, 
+                                               uf_estado, 
+                                               cep)
+                            VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
 
         const [resposta] = await connection.query(comando, [
@@ -38,7 +37,7 @@ export async function inserirEndereco(endereco) {
 }
 
 /**
- * Função para alterar um endereçi que já tenha sido inserido no banco de dados
+ * Função para alterar um endereço que já tenha sido inserido no banco de dados
  * 
  * @param {Number} idEndereco - ID (PK) do endereço que será alterado 
  * @param {JSON} endereco - Objeto com os dados necessários para alterar um pais
@@ -47,17 +46,15 @@ export async function inserirEndereco(endereco) {
  */
 export async function alterarEndereco(idEndereco, endereco) {
     try {
-        const comando = `
-        UPDATE endereco 
-            SET logradouro = ?,
-                numero = ?,
-                complemento = ?, 
-                bairro = ?, 
-                cidade = ?, 
-                uf_estado = ?, 
-                cep = ?
-        WHERE id_endereco = ?
-    `;
+        const comando = ` UPDATE endereco 
+                            SET logradouro = ?,
+                                numero = ?,
+                                complemento = ?, 
+                                bairro = ?, 
+                                cidade = ?, 
+                                uf_estado = ?, 
+                                cep = ?
+                            WHERE id_endereco = ?`;
 
         const [resposta] = await connection.query(comando, [
             endereco.logradouro,

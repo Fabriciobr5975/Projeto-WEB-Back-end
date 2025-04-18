@@ -1,0 +1,92 @@
+import alterarEnderecoClienteService from '../../service/enderecoCliente/alterarEnderecoClienteService.js';
+import inserirEnderecoClienteService from '../../service/enderecoCliente/inserirEnderecoClienteService.js';
+import removerEnderecoClienteService from '../../service/enderecoCliente/removerEnderecoClienteService.js';
+import listarEnderecosClienteService from '../../service/enderecoCliente/listarEnderecosClienteService.js';
+import buscarEnderecoClientePorCEPService from '../../service/enderecoCliente/buscarEnderecoClientePorCEPService.js';
+import buscarEnderecoClientePorCPFService from '../../service/enderecoCliente/buscarEnderecoClientePorCPFService.js';
+
+import { Router } from "express";
+
+const endpoints = Router();
+
+endpoints.post("/enderecoCliente", async (req, resp) => {
+    try {
+        const enderecoCliente = req.body;
+        const resposta = await inserirEnderecoClienteService(enderecoCliente);
+
+        resp.send({
+            id_inserido: resposta
+        });
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
+
+endpoints.put("/enderecoCliente/:id", async (req, resp) => {
+    try {
+        const enderecoCliente = req.body;
+        const resposta = await alterarEnderecoClienteService(enderecoCliente);
+
+        resp.send({resposta});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
+
+endpoints.delete("/enderecoCliente/:id", async (req, resp) => {
+    try {
+        const enderecoCliente = req.body;
+        const resposta = await removerEnderecoClienteService(enderecoCliente);
+
+        resp.send({resposta});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
+
+endpoints.get("/endereco", async (req, resp) => {
+    try {
+        const registros = await listarEnderecosClienteService();
+
+        resp.send(registros);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
+
+endpoints.get("/enderecoCliente/cep/:cep", async (req, resp) => {
+    try {
+        const cep = req.params.cep;
+        const registro = await buscarEnderecoClientePorCEPService(cep);
+
+        resp.send(registro);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
+
+endpoints.get("/enderecoCliente/cliente/:cliente", async (req, resp) => {
+    try {
+        const cliente = req.params.cliente;
+        const registro = await buscarEnderecoClientePorCPFService(cliente);
+
+        resp.send(registro);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
+ 
+
+export default endpoints;
