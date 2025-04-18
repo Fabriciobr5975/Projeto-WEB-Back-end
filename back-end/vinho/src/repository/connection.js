@@ -1,5 +1,9 @@
 import mysql from 'mysql2/promise'
 
+/**
+ * Criando a conexxão com o BD e realizando algumas configurações 
+ * no typeCast
+ */
 const connection = await mysql.createConnection({
     host: process.env.MYSQL_HOST,
     database: process.env.MYSQL_DATABASE,

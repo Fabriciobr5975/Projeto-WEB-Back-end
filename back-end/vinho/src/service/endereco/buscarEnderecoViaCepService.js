@@ -31,11 +31,10 @@ const validarSeCepFoiEncontrado = (endereco, cep) => {
  * Função para contruir objeto que será usado para criar os endereços no banco de dados 
  * 
  * @param {JSON} - Recebe o JSON que vem da API do viacep  
- * @param {JSON} - Recebe o JSON que o cliente inseriu as informações básicas (cep, numero e complemento)
  *  
  * @returns Retorna um JSON contendo somente as informações relevantes para a inserção dos endereços  
  */
-export const construirJSONIEndereco = ({ logradouro, bairro, localidade, uf, cep }, { numero, complemento }) => {
+export const construirJSONIEndereco = ({ logradouro, bairro, localidade, uf, cep }) => {
     return {
         logradouro,
         numero,
