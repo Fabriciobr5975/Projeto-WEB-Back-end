@@ -10,7 +10,7 @@ export function validarCPFDeTamanhoInvalido(cpf) {
         throw new Error("O CPF passado não pode ser analisado, pois ele não tem os digitos necessários")
 }
 
-export function validarCPFInvalidoAposLimpeza(cpf) {
+export function validarCPFInvalido(cpf) {
     const verificadorDeSequencias = /(\d)\1{10}/;
     
     if (cpf.length != 11 || verificadorDeSequencias.test(cpf))

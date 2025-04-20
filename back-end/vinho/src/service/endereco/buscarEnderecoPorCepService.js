@@ -1,10 +1,10 @@
-import { buscarEnderecoPorCep } from '../../repository/endereco/enderecoRepository.js'
-import { validarEntradaParaBuscaPorEndereco, validarBuscaEndereco } from '../../validation/endereco/enderecoValidation.js'
+import { buscarEnderecoPorCep } from '../../repository/endereco/enderecoRepository.js';
+import { validarEntradaParaBuscaPorEndereco, validarBuscaEndereco } from '../../validation/endereco/enderecoValidation.js';
 
-export default async function buscarEnderecoPorCepService(idEndereco) {
-    validarEntradaParaBuscaPorEndereco(idEndereco);
-    
-    const registros = await buscarEnderecoPorCep(idEndereco);
+export default async function buscarEnderecoPorCepService(cep) {
+    validarEntradaParaBuscaPorEndereco(cep);
+
+    const registros = await buscarEnderecoPorCep(cep);
     validarBuscaEndereco(registros);
 
     return registros;

@@ -1,3 +1,4 @@
+import { validarCEP } from '../../service/autenticacao/autenticacaoCEP.js'
 
 export function validarEntradaParaBuscaPorEndereco(entrada) {
     if (!entrada)
@@ -8,14 +9,7 @@ export function validarCamposObrigatoriosEnderecoParaInsercao(endereco) {
     if (!endereco.cep)
         throw new Error("O cep é obrigatório e deve ser único");
 
-    if(validarCep(endereco.cep)) 
-        throw new Error("O cep não foi digitado corretamente");
-}
-
-export function validarCep(cep) {
-    let cepLimpo = cep.trim().replace("-", "");
-
-    return !(cepLimpo.length === 8 || isNaN(cepLimpo)) ? true : false;
+    validarCEP(endereco.cep) 
 }
 
 export function validarCamposObrigatoriosEndereco(endereco) {
@@ -34,8 +28,7 @@ export function validarCamposObrigatoriosEndereco(endereco) {
     if (!endereco.cep)
         throw new Error("O cep é obrigatório e deve ser único");
 
-    if(validarCep(endereco.cep)) 
-        throw new Error("O cep não foi digitado corretamente");
+    validarCEP(endereco.cep) 
 }
 
 export function validarBuscaEndereco(registros) {

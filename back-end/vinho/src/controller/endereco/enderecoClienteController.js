@@ -24,10 +24,13 @@ endpoints.post("/enderecoCliente", async (req, resp) => {
     }
 }); 
 
-endpoints.put("/enderecoCliente/:id", async (req, resp) => {
+endpoints.put("/enderecoCliente/id", async (req, resp) => {
     try {
+        const endereco = req.query.endereco;
+        const cliente = req.query.cliente;
         const enderecoCliente = req.body;
-        const resposta = await alterarEnderecoClienteService(enderecoCliente);
+        
+        const resposta = await alterarEnderecoClienteService(endereco, cliente, enderecoCliente);
 
         resp.send({resposta});
     } catch (err) {
@@ -37,10 +40,12 @@ endpoints.put("/enderecoCliente/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.delete("/enderecoCliente/:id", async (req, resp) => {
+endpoints.delete("/enderecoCliente/id", async (req, resp) => {
     try {
-        const enderecoCliente = req.body;
-        const resposta = await removerEnderecoClienteService(enderecoCliente);
+        const endereco = req.query.endereco;
+        const cliente = req.query.cliente;
+
+        const resposta = await removerEnderecoClienteService(endereco, cliente);
 
         resp.send({resposta});
     } catch (err) {
@@ -50,7 +55,7 @@ endpoints.delete("/enderecoCliente/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/endereco", async (req, resp) => {
+endpoints.get("/enderecoCliente", async (req, resp) => {
     try {
         const registros = await listarEnderecosClienteService();
 

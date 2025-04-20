@@ -39,7 +39,9 @@ export async function alterarVinicola(idVinicola, vinicola) {
         const [resposta] = await connection.query(comando, [
             vinicola.vinicola,
             vinicola.rotulo,
-            idVinicola]);
+            idVinicola
+        ]);
+        
         return resposta.affectedRows;
 
     } catch (err) {

@@ -12,4 +12,3 @@ export function mensagemCampoUnicoDuplicado(erro) {
 export function mensagemCampoReferencialInexistente(erro) {
     return erro;
 }
-

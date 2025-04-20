@@ -1,4 +1,4 @@
-import { validarCPFNulo, validarCPFDeTamanhoInvalido, validarCPFInvalido } from '../../validation/autenticacaoCPF/autenticacaoCPFValidation.js'
+import { validarCPFNulo, validarCPFDeTamanhoInvalido, validarCPFInvalido } from '../../validation/autenticacao/autenticacaoCPFValidation.js'
 
 /**
  * Função para limpar um CPF, antes que ele seja validado, ou que ele seja salvo no banco de dados.
@@ -65,4 +65,14 @@ function calcularDigitoValidador(cpf, peso) {
 
     let resto = soma % 11;
     return (resto < 2) ? 0 : 11 - resto;
+}
+
+/**
+ * Função que verifica se o CPF é válido
+ * 
+ * @param {*} cpf - Recebe o CPF
+ */
+export function verificarCPFValido(cpf) {
+    if(!(validarCPF(cpf))) 
+        throw new Error(`O CPF ${cpf} não é válido`);
 }

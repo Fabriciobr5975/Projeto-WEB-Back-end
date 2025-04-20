@@ -2,7 +2,6 @@ import alterarClienteService from '../../service/cliente/alterarClienteService.j
 import inserirClienteService from '../../service/cliente/inserirClienteService.js';
 import removerClienteService from '../../service/cliente/removerClienteService.js';
 import listarClientesService from '../../service/cliente/listarClientesService.js';
-import buscarClientePorCepService from '../../service/cliente/buscarClientePorCepService.js';
 import buscarClientePorCpfService from '../../service/cliente/buscarClientePorCpfService.js';
 import buscarClientePorEmailService from '../../service/cliente/buscarClientePorEmailService.js';
 import buscarClientePorIdService from '../../service/cliente/buscarClientePorIdService.js';
@@ -117,18 +116,5 @@ endpoints.get("/cliente/email/:email", async (req, resp) => {
         });
     }
 }); 
-
-endpoints.get("/cliente/cep/:cep", async (req, resp) => {
-    try {
-        const cepCliente = req.params.cep;
-        const registro = await buscarClientePorCepService(cepCliente);
-
-        resp.send(registro);
-    } catch (err) {
-        resp.status(404).send({
-            erro: err.message
-        });
-    }
-}); 
-
+ 
 export default endpoints;

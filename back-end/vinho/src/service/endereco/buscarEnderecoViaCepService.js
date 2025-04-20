@@ -1,3 +1,4 @@
+import { validarCEP, validarSeCepFoiEncontrado } from '../autenticacao/autenticacaoCEP.js'
 
 /**
  * Função que busca um endereço a partir do cep passado pelo usuário, utilizando a API viacep
@@ -7,24 +8,14 @@
  * @returns Retorna um JSON, contendo as informações do endereço buscado
  */
 export const pegarEnderecoDoViaCep = async cep => {
+    validarCEP(cep);
+    
     const request = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
 
     const endereco = await request.json();
     validarSeCepFoiEncontrado(endereco, cep);
 
     return endereco;
-}
-
-/**
- * Função para verificar se o CEP buscado retornou um endereço. Se ele não tiver retornado
- * um endereço, lança uma exceção
- * 
- * @param {JSON} endereco - Recebe o objeto do endereço 
- */
-const validarSeCepFoiEncontrado = (endereco, cep) => {
-    if (Object.keys(endereco).length === 1) {
-        throw new Error(`O CEP ${cep} não foi encontrado, verifique se o CEP passado está correto`);
-    }
 }
 
 /**

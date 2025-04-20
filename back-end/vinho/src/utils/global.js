@@ -25,11 +25,11 @@ const tratarErro = erro => {
     if (erro.includes("Duplicate entry")) {
         return mensagemCampoUnicoDuplicado(erro);
     
-    } else if (erro.includes("")) {
+    } else if (erro.includes("teste")) {
         return mensagemCampoReferencialInexistente(erro);
     }
 
-    return "Não foi possível identificar o erro";
+    return "Não foi possível identificar o erro " + erro;
 
 }
 

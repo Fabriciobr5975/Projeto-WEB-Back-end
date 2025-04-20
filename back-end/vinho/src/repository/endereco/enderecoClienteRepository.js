@@ -10,9 +10,11 @@ import connection from "../connection.js";
 export async function inserirEnderecoCliente(enderecoCliente) {
     try {
         const comando = `INSERT INTO endereco_cliente (endereco_id, 
-                                cliente_id, numero, complemento)
+                                                       cliente_id, 
+                                                       numero, 
+                                                       complemento)
                             VALUES((SELECT id_endereco FROM endereco WHERE cep = ?), 
-                                    (SELECT id_cliente FROM endereco WHERE cpf = ?), ?, ?, ?)`;
+                                    (SELECT id_cliente FROM cliente WHERE cpf = ?), ?, ?);`;
 
         await connection.query(comando, [
             enderecoCliente.endereco,
@@ -22,8 +24,8 @@ export async function inserirEnderecoCliente(enderecoCliente) {
         ]);
 
         return {
-            id_endereco: enderecoCliente.endereco,
-            id_cliente: enderecoCliente.cliente
+            cep_inserido: enderecoCliente.endereco,
+            cpf_inserido: enderecoCliente.cliente
         };
 
     } catch (err) {
@@ -38,21 +40,22 @@ export async function inserirEnderecoCliente(enderecoCliente) {
  * 
  * @returns Retorna a quantidade de linhas que foram afetadas pela alteração 
  */
-export async function alterarEnderecoCliente(enderecoCliente) {
+export async function alterarEnderecoCliente(endereco, cliente, enderecoCliente) {
     try {
         const comando = ` UPDATE endereco_cliente SET endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?), 
-                                                      cliente_id = (SELECT id_cliente FROM endereco WHERE cpf = ?),
+                                                      cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?),
                                                       numero = ?,
                                                       complemento = ?
-                            WHERE (endereco_id = ? AND cliente_id = ?)`;
+                            WHERE (endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?) 
+                                AND cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?))`;
 
         const [resposta] = await connection.query(comando, [
             enderecoCliente.endereco,
             enderecoCliente.cliente,
             enderecoCliente.numero,
             enderecoCliente.complemento,
-            enderecoCliente.endereco,
-            enderecoCliente.cliente
+            endereco,
+            cliente
         ]);
 
         return resposta.affectedRows;
@@ -69,14 +72,15 @@ export async function alterarEnderecoCliente(enderecoCliente) {
  * 
  * @returns Retorna a quantidade de linhas que foram afetadas pela remoção
  */
-export async function removerEnderecoCliente(enderecoCliente) {
+export async function removerEnderecoCliente(endereco, cliente) {
     try {
         const comando = `DELETE FROM endereco_cliente 
-                            WHERE (endereco_id = ? AND cliente_id = ?)`;
+                            WHERE endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?) AND 
+                                  cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?)`;
 
         const [resposta] = await connection.query(comando, [
-            enderecoCliente.endereco,
-            enderecoCliente.cliente
+            endereco,
+            cliente
         ]);
 
         return resposta.affectedRows;
@@ -113,7 +117,7 @@ export async function listarEnderecosCliente() {
 export async function buscarEnderecoClientePorCEP(cep) {
     try {
         const comando = `SELECT * from view_listagem_enderecos 
-                            WHERE e.cep = ?`;
+                            WHERE cep = ?`;
 
         const [registros] = await connection.query(comando, [cep]);
         return registros;
@@ -133,7 +137,7 @@ export async function buscarEnderecoClientePorCEP(cep) {
 export async function buscarEnderecoClientePorCPF(cpf) {
     try {
         const comando = `SELECT * from view_listagem_enderecos
-                            WHERE c.cpf = ?`;
+                            WHERE cpf = ?`;
 
         const [registros] = await connection.query(comando, [cpf]);
         return registros;

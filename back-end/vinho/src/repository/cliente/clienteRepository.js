@@ -8,30 +8,33 @@ import connection from "../connection.js";
  * @returns Retorna o id do cliente, caso ele seja inserido
  */
 export async function inserirCliente(cliente) {
-    const comando = `
+    try {
+        const comando = `
         INSERT INTO cliente (nome,
                              sobrenome,
                              cpf,
                              data_nascimento,
-                             endereco_fk,
                              email,
                              senha,
                              celular)
-            VALUES (?, ?, ?, ?, (SELECT id_endereco FROM endereco WHERE cep = ?), ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const [resposta] = await connection.query(comando, [
-        cliente.nome,
-        cliente.sobrenome,
-        cliente.cpf,
-        cliente.data_nascimento,
-        cliente.cep_endereco,
-        cliente.email,
-        cliente.senha,
-        cliente.celular 
-    ]);
+        const [resposta] = await connection.query(comando, [
+            cliente.nome,
+            cliente.sobrenome,
+            cliente.cpf,
+            cliente.data_nascimento,
+            cliente.email,
+            cliente.senha,
+            cliente.celular
+        ]);
 
-    return resposta.insertId;
+        return resposta.insertId;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -43,32 +46,35 @@ export async function inserirCliente(cliente) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do cliente 
  */
 export async function alterarCliente(idCliente, cliente) {
-    const comando = `
+    try {
+        const comando = `
         UPDATE cliente 
             SET nome = ?,
                 sobrenome = ?,
                 cpf = ?,
                 data_nascimento = ?,
-                endereco_fk = (SELECT id_endereco FROM endereco WHERE cep = ?),
                 email = ?,
                 senha = ?,
                 celular = ?
         WHERE id_cliente = ?
     `;
 
-    const [resposta] = await connection.query(comando, [
-        cliente.nome,
-        cliente.sobrenome,
-        cliente.cpf,
-        cliente.data_nascimento,
-        cliente.cep_endereco,
-        cliente.email,
-        cliente.senha,
-        cliente.celular,
-        idCliente 
-    ]);
+        const [resposta] = await connection.query(comando, [
+            cliente.nome,
+            cliente.sobrenome,
+            cliente.cpf,
+            cliente.data_nascimento,
+            cliente.email,
+            cliente.senha,
+            cliente.celular,
+            idCliente
+        ]);
 
-    return resposta.affectedRows;
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -79,10 +85,15 @@ export async function alterarCliente(idCliente, cliente) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a remoção
  */
 export async function removerCliente(idCliente) {
-    const comando = `DELETE FROM cliente WHERE id_cliente = ?`;
+    try {
+        const comando = `DELETE FROM cliente WHERE id_cliente = ?`;
 
-    const [resposta] = await connection.query(comando, [idCliente]);
-    return resposta.affectedRows
+        const [resposta] = await connection.query(comando, [idCliente]);
+        return resposta.affectedRows
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -91,10 +102,15 @@ export async function removerCliente(idCliente) {
  * @returns Retorna um objeto JSON contendo os clientes que foram encontrados
  */
 export async function listarClientes() {
-    const comando = `SELECT * FROM view_listagem_cliente`;
- 
-    const[registros] = await connection.query(comando);
-    return registros;
+    try {
+        const comando = `SELECT * FROM view_cliente`;
+
+        const [registros] = await connection.query(comando);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -105,10 +121,15 @@ export async function listarClientes() {
  * @returns Retorna um objeto JSON contendo o cliente que foi buscado, caso o id seja válido
  */
 export async function buscarClientesPorId(idCliente) {
-    const comando = `SELECT * FROM view_listagem_cliente WHERE id_cliente = ?`;
- 
-    const[registro] = await connection.query(comando, [idCliente]);
-    return registro;
+    try {
+        const comando = `SELECT * FROM view_cliente WHERE id_cliente = ?`;
+        
+        const [registro] = await connection.query(comando, [idCliente]);
+
+        return registro;
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -119,10 +140,15 @@ export async function buscarClientesPorId(idCliente) {
  * @returns Retorna um objeto JSON, contendo um ou mais clientes que foram buscado 
  */
 export async function buscarClientesPorNome(nome) {
-    const comando = `SELECT * FROM view_listagem_cliente WHERE nome_completo LIKE ?`;
- 
-    const[registros] = await connection.query(comando, [`%${nome}%`]);
-    return registros;
+    try {
+        const comando = `SELECT * FROM view_cliente WHERE nome_completo LIKE ?`;
+
+        const [registros] = await connection.query(comando, [`%${nome}%`]);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -133,10 +159,15 @@ export async function buscarClientesPorNome(nome) {
  * @returns Retorna um objeto JSON, contendo o cliente que foi buscado
  */
 export async function buscarClientesPorEmail(email) {
-    const comando = `SELECT * FROM view_listagem_cliente WHERE email = ?`;
- 
-    const[registro] = await connection.query(comando, [email]);
-    return registro;
+    try {
+        const comando = `SELECT * FROM view_cliente WHERE email = ?`;
+
+        const [registro] = await connection.query(comando, [email]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -147,22 +178,13 @@ export async function buscarClientesPorEmail(email) {
  * @returns Retorna um objeto JSON, contendo o cliente que foi buscado
  */
 export async function buscarClientesPorCpf(cpf) {
-    const comando = `SELECT * FROM view_listagem_cliente WHERE cpf = ?`;
- 
-    const[registro] = await connection.query(comando, [cpf]);
-    return registro;
-}
+    try {
+        const comando = `SELECT * FROM view_cliente WHERE cpf = ?`;
 
-/**
- * Função para buscar um cliente pelo seu ceo
- * 
- * @param {String} cep - Recebe o cep que será usando no busca
- * 
- * @returns Retorna um objeto JSON, contendo um ou mais clientes que foram buscado
- */
-export async function buscarClientesPorCep(cep) {
-    const comando = `SELECT * FROM view_listagem_cliente WHERE cep = ?`;
- 
-    const[registro] = await connection.query(comando, [cep]);
-    return registro;
+        const [registro] = await connection.query(comando, [cpf]);
+        return registro;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }

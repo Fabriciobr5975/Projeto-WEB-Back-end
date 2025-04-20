@@ -1,6 +1,6 @@
 
 export function validarEntradaParaBuscaPorCliente(entrada) {
-    if(!entrada)
+    if (!entrada)
         throw new Error("O campo para busca deve estar preenchido");
 }
 
@@ -8,42 +8,39 @@ export function validarCamposObrigatoriosCliente(cliente) {
     if (!cliente.nome)
         throw new Error("O primeiro nome é obrigatório");
 
-    if(!cliente.sobrenome)
+    if (!cliente.sobrenome)
         throw new Error("O sobrenome é obrigatório");
 
-    if(!cliente.cpf)
+    if (!cliente.cpf)
         throw new Error("O cpf é obrigatório e deve ser único");
 
-    if(!cliente.data_nascimento)
+    if (!cliente.data_nascimento)
         throw new Error("A data de nascimento é obrigatório");
 
-    if(!cliente.cep_endereco)
-        throw new Error("O endereço é obrigatório");
-
-    if(!cliente.email)
+    if (!cliente.email)
         throw new Error("O email é obrigatório");
 
-    if(! cliente.senha)
+    if (!cliente.senha)
         throw new Error("A senha é obrigatório");
 }
 
 export function validarBuscaCliente(registros) {
-    if(registros.length === 0)
+    if (registros.length === 0)
         throw new Error("Não foram encontrado registros para o cliente");
 }
 
 export function verificarSeClienteFoiInserido(insertId) {
-    if(insertId === 0)
+    if (insertId === 0)
         throw new Error("O cliente não foi inserido");
 }
 
 export function verificarSeClienteFoiAlterado(linhasAfetadas) {
-    if(linhasAfetadas === 0)
+    if (linhasAfetadas === 0)
         throw new Error("O cliente não foi alterado");
 }
 
 export function verificarSeClienteFoiRemovido(linhasAfetadas) {
-    if(linhasAfetadas === 0)
+    if (linhasAfetadas === 0)
         throw new Error("O cliente não foi removido");
 }
 

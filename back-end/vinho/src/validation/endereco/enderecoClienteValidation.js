@@ -1,3 +1,4 @@
+import { validarCEP } from '../../service/autenticacao/autenticacaoCEP.js'
 
 export function validarEntradaParaBusca(entrada) {
     if (!entrada)
@@ -5,23 +6,16 @@ export function validarEntradaParaBusca(entrada) {
 }
 
 export function validarCamposObrigatoriosEnderecoCliente(enderecoCliente) {
-    if (!enderecoCliente.cep)
+    if (!enderecoCliente.endereco)
         throw new Error("O cep é obrigatório e deve ser único");
 
-    if(validarCep(enderecoCliente.cep)) 
-        throw new Error("O cep não foi digitado corretamente");
-
+    validarCEP(enderecoCliente.endereco)
+    
     if (!enderecoCliente.cliente)
         throw new Error("O cpf do usuário é obrigatório");
 
     if (!enderecoCliente.numero)
         throw new Error("O número é obrigatório");
-}
-
-export function validarCep(cep) {
-    let cepLimpo = cep.trim().replace("-", "");
-
-    return !(cepLimpo.length === 8 || isNaN(cepLimpo)) ? true : false;
 }
 
 export function validarBuscaEnderecoCliente(registros) {
@@ -30,7 +24,7 @@ export function validarBuscaEnderecoCliente(registros) {
 }
 
 export function verificarSeEnderecoClienteFoiInserido(resposta) {
-    if (resposta.id_endereco === 0 || resposta.id_cliente)
+    if (resposta.cep_inserido === 0 || resposta.cpf_inserido === 0)
         throw new Error("O endereço do cliente não foi inserido");
 }
 

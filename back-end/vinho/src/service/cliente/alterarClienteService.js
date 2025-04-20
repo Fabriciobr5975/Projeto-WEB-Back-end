@@ -7,9 +7,11 @@ export default async function alterarClienteClienteService(idCliente, cliente) {
     validarCamposObrigatoriosCliente(cliente);
 
     let cpfLimpo = limparCPF(cliente.cpf);
-    validarCPF(cliente.cpf);
+    
+    if(!(validarCPF(cpfLimpo))) 
+        throw new Error(`O CPF ${cliente.cpf} não é válido`);
 
-    const registro = buscarClientesPorId(idCliente)
+    const registro = await buscarClientesPorId(idCliente);
     validarBuscaCliente(registro);
 
     // Alterando o cpf que vem via JSON para o cpf limpo
