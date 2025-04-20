@@ -10,9 +10,6 @@ export function validarCamposObrigatoriosEnderecoParaInsercao(endereco) {
 
     if(validarCep(endereco.cep)) 
         throw new Error("O cep não foi digitado corretamente");
-
-    if (!endereco.numero || isNaN(endereco.numero))
-        throw new Error("O numero é obrigatório");
 }
 
 export function validarCep(cep) {
@@ -24,9 +21,6 @@ export function validarCep(cep) {
 export function validarCamposObrigatoriosEndereco(endereco) {
     if (!endereco.logradouro)
         throw new Error("O logradouro é obrigatório");
-
-    if (!endereco.numero || isNaN(endereco.numero))
-        throw new Error("O número do endereço é obrigátorio");
 
     if (!endereco.bairro)
         throw new Error("O nome do bairro é obrigatório");

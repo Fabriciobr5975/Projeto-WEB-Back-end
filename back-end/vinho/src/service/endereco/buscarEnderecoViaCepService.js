@@ -23,7 +23,7 @@ export const pegarEnderecoDoViaCep = async cep => {
  */
 const validarSeCepFoiEncontrado = (endereco, cep) => {
     if (Object.keys(endereco).length === 1) {
-        throw new Error(`O endereço não foi encontrado, pois o CEP ${cep} foi encontrado`);
+        throw new Error(`O CEP ${cep} não foi encontrado, verifique se o CEP passado está correto`);
     }
 }
 
@@ -37,11 +37,9 @@ const validarSeCepFoiEncontrado = (endereco, cep) => {
 export const construirJSONIEndereco = ({ logradouro, bairro, localidade, uf, cep }) => {
     return {
         logradouro,
-        numero,
         bairro,
         localidade,
         uf,
-        cep,
-        complemento
+        cep
     };
 }
