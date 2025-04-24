@@ -97,7 +97,7 @@ export async function buscarVinicolaPorId(idVinicola) {
         const comando = `SELECT * FROM vinicola WHERE id_vinicola = ?`;
 
         const [registro] = await connection.query(comando, [idVinicola]);
-        return registro;
+        return registro[0];
 
     } catch (err) {
         throw new Error(criarErro(err.message));

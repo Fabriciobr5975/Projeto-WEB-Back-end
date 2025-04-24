@@ -114,7 +114,7 @@ export async function buscarEnderecoPorId(idEndereco) {
         const comando = `SELECT * FROM endereco WHERE id_endereco = ?`;
 
         const [registro] = await connection.query(comando, [idEndereco]);
-        return registro;
+        return registro[0];
 
     } catch (err) {
         throw new Error(criarErro(err.message));

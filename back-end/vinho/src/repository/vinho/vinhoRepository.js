@@ -117,7 +117,7 @@ export async function buscarVinhoPorId(idVinho) {
     const comando = `SELECT * FROM view_listagem_vinho WHERE id_vinho = ?`;
 
     const [registro] = await connection.query(comando, [idVinho]);
-    return registro;
+    return registro[0];
 }
 
 /**

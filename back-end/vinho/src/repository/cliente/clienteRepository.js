@@ -126,7 +126,7 @@ export async function buscarClientesPorId(idCliente) {
         
         const [registro] = await connection.query(comando, [idCliente]);
 
-        return registro;
+        return registro[0];
     } catch (err) {
         throw new Error(criarErro(err.message));
     }

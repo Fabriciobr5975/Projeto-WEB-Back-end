@@ -98,7 +98,7 @@ export async function buscarPaisPorId(idPais) {
         const comando = `SELECT * FROM pais WHERE id_pais = ?`;
 
         const [registro] = await connection.query(comando, [idPais]);
-        return registro;
+        return registro[0];
 
     } catch (err) {
         throw new Error(criarErro(err.message));

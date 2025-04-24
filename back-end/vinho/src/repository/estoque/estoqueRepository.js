@@ -86,7 +86,7 @@ export async function buscarEstoquePorId(idEstoque) {
     const comando = `SELECT * FROM view_listagem_estoque WHERE id_estoque = ?`;
 
     const [registro] = await connection.query(comando, [idEstoque]);
-    return registro;
+    return registro[0];
 }
 
 /**

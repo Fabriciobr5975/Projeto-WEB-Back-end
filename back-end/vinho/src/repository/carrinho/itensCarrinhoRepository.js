@@ -80,7 +80,7 @@ export async function buscarItensCarrinhoPorId(idCarrinho) {
                      WHERE id_itens_carrinho = ?`;
 
     const [registro] = await connection.query(comando, [idCarrinho]);
-    return registro;
+    return registro[0];
 }
 
 /**
