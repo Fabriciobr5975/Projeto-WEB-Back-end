@@ -23,7 +23,7 @@ const endpoints = Router();
 // const upload = multer({armazenmento});
 
 
-endpoints.post("/vinho", upload.single('imagem'), async (req, resp) => {
+endpoints.post("/vinho",  async (req, resp) => {
     try {
         const vinho = req.body;
         vinho.imagem_vinho = req.file?.buffer;
