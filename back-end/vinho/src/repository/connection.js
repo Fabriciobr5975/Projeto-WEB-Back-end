@@ -1,4 +1,7 @@
 import mysql from 'mysql2/promise'
+import dotenv from 'dotenv';
+//dotenv.config();
+
 
 /**
  * Criando a conexxão com o BD e realizando algumas configurações 
