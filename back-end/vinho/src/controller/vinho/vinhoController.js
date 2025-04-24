@@ -14,15 +14,20 @@ import buscarVinhoPorUvaService from '../../service/vinho/buscarVinhoPorUvaServi
 import { Router } from "express";
 import multer from 'multer';
 
+const storage = multer.memoryStorage();
+const upload = multer({storage});
+
 const endpoints = Router();
 
 // const armazenmento = multer.memoryStorage();
 // const upload = multer({armazenmento});
 
 
-endpoints.post("/vinho", async (req, resp) => {
+endpoints.post("/vinho", upload.single('imagem'), async (req, resp) => {
     try {
         const vinho = req.body;
+        vinho.imagem_vinho = req.file?.buffer;
+
         const resposta = await inserirVinhoService(vinho);
 
         resp.send({

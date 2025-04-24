@@ -9,6 +9,7 @@ const connection = await mysql.createConnection({
     database: process.env.MYSQL_DATABASE,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
+    multipleStatements: true,
     typeCast: function (field, next) {
         if(field.type === 'DATE') {
             const date = new Date(field.string());

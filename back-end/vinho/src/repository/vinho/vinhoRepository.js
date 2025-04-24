@@ -10,38 +10,28 @@ import connection from "../connection.js";
 export async function inserirVinho(vinho) {
     // imagem_vinho,
     const comando = `
-        INSERT INTO vinho (
-                           nome,
-                           uva,
-                           vinicola_fk,
-                           teor_alcolico,
-                           classificacao,
-                           volume,
-                           safra,
-                           temperatura_servir,
-                           pais_fk,
-                           preco,
-                           descricao)
-            VALUES (?, ?, (SELECT id_vinicola FROM vinicola WHERE vinicola = ?), ?, ?, ?, ?, ?,
-                    (SELECT id_pais FROM pais WHERE pais = ?), ?, ?)    
-    `;
+       CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?,
+            (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
+            (SELECT id_pais FROM pais WHERE pais = ?));`;
 
     const [resposta] = await connection.query(comando, [
         //vinho.imagem_vinho,
         vinho.nome,
         vinho.uva,
-        vinho.vinicola,
         vinho.teor_alcolico,
         vinho.classificacao,
         vinho.volume,
         vinho.safra,
         vinho.temperatura_servir,
-        vinho.pais,
         vinho.preco,
-        vinho.descricao
+        vinho.descricao,
+        vinho.vinicola,
+        vinho.pais
     ]);
 
-    return resposta.insertId;   
+    const mensagem = resposta[0][0]?.mensagem;
+
+    return mensagem;
 }
 
 /**
@@ -59,35 +49,35 @@ export async function alterarVinho(idVinho, vinho) {
             SET 
                 nome = ?,
                 uva = ?,
-                vinicola_fk = (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
                 teor_alcolico = ?,
                 classificacao = ?,
                 volume = ?,
                 safra = ?,
                 temperatura_servir = ?,
-                pais_fk = (SELECT id_pais FROM pais WHERE pais = ?),
                 preco = ?,
-                descricao = ?
+                descricao = ?,
+                vinicola_fk = (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
+                pais_fk = (SELECT id_pais FROM pais WHERE pais = ?)
         WHERE id_vinho = ?    
 `;
 
-const [resposta] = await connection.query(comando, [
-    //vinho.imagem_vinho,
-    vinho.nome,
-    vinho.uva,
-    vinho.vinicola,
-    vinho.teor_alcolico,
-    vinho.classificacao,
-    vinho.volume,
-    vinho.safra,
-    vinho.temperatura_servir,
-    vinho.pais,
-    vinho.preco,
-    vinho.descricao,
-    idVinho
-]);
+    const [resposta] = await connection.query(comando, [
+        //vinho.imagem_vinho,
+        vinho.nome,
+        vinho.uva,
+        vinho.teor_alcolico,
+        vinho.classificacao,
+        vinho.volume,
+        vinho.safra,
+        vinho.temperatura_servir,
+        vinho.preco,
+        vinho.descricao,
+        vinho.vinicola,
+        vinho.pais,
+        idVinho
+    ]);
 
-return resposta.affectedRows;   
+    return resposta.affectedRows;
 }
 
 /**
