@@ -7,6 +7,9 @@
 ## Uma Breve Explicação Sobre a Nossa Aplicação 📕
 
 ## Informações Complementares 🧩
+- O sistema foi validado e tenta tratar todas as possíveis exceções que são geradas
+- No banco utilizamos algumas coisas mais avançadas, como procedures e triggers para controle de inserções e manipulações gerais 
+
 > Os arquivos do Front-End se encontra neste repositório: [`Repositório do Front-End`](https://github.com/Ruanlv/Projeto-WEB-Front-end)  
 
 ## Ferramentas e Tecnologias Usadas ⚒️
