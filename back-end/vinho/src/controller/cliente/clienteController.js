@@ -78,9 +78,9 @@ endpoints.get("/cliente/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/nome/:nome", async (req, resp) => {
+endpoints.get("/cliente/informacoes/nome", async (req, resp) => {
     try {
-        const nomeCliente = req.params.nome;
+        const nomeCliente = req.query.nome;
         const registro = await buscarClientePorNomeService(nomeCliente);
 
         resp.send(registro);
@@ -91,9 +91,9 @@ endpoints.get("/cliente/nome/:nome", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/cpf/:cpf", async (req, resp) => {
+endpoints.get("/cliente/informacao/cpf", async (req, resp) => {
     try {
-        const cpfCliente = req.params.cpf;
+        const cpfCliente = req.query.cpf;
         const registro = await buscarClientePorCpfService(cpfCliente);
 
         resp.send(registro);
@@ -104,9 +104,9 @@ endpoints.get("/cliente/cpf/:cpf", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/email/:email", async (req, resp) => {
+endpoints.get("/cliente/informacao/email", async (req, resp) => {
     try {
-        const emailCliente = req.params.email;
+        const emailCliente = req.query.email;
         const registro = await buscarClientePorEmailService(emailCliente);
 
         resp.send(registro);
