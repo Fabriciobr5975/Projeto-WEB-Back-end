@@ -14,19 +14,24 @@ import buscarVinhoPorUvaService from '../../service/vinho/buscarVinhoPorUvaServi
 import { Router } from "express";
 import multer from 'multer';
 
+// Para salvar a imagem na memória (Buffer)
 const storage = multer.memoryStorage();
 const upload = multer({storage});
 
 const endpoints = Router();
 
-// const armazenmento = multer.memoryStorage();
-// const upload = multer({armazenmento});
-
-
-endpoints.post("/vinho",  async (req, resp) => {
+endpoints.post("/vinho", upload.single("imagem_vinho"),  async (req, resp) => {
     try {
-        const vinho = req.body;
+        const vinho = req.body;        
+        
+        // Para salvar a extensão e o tipo de arquivo;
+        const mimetype = req.file?.mimetype;
+        const extensao = req.file?.originalname.split('.').pop();
+        
+        // Adicionando as informações das imagens no JSON que será inserido
         vinho.imagem_vinho = req.file?.buffer;
+        vinho.mimetype = mimetype;
+        vinho.extensao = extensao;
 
         const resposta = await inserirVinhoService(vinho);
 
@@ -40,10 +45,20 @@ endpoints.post("/vinho",  async (req, resp) => {
     }
 });
 
-endpoints.put("/vinho/:id", async (req, resp) => {
+endpoints.put("/vinho/:id", upload.single("imagem_vinho"), async (req, resp) => {
     try {
         const idVinho = req.params.id;
         const vinho = req.body;
+
+        // Para salvar a extensão e o tipo de arquivo;
+        const mimetype = req.file?.mimetype;
+        const extensao = req.file?.originalname.split('.').pop();
+        
+        // Adicionando as informações das imagens no JSON que será inserido
+        vinho.imagem_vinho = req.file?.buffer;
+        vinho.mimetype = mimetype;
+        vinho.extensao = extensao;
+
         const resposta = await alterarVinhoService(idVinho, vinho);
 
         resp.send({ resposta });

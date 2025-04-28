@@ -10,12 +10,14 @@ import connection from "../connection.js";
 export async function inserirVinho(vinho) {
     // imagem_vinho,
     const comando = `
-       CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?,
+       CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
             (SELECT id_pais FROM pais WHERE pais = ?));`;
 
     const [resposta] = await connection.query(comando, [
-        //vinho.imagem_vinho,
+        vinho.imagem_vinho,
+        vinho.mimetype,
+        vinho.extensao,
         vinho.nome,
         vinho.uva,
         vinho.teor_alcolico,
@@ -47,6 +49,9 @@ export async function alterarVinho(idVinho, vinho) {
     const comando = `
         UPDATE vinho 
             SET 
+                imagem_vinho = ?,
+                mimetype = ?,
+                extensao = ?,
                 nome = ?,
                 uva = ?,
                 teor_alcolico = ?,
@@ -62,7 +67,9 @@ export async function alterarVinho(idVinho, vinho) {
 `;
 
     const [resposta] = await connection.query(comando, [
-        //vinho.imagem_vinho,
+        vinho.imagem_vinho,
+        vinho.mimetype,
+        vinho.extensao,
         vinho.nome,
         vinho.uva,
         vinho.teor_alcolico,
