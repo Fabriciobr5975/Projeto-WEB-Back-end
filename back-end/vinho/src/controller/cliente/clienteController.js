@@ -1,5 +1,5 @@
 import alterarClienteService from '../../service/cliente/alterarClienteService.js';
-import inserirClienteService from '../../service/cliente/inserirClienteService.js';
+import inserirClienteComEnderecoService from '../../service/cliente/inserirClienteService.js';
 import removerClienteService from '../../service/cliente/removerClienteService.js';
 import listarClientesService from '../../service/cliente/listarClientesService.js';
 import buscarClientePorCpfService from '../../service/cliente/buscarClientePorCpfService.js';
@@ -14,10 +14,10 @@ const endpoints = Router();
 endpoints.post("/cliente", async (req, resp) => {
     try {
         const cliente = req.body;
-        const resposta = await inserirClienteService(cliente);
+        const resposta = await inserirClienteComEnderecoService(cliente);
 
         resp.send({
-            id_inserido: resposta
+            resposta
         });
     } catch (err) {
         resp.status(404).send({

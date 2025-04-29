@@ -1,8 +1,8 @@
-/* Procedures */
-
-/* Para chamar as procedures usamos CALL. Exemplo: CALL cadastro_vinho(parametros...) */
+/* Procedures. Para chamar as procedures usamos CALL. Exemplo: CALL cadastro_vinho(parametros...)  */
 
 use db_projeto_vinho;
+
+/* PROCEDURE para o cadastro dos vinhos */
 
 DELIMITER $$
 
@@ -54,6 +54,109 @@ BEGIN
     ELSE 
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Vinho' AS mensagem;
+    END IF;
+END;$$
+
+DELIMITER ;
+
+/* PROCEDURE para a inserção de clientes, endereço e endereco_cliente */
+
+DELIMITER $$
+
+CREATE PROCEDURE 
+    cadastro_usuario(
+    nome VARCHAR(30),
+    sobrenome VARCHAR(30),
+    cpf CHAR(11),
+    data_nascimento DATE,
+    email VARCHAR(100),
+    senha VARCHAR(20),
+    celular CHAR(15),
+    logradouro VARCHAR(100),
+    bairro VARCHAR(50),
+    localidade VARCHAR(50),
+    uf CHAR(2),
+    cep CHAR(9),
+    numero VARCHAR(10),
+    complemento VARCHAR(50)
+    )
+    
+BEGIN
+	/* Variáveis para validar se os itens abaixo existem ou não */
+    DECLARE exists_cliente INT;
+    DECLARE exists_endereco INT;
+    DECLARE exist_endereco_cliente INT;
+
+    START TRANSACTION;
+
+    -- Verificando se o Cliente já existe
+    SELECT COUNT(*) INTO exists_cliente 
+    FROM cliente c
+    WHERE c.cpf = cpf;
+
+    -- Validando se o Endereço já existe
+    SELECT COUNT(*) INTO exists_endereco
+    FROM endereco e 
+    WHERE e.cep = cep;
+    
+    -- Validando se o cliente já tem esse endereço
+    SELECT COUNT(*) INTO exist_endereco_cliente
+    FROM endereco_cliente
+    WHERE cliente_id = (SELECT id_cliente FROM cliente c where c.cpf = cpf);
+
+	-- Se não tiver o usuário buscado, o endereço buscado não existir e a relação entre cliente e endereço não existir
+    IF exists_cliente = 0 AND exists_endereco = 0 AND exist_endereco_cliente = 0 THEN
+        -- Inserção do Cliente
+        INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular)
+			VALUES (nome, sobrenome, cpf, data_nascimento, email, senha, celular);
+            
+		-- ID gerado do cliente
+		SET @last_id_cliente = last_insert_id();
+        
+        -- Inserção do Endereço
+        INSERT INTO vinho (logradouro, bairro, localidade, uf, cep)
+			VALUES (logradouro, bairro, localidade, uf, cep);
+            
+		-- ID gerado do endereco
+		SET @last_id_endereco = last_insert_id();
+        
+        -- Inserção do Endereço dos Clientes
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
+			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento);
+        
+    COMMIT;
+        SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
+    
+    -- Se não tiver o usuário buscado, mas o endereço buscado existir e a relação entre cliente e endereço não existir
+    ELSEIF exists_cliente = 0 AND exists_endereco = 1 AND exist_endereco_cliente = 0 THEN
+			-- Inserção do Cliente
+        INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular)
+			VALUES (nome, sobrenome, cpf, data_nascimento, email, senha, celular);
+            
+		-- ID gerado do cliente
+		SET @last_id_cliente = last_insert_id();
+        
+        -- Busca pelo Endereço
+        SET @id_endereco = (SELECT id_endereco FROM endereco e WHERE e.cep = cep);
+            
+        -- Inserção do Endereço dos Clientes
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
+			VALUES (@id_endereco, @last_id_cliente, numero, complemento);
+            
+	COMMIT;
+        SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
+            
+	ELSEIF exists_cliente = 1 THEN
+		ROLLBACK; 
+        SELECT 'Erro: Esse cliente já foi inserido' AS mensagem;
+        
+        ELSEIF exists_cliente = 1 THEN
+		ROLLBACK; 
+        SELECT 'Erro: Esse cliente já foi inserido e já contem os dados do endereço' AS mensagem;
+    
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;
     END IF;
 END;$$
 

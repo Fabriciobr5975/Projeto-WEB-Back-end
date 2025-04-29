@@ -38,6 +38,43 @@ export async function inserirCliente(cliente) {
 }
 
 /**
+* Função que deve inserir um novo cliente com endereço no banco de dados
+* 
+* @param {JSON} cliente - Objeto que terá os atributos necessários para a inserção do cliente
+* 
+* @returns Retorna o id do cliente, caso ele seja inserido
+*/
+export async function inserirClienteComEndereco(cliente) {
+    try {
+        const comando = `
+            CALL cadastro_usuario (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        `;
+
+        const [resposta] = await connection.query(comando, [
+            cliente.nome,
+            cliente.sobrenome,
+            cliente.cpf,
+            cliente.data_nascimento,
+            cliente.email,
+            cliente.senha,
+            cliente.celular,
+            cliente.logradouro,
+            cliente.bairro,
+            cliente.localidade,
+            cliente.uf,
+            cliente.cep,
+            cliente.numero,
+            cliente.complemento
+        ]);
+
+        return resposta[0][0]?.mensagem;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
+}
+
+/**
  * Função para alterar um cliente que já tenha sido inserido no banco de dados
  * 
  * @param {Number} idCliente - ID (PF) do cliente que será alterado 
@@ -123,7 +160,7 @@ export async function listarClientes() {
 export async function buscarClientesPorId(idCliente) {
     try {
         const comando = `SELECT * FROM view_cliente WHERE id_cliente = ?`;
-        
+
         const [registro] = await connection.query(comando, [idCliente]);
 
         return registro[0];

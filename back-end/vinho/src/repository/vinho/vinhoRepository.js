@@ -8,7 +8,6 @@ import connection from "../connection.js";
  * @returns Retorna o id do vinho, caso ele seja inserido 
  */
 export async function inserirVinho(vinho) {
-    // imagem_vinho,
     const comando = `
        CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
