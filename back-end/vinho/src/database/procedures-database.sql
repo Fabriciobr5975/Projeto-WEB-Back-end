@@ -101,11 +101,20 @@ BEGIN
     
     -- Validando se o cliente já tem esse endereço
     SELECT COUNT(*) INTO exist_endereco_cliente
-    FROM endereco_cliente
-    WHERE cliente_id = (SELECT id_cliente FROM cliente c where c.cpf = cpf);
+    FROM endereco_cliente ec
+    WHERE ec.cliente_id = (SELECT c.id_cliente FROM cliente c where c.cpf = cpf);
+
+	-- Se não tiver o usuário, e o mesmo não tiver passado os dados do endereço (cep)
+	IF exists_cliente = 0 AND (cep IS NULL OR TRIM(cep) = '') THEN
+    -- Inserção do Cliente
+        INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular)
+			VALUES (nome, sobrenome, cpf, data_nascimento, email, senha, celular);
+            
+			COMMIT;
+			SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
 
 	-- Se não tiver o usuário buscado, o endereço buscado não existir e a relação entre cliente e endereço não existir
-    IF exists_cliente = 0 AND exists_endereco = 0 AND exist_endereco_cliente = 0 THEN
+    ELSEIF exists_cliente = 0 AND exists_endereco = 0 AND exist_endereco_cliente = 0 THEN
         -- Inserção do Cliente
         INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular)
 			VALUES (nome, sobrenome, cpf, data_nascimento, email, senha, celular);
@@ -114,7 +123,7 @@ BEGIN
 		SET @last_id_cliente = last_insert_id();
         
         -- Inserção do Endereço
-        INSERT INTO vinho (logradouro, bairro, localidade, uf, cep)
+        INSERT INTO endereco (logradouro, bairro, localidade, uf, cep)
 			VALUES (logradouro, bairro, localidade, uf, cep);
             
 		-- ID gerado do endereco
@@ -124,7 +133,7 @@ BEGIN
         INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
 			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento);
         
-    COMMIT;
+		COMMIT;
         SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
     
     -- Se não tiver o usuário buscado, mas o endereço buscado existir e a relação entre cliente e endereço não existir
@@ -143,14 +152,14 @@ BEGIN
         INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
 			VALUES (@id_endereco, @last_id_cliente, numero, complemento);
             
-	COMMIT;
-        SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
+		COMMIT;
+		SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
             
 	ELSEIF exists_cliente = 1 THEN
 		ROLLBACK; 
         SELECT 'Erro: Esse cliente já foi inserido' AS mensagem;
         
-        ELSEIF exists_cliente = 1 THEN
+	ELSEIF exist_endereco_cliente = 1 THEN
 		ROLLBACK; 
         SELECT 'Erro: Esse cliente já foi inserido e já contem os dados do endereço' AS mensagem;
     
