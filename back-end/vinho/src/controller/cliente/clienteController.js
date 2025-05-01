@@ -1,5 +1,6 @@
 import alterarClienteService from '../../service/cliente/alterarClienteService.js';
-import inserirClienteComEnderecoService from '../../service/cliente/inserirClienteService.js';
+import inserirClienteComEnderecoService from '../../service/cliente/inserirClienteComEnderecoService.js';
+import inserirClienteSemEnderecoService from '../../service/cliente/inserirClienteSemEnderecoService.js';
 import removerClienteService from '../../service/cliente/removerClienteService.js';
 import listarClientesService from '../../service/cliente/listarClientesService.js';
 import buscarClientePorCpfService from '../../service/cliente/buscarClientePorCpfService.js';
@@ -14,10 +15,17 @@ const endpoints = Router();
 endpoints.post("/cliente", async (req, resp) => {
     try {
         const cliente = req.body;
-        const resposta = await inserirClienteComEnderecoService(cliente);
+        let resposta = undefined;
 
+        if(!cliente.cep || cliente.cep === "") {
+            resposta = await inserirClienteSemEnderecoService(cliente);
+        
+        } else {
+            resposta = await inserirClienteComEnderecoService(cliente);
+        }
+        
         resp.send({
-            resposta: `Usuário criado com sucesso. Id gerado: ${resposta}`
+            resposta
         });
     } catch (err) {
         resp.status(404).send({
@@ -78,7 +86,7 @@ endpoints.get("/cliente/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/informacoes/nome", async (req, resp) => {
+endpoints.get("/cliente/busca/nome", async (req, resp) => {
     try {
         const nomeCliente = req.query.nome;
         const registro = await buscarClientePorNomeService(nomeCliente);
@@ -91,7 +99,7 @@ endpoints.get("/cliente/informacoes/nome", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/informacao/cpf", async (req, resp) => {
+endpoints.get("/cliente/busca/cpf", async (req, resp) => {
     try {
         const cpfCliente = req.query.cpf;
         const registro = await buscarClientePorCpfService(cpfCliente);
@@ -104,7 +112,7 @@ endpoints.get("/cliente/informacao/cpf", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/cliente/informacao/email", async (req, resp) => {
+endpoints.get("/cliente/busca/email", async (req, resp) => {
     try {
         const emailCliente = req.query.email;
         const registro = await buscarClientePorEmailService(emailCliente);

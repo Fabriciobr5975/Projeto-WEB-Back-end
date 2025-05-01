@@ -61,8 +61,6 @@ DELIMITER ;
 
 /* PROCEDURE para a inserção de clientes, endereço e endereco_cliente */
 
-DELIMITER $$
-
 CREATE PROCEDURE 
     cadastro_usuario(
     nome VARCHAR(30),
@@ -77,8 +75,7 @@ CREATE PROCEDURE
     uf CHAR(2),
     cep CHAR(9),
     numero VARCHAR(10),
-    complemento VARCHAR(50)
-    )
+    complemento VARCHAR(50))
     
 BEGIN
 	/* Variáveis para validar se os itens abaixo existem ou não */
@@ -103,11 +100,22 @@ BEGIN
     FROM endereco_cliente ec
     WHERE ec.cliente_id = (SELECT c.id_cliente FROM cliente c where c.cpf = cpf);
 
+	IF exists_cliente = 1 THEN
+		ROLLBACK; 
+        SELECT 'Erro: Esse cliente já foi inserido' AS mensagem;
+        
+	ELSEIF exist_endereco_cliente = 1 THEN
+		ROLLBACK; 
+        SELECT 'Erro: Esse cliente já foi inserido e já contem os dados do endereço' AS mensagem;
+
 	-- Se não tiver o usuário, e o mesmo não tiver passado os dados do endereço (cep)
-	IF exists_cliente = 0 AND (cep IS NULL OR TRIM(cep) = '') THEN
+	ELSEIF exists_cliente = 0 AND (cep IS NULL OR TRIM(cep) = '') THEN
     -- Inserção do Cliente
-        INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular)
-			VALUES (nome, sobrenome, cpf, data_nascimento, email, senha, celular);
+        INSERT INTO cliente (nome, sobrenome, cpf, email, senha, celular)
+			VALUES (nome, sobrenome, cpf, email, senha, celular);
+            
+            -- ID gerado do cliente
+			SET @last_id_cliente = last_insert_id();
             
 			COMMIT;
 			SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
@@ -115,8 +123,8 @@ BEGIN
 	-- Se não tiver o usuário buscado, o endereço buscado não existir e a relação entre cliente e endereço não existir
     ELSEIF exists_cliente = 0 AND exists_endereco = 0 AND exist_endereco_cliente = 0 THEN
         -- Inserção do Cliente
-        INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular)
-			VALUES (nome, sobrenome, cpf, data_nascimento, email, senha, celular);
+        INSERT INTO cliente (nome, sobrenome, cpf, email, senha, celular)
+			VALUES (nome, sobrenome, cpf, email, senha, celular);
             
 		-- ID gerado do cliente
 		SET @last_id_cliente = last_insert_id();
@@ -137,15 +145,15 @@ BEGIN
     
     -- Se não tiver o usuário buscado, mas o endereço buscado existir e a relação entre cliente e endereço não existir
     ELSEIF exists_cliente = 0 AND exists_endereco = 1 AND exist_endereco_cliente = 0 THEN
-			-- Inserção do Cliente
-        INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular)
-			VALUES (nome, sobrenome, cpf, data_nascimento, email, senha, celular);
+		-- Inserção do Cliente
+        INSERT INTO cliente (nome, sobrenome, cpf, email, senha, celular)
+			VALUES (nome, sobrenome, cpf, email, senha, celular);
             
 		-- ID gerado do cliente
 		SET @last_id_cliente = last_insert_id();
         
         -- Busca pelo Endereço
-        SET @id_endereco = (SELECT id_endereco FROM endereco e WHERE e.cep = cep);
+        SET @id_endereco = (SELECT e.id_endereco FROM endereco e WHERE e.cep = cep);
             
         -- Inserção do Endereço dos Clientes
         INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
@@ -153,15 +161,7 @@ BEGIN
             
 		COMMIT;
 		SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
-            
-	ELSEIF exists_cliente = 1 THEN
-		ROLLBACK; 
-        SELECT 'Erro: Esse cliente já foi inserido' AS mensagem;
         
-	ELSEIF exist_endereco_cliente = 1 THEN
-		ROLLBACK; 
-        SELECT 'Erro: Esse cliente já foi inserido e já contem os dados do endereço' AS mensagem;
-    
     ELSE 
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;

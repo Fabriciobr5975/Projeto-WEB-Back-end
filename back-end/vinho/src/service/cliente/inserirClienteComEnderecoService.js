@@ -16,15 +16,15 @@ export default async function inserirClienteComEnderecoService(cliente) {
     if (!(validarCPF(cpfLimpo)))
         throw new Error(`O CPF ${cliente.cpf} não é válido`);
     
-    const cepLimpo = limparCEP(endereco.cep);
+    const cepLimpo = limparCEP(cliente.cep);
     validarCEP(cepLimpo);
-    endereco.cep = cepLimpo;
+    cliente.cep = cepLimpo;
 
     // Pegando as informações do CEP da API do viacep
-    const enderecoViaCep = await pegarEnderecoDoViaCep(endereco.cep);
+    const enderecoViaCep = await pegarEnderecoDoViaCep(cliente.cep);
 
     // Construindo o JSON para a inserção do endereço no BD
-    const enderecoFinal = construirJSONIEndereco(enderecoViaCep, endereco);
+    const enderecoFinal = construirJSONIEndereco(enderecoViaCep);
 
     // Juntado os Objetos cliente com o endereço
     const clienteCompleto =  { ...cliente, ...enderecoFinal };

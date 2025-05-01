@@ -7,30 +7,31 @@ import connection from "../connection.js";
  * 
  * @returns Retorna o id do cliente, caso ele seja inserido
  */
-export async function inserirCliente(cliente) {
+export async function inserirClienteSemEndereco(cliente) {
     try {
         const comando = `
-        INSERT INTO cliente (nome,
-                             sobrenome,
-                             cpf,
-                             data_nascimento,
-                             email,
-                             senha,
-                             celular)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+          CALL cadastro_usuario (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
         const [resposta] = await connection.query(comando, [
             cliente.nome,
             cliente.sobrenome,
             cliente.cpf,
-            cliente.data_nascimento,
             cliente.email,
             cliente.senha,
-            cliente.celular
+            cliente.celular,
+            cliente.logradouro,
+            cliente.bairro,
+            cliente.localidade,
+            cliente.uf,
+            cliente.cep,
+            cliente.numero,
+            cliente.complemento
         ]);
 
-        return resposta.insertId;
+        const mensagem = resposta[0][0]?.mensagem;
+
+        return mensagem;
 
     } catch (err) {
         throw new Error(criarErro(err.message));
@@ -66,7 +67,9 @@ export async function inserirClienteComEndereco(cliente) {
             cliente.complemento
         ]);
 
-        return resposta[0][0]?.mensagem;
+        const mensagem = resposta[0][0]?.mensagem;
+
+        return mensagem;
 
     } catch (err) {
         throw new Error(criarErro(err.message));
@@ -162,7 +165,7 @@ export async function buscarClientesPorId(idCliente) {
 
         const [registro] = await connection.query(comando, [idCliente]);
 
-        return registro[0];
+        return registro;
     } catch (err) {
         throw new Error(criarErro(err.message));
     }
