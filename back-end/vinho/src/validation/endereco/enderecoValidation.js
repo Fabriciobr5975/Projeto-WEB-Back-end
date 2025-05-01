@@ -9,7 +9,7 @@ export function validarCamposObrigatoriosEnderecoParaInsercao(endereco) {
     if (!endereco.cep)
         throw new Error("O cep é obrigatório e deve ser único");
 
-    validarCEP(endereco.cep) 
+    validarCEP(String(endereco.cep)) 
 }
 
 export function validarCamposObrigatoriosEndereco(endereco) {

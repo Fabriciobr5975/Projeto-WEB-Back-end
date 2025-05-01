@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     nome VARCHAR(30) NOT NULL,
     sobrenome VARCHAR(30) NOT NULL,
     cpf CHAR(11) NOT NULL UNIQUE,
-    data_nascimento DATE NOT NULL,
+    data_nascimento DATE,
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(20) NOT NULL,
     celular CHAR(15)

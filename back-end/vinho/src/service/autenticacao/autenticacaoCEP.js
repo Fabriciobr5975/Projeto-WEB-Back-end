@@ -33,6 +33,6 @@ export function validarCEP(cep) {
  * @param {JSON} endereco - Recebe o objeto do endereço 
  */
 export function validarSeCepFoiEncontrado(endereco, cep) {
-    if (Object.keys(endereco).length === 1)
+    if (Object.keys(endereco).length === 1 || !endereco)
         throw new Error(`O CEP ${cep} não foi encontrado, verifique se o CEP passado está correto`);
 }

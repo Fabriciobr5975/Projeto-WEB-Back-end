@@ -47,14 +47,13 @@ export async function inserirCliente(cliente) {
 export async function inserirClienteComEndereco(cliente) {
     try {
         const comando = `
-            CALL cadastro_usuario (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            CALL cadastro_usuario (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
 
         const [resposta] = await connection.query(comando, [
             cliente.nome,
             cliente.sobrenome,
             cliente.cpf,
-            cliente.data_nascimento,
             cliente.email,
             cliente.senha,
             cliente.celular,

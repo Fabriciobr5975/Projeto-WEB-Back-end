@@ -17,7 +17,7 @@ endpoints.post("/cliente", async (req, resp) => {
         const resposta = await inserirClienteComEnderecoService(cliente);
 
         resp.send({
-            resposta
+            resposta: `Usuário criado com sucesso. Id gerado: ${resposta}`
         });
     } catch (err) {
         resp.status(404).send({

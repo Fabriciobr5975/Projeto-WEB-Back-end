@@ -79,9 +79,9 @@ endpoints.get("/endereco/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/endereco/cep/:cep", async (req, resp) => {
+endpoints.get("/endereco/busca/cep", async (req, resp) => {
     try {
-        const cep = req.params.cep;
+        const cep = req.query.cep;
         const registro = await buscarEnderecoPorCepService(cep);
 
         resp.send(registro);
@@ -92,9 +92,9 @@ endpoints.get("/endereco/cep/:cep", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/endereco/cidade/:cidade", async (req, resp) => {
+endpoints.get("/endereco/busca/cidade", async (req, resp) => {
     try {
-        const cidade = req.params.cidade;
+        const cidade = req.query.cidade;
         const registro = await buscarEnderecoPorCidadeService(cidade);
 
         resp.send(registro);
@@ -105,9 +105,9 @@ endpoints.get("/endereco/cidade/:cidade", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/endereco/logradouro/:logradouro", async (req, resp) => {
+endpoints.get("/endereco/busca/logradouro", async (req, resp) => {
     try {
-        const logradouro = req.params.logradouro;
+        const logradouro = req.query.logradouro;
         const registro = await buscarEnderecoPorLogradouroService(logradouro);
 
         resp.send(registro);
@@ -118,9 +118,9 @@ endpoints.get("/endereco/logradouro/:logradouro", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/endereco/uf/:uf", async (req, resp) => {
+endpoints.get("/endereco/busca/uf", async (req, resp) => {
     try {
-        const ufCidade = req.params.uf;
+        const ufCidade = req.query.uf;
         const registro = await buscarEnderecoPorUFService(ufCidade);
 
         resp.send(registro);

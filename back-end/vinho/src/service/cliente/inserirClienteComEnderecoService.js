@@ -3,14 +3,22 @@ import { validarCamposObrigatoriosCliente, verificarSeClienteFoiInserido } from 
 
 import { pegarEnderecoDoViaCep, construirJSONIEndereco } from '../endereco/buscarEnderecoViaCepService.js'
 import { limparCPF, validarCPF } from '../autenticacao/autenticacaoCPF.js';
+import { limparCEP, validarCEP } from '../autenticacao/autenticacaoCEP.js';
 
 export default async function inserirClienteComEnderecoService(cliente) {
     validarCamposObrigatoriosCliente(cliente);
 
-    let cpfLimpo = limparCPF(cliente.cpf)
+    const cpfLimpo = limparCPF(cliente.cpf)
+
+    // Alterando o cpf que vem via JSON para o cpf limpo
+    cliente.cpf = cpfLimpo;
 
     if (!(validarCPF(cpfLimpo)))
         throw new Error(`O CPF ${cliente.cpf} não é válido`);
+    
+    const cepLimpo = limparCEP(endereco.cep);
+    validarCEP(cepLimpo);
+    endereco.cep = cepLimpo;
 
     // Pegando as informações do CEP da API do viacep
     const enderecoViaCep = await pegarEnderecoDoViaCep(endereco.cep);
@@ -18,9 +26,7 @@ export default async function inserirClienteComEnderecoService(cliente) {
     // Construindo o JSON para a inserção do endereço no BD
     const enderecoFinal = construirJSONIEndereco(enderecoViaCep, endereco);
 
-    // Alterando o cpf que vem via JSON para o cpf limpo
-    cliente.cpf = cpfLimpo;
-
+    // Juntado os Objetos cliente com o endereço
     const clienteCompleto =  { ...cliente, ...enderecoFinal };
 
     const resposta = await inserirClienteComEndereco(clienteCompleto);

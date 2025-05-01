@@ -14,9 +14,6 @@ export function validarCamposObrigatoriosCliente(cliente) {
     if (!cliente.cpf)
         throw new Error("O cpf é obrigatório e deve ser único");
 
-    if (!cliente.data_nascimento)
-        throw new Error("A data de nascimento é obrigatório");
-
     if (!cliente.email)
         throw new Error("O email é obrigatório");
 

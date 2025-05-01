@@ -1,4 +1,4 @@
-import { validarCEP, validarSeCepFoiEncontrado } from '../autenticacao/autenticacaoCEP.js'
+import { limparCEP, validarCEP, validarSeCepFoiEncontrado } from '../autenticacao/autenticacaoCEP.js'
 
 /**
  * Função que busca um endereço a partir do cep passado pelo usuário, utilizando a API viacep
@@ -10,7 +10,9 @@ import { validarCEP, validarSeCepFoiEncontrado } from '../autenticacao/autentica
 export const pegarEnderecoDoViaCep = async cep => {
     validarCEP(cep);
     
-    const request = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const url = `https://viacep.com.br/ws/${cep}/json/`;
+
+    const request = await fetch(url);
 
     const endereco = await request.json();
     validarSeCepFoiEncontrado(endereco, cep);
@@ -31,6 +33,6 @@ export const construirJSONIEndereco = ({ logradouro, bairro, localidade, uf, cep
         bairro,
         localidade,
         uf,
-        cep
+        cep: limparCEP(cep)
     };
 }

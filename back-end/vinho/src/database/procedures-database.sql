@@ -68,7 +68,6 @@ CREATE PROCEDURE
     nome VARCHAR(30),
     sobrenome VARCHAR(30),
     cpf CHAR(11),
-    data_nascimento DATE,
     email VARCHAR(100),
     senha VARCHAR(20),
     celular CHAR(15),

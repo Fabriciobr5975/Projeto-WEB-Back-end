@@ -67,9 +67,9 @@ endpoints.get("/enderecoCliente", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/enderecoCliente/cep/:cep", async (req, resp) => {
+endpoints.get("/enderecoCliente/busca/cep", async (req, resp) => {
     try {
-        const cep = req.params.cep;
+        const cep = req.query.cep;
         const registro = await buscarEnderecoClientePorCEPService(cep);
 
         resp.send(registro);
@@ -80,9 +80,9 @@ endpoints.get("/enderecoCliente/cep/:cep", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/enderecoCliente/cliente/:cliente", async (req, resp) => {
+endpoints.get("/enderecoCliente/busca/cliente", async (req, resp) => {
     try {
-        const cliente = req.params.cliente;
+        const cliente = req.query.cliente;
         const registro = await buscarEnderecoClientePorCPFService(cliente);
 
         resp.send(registro);
