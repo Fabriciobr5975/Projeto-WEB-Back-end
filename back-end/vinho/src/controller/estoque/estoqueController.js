@@ -79,9 +79,9 @@ endpoints.get("/estoque/:id", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/vinho/:vinho", async (req, resp) => {
+endpoints.get("/estoque/busca/vinho", async (req, resp) => {
     try {
-        const vinhoEstoque = req.params.vinho;
+        const vinhoEstoque = req.query.vinho;
         const registro = await buscarEstoquePorVinhoService(vinhoEstoque);
 
         resp.send(registro);
@@ -92,9 +92,9 @@ endpoints.get("/estoque/vinho/:vinho", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/safra/:safra", async (req, resp) => {
+endpoints.get("/estoque/busca/safra", async (req, resp) => {
     try {
-        const safraEstoque = req.params.safra;
+        const safraEstoque = req.query.safra;
         const registro = await buscarEstoquePorSafraService(safraEstoque);
 
         resp.send(registro);
@@ -105,9 +105,9 @@ endpoints.get("/estoque/safra/:safra", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/status/:status", async (req, resp) => {
+endpoints.get("/estoque/busca/status", async (req, resp) => {
     try {
-        const statusEstoque = req.params.status;
+        const statusEstoque = req.query.status;
         const registro = await buscarEstoquePorStatusService(statusEstoque);
 
         resp.send(registro);
@@ -118,9 +118,9 @@ endpoints.get("/estoque/status/:status", async (req, resp) => {
     }
 }); 
 
-endpoints.get("/estoque/quantidade/:quantidade", async (req, resp) => {
+endpoints.get("/estoque/busca/quantidade", async (req, resp) => {
     try {
-        const quantidadeEstoque = req.params.quantidade;
+        const quantidadeEstoque = req.query.quantidade;
         const registro = await buscarEstoquePorQuantidadeService(quantidadeEstoque);
 
         resp.send(registro);

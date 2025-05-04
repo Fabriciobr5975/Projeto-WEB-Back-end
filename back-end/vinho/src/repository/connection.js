@@ -21,12 +21,11 @@ const connection = await mysql.createConnection({
             const mes = (`0${date.getMonth() + 1}`).slice(-2);
             const ano = date.getFullYear();
 
-            return `${dia}/${mes}/${ano}`;
+            return `${ano}-${mes}-${dia}`;
         } else {
             return next();
         }
     }
-
 });
 
 console.log(`--> Conexão ao Banco de dados realizada com sucesso`);

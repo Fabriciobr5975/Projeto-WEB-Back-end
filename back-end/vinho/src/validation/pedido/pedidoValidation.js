@@ -5,7 +5,7 @@ export function validarEntradaParaBuscaPorPedido(entrada) {
 }
 
 export function validarCamposObrigatoriosPedido(pedido) {
-    if (!pedido.itens_carrinho)
+    if (!pedido.carrinho)
         throw new Error("A identificação dos itens do carrinho vinho é obrigátoria é deve ser única");
 
     if (!pedido.endereco_entrega)
@@ -43,7 +43,7 @@ export function verificarSePedidoFoiRemovido(linhasAfetadas) {
 
 export function verificarSePedidosSãoIguais(registro, pedido) {
     registro.forEach(itens => {
-        if(itens.itens_carrinho === pedido.itens_carrinho) {
+        if(itens.carrinho === pedido.carrinho) {
             throw new Error("Esse pedido já foi inserido");
         }
     });

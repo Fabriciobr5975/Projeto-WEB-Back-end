@@ -1,11 +1,13 @@
-import { buscarPedidoPeloCliente} from '../../repository/pedido/pedidoRepository.js'
-import { validarEntradaParaBuscaPorPedido, validarBuscaPedido } from '../../validation/pedido/pedidoValidation.js'
+import { buscarPedidoPeloCliente} from '../../repository/pedido/pedidoRepository.js';
+import { validarEntradaParaBuscaPorPedido, validarBuscaPedido } from '../../validation/pedido/pedidoValidation.js';
+import agruparPedidos from './contruirVetorBuscaPedido.js';
 
 export default async function buscarPedidoPeloClienteService(cpfCliente) {
     validarEntradaParaBuscaPorPedido(cpfCliente);
 
-    const registro = await buscarPedidoPeloCliente(cpfCliente);
-    validarBuscaPedido(registro);
+    const registros = await buscarPedidoPeloCliente(cpfCliente);
+    validarBuscaPedido(registros);
 
-    return registro;
+    return agruparPedidos(registros);
 }
+

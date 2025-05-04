@@ -9,13 +9,12 @@ import connection from "../connection.js";
  */
 export async function inserirCarrinho(carrinho) {
     const comando = `
-        INSERT INTO carrinho (cliente_fk, quantidade)
-            VALUES ((SELECT id_cliente FROM cliente WHERE cpf = ?), ?)
+        INSERT INTO carrinho (cliente_fk)
+            VALUES ((SELECT id_cliente FROM cliente WHERE cpf = ?))
     `;
 
     const [resposta] = await connection.query(comando, [
         carrinho.cliente,
-        carrinho.quantidade
     ]);
 
     return resposta.insertId;
@@ -33,13 +32,11 @@ export async function alterarCarrinho(idCarrinho, carrinho) {
     const comando = `
         UPDATE carrinho 
             SET cliente_fk = (SELECT id_cliente FROM cliente WHERE cpf = ?),
-                quantidade = ?
         WHERE id_carrinho = ?
     `;
 
     const [resposta] = await connection.query(comando, [
         carrinho.cliente,
-        carrinho.quantidade,
         idCarrinho
     ]);
 
@@ -66,7 +63,7 @@ export async function removerCarrinho(idCarrinho) {
  * @returns Retorna um objeto JSON contendo todos os carrinhos que foram encontrados
  */
 export async function listarCarrinhos() {
-    const comando = `SELECT * FROM view_listagem_itens_carrinho`;
+    const comando = `SELECT * FROM view_listagem_carrinho`;
 
     const [registros] = await connection.query(comando);
     return registros;
@@ -80,7 +77,7 @@ export async function listarCarrinhos() {
  * @returns Retorna um objeto JSON contendo o carrinho que foi buscado, caso o id seja válido
  */
 export async function buscarCarrinhoPorId(idCarrinho) {
-    const comando = `SELECT * FROM view_listagem_itens_carrinho 
+    const comando = `SELECT * FROM view_listagem_carrinho 
                      WHERE id_carrinho = ?`;
 
     const [registro] = await connection.query(comando, [idCarrinho]);
@@ -97,7 +94,7 @@ export async function buscarCarrinhoPorId(idCarrinho) {
  * caso o cpf do usuário seja válido
  */
 export async function buscarCarrinhoPeloCliente(cpfCliente) {
-    const comando = `SELECT * FROM view_listagem_itens_carrinho 
+    const comando = `SELECT * FROM view_listagem_carrinho 
                      WHERE cpf = ?`;
 
     const [registros] = await connection.query(comando, [cpfCliente]);
@@ -114,7 +111,7 @@ export async function buscarCarrinhoPeloCliente(cpfCliente) {
  * vinho, caso esse id seja válido  
  */
 export async function buscarCarrinhoPorVinho(idVinho) {
-    const comando = `SELECT * FROM view_listagem_itens_carrinho
+    const comando = `SELECT * FROM view_listagem_carrinho
                      WHERE id_vinho = ?`;
 
     const [registros] = await connection.query(comando, [idVinho]);

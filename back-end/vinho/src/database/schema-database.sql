@@ -6,21 +6,21 @@ CREATE DATABASE IF NOT EXISTS db_projeto_vinho;
  
 use db_projeto_vinho;
 
-/* Tabela da Vinícola */
+/* Tabela Vinícola */
 CREATE TABLE IF NOT EXISTS vinicola (
     id_vinicola INT AUTO_INCREMENT PRIMARY KEY,
     vinicola VARCHAR(100) NOT NULL UNIQUE,
     rotulo VARCHAR(100) NOT NULL
 );
 
-/* Tabela do Pais */
+/* Tabela Pais */
 CREATE TABLE IF NOT EXISTS pais (
     id_pais INT AUTO_INCREMENT PRIMARY KEY,
     pais VARCHAR(100) NOT NULL UNIQUE,
     sigla CHAR(3) NOT NULL UNIQUE
 );
 
-/* Tabela do Vinho */
+/* Tabela Vinho */
 CREATE TABLE IF NOT EXISTS vinho (
     id_vinho INT AUTO_INCREMENT PRIMARY KEY,
     imagem_vinho LONGBLOB NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS vinho (
     CONSTRAINT pais_vinho_fk FOREIGN KEY (pais_fk) REFERENCES pais(id_pais)
 ); 
 
-/* Tabela do Estoque */
+/* Tabela Estoque */
 CREATE TABLE IF NOT EXISTS estoque (
     id_estoque INT AUTO_INCREMENT PRIMARY KEY,
     vinho_fk INT NOT NULL UNIQUE, 
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS estoque (
     CONSTRAINT vinho_estoque_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho) ON DELETE CASCADE
 );
 
-/* Tabela dos Endereços */
+/* Tabela Endereço */
 CREATE TABLE IF NOT EXISTS endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
     logradouro VARCHAR(100) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS endereco (
     cep CHAR(9) NOT NULL UNIQUE
 );
 
-/* Tabela dos Clientes */
+/* Tabela Cliente */
 CREATE TABLE IF NOT EXISTS cliente (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(30) NOT NULL,
@@ -74,16 +74,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     celular CHAR(15)
 );
 
-/* Tabela do carrinho */
-CREATE TABLE IF NOT EXISTS carrinho (
-    id_carrinho INT AUTO_INCREMENT PRIMARY KEY,
-    cliente_fk INT UNIQUE,
-    quantidade INT NOT NULL default 0,
-    CHECK(quantidade >= 0),
-    CONSTRAINT cliente_carrinho_fk FOREIGN KEY (cliente_fk) REFERENCES cliente(id_cliente)
-);
- 
-/* Relacionamento N:N entre endereços e os clientes */
+/* Tabela Endereco Cliente (N:N) */
 CREATE TABLE IF NOT EXISTS endereco_cliente (
 	endereco_id INT NOT NULL,
     cliente_id INT NOT NULL,
@@ -94,26 +85,36 @@ CREATE TABLE IF NOT EXISTS endereco_cliente (
     CONSTRAINT cliente_fk FOREIGN KEY (cliente_id) REFERENCES cliente(id_cliente) ON DELETE CASCADE
 );
 
-/* Relacionamento N:N entre carrinho e vinhos */
+/* Tabela Carrinho */
+CREATE TABLE IF NOT EXISTS carrinho (
+    id_carrinho INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_fk INT UNIQUE,
+    CONSTRAINT cliente_carrinho_fk FOREIGN KEY (cliente_fk) REFERENCES cliente(id_cliente)
+);
+
+/* Tabela Itens Carrinho (N:N) */
 CREATE TABLE IF NOT EXISTS itens_carrinho (
     id_itens_carrinho INT AUTO_INCREMENT PRIMARY KEY,
-    carrinho_fk INT NOT NULL UNIQUE,
+    carrinho_fk INT NOT NULL,
     vinho_fk INT NOT NULL,
+    quantidade INT NOT NULL default 0,
+    CHECK(quantidade >= 0),
     UNIQUE(carrinho_fk, vinho_fk), 
     CONSTRAINT carrinho_itens_carrinho_fk FOREIGN KEY (carrinho_fk) REFERENCES carrinho(id_carrinho)
 		ON DELETE CASCADE,
 	CONSTRAINT carrinho_itens_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
 );
 
-/* Tabela dos Pedidos */
+/* Tabela Pedido */
 CREATE TABLE IF NOT EXISTS pedido (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    itens_carrinho_fk INT NOT NULL UNIQUE,
+    carrinho_fk INT NOT NULL UNIQUE,
     endereco_entrega_fk INT NOT NULL,
     valor_total DECIMAL(10, 2) NOT NULL,
     status_pedido ENUM('PENDENTE', 'EM ANDAMENTO', 'ENVIADO', 'ENTREGUE') NOT NULL DEFAULT "PENDENTE",
     data_pedido DATE NOT NULL,
     CHECK(valor_total >= 0),
-    CONSTRAINT itens_carrinho_pedido_fk FOREIGN KEY (itens_carrinho_fk) REFERENCES itens_carrinho(id_itens_carrinho) ON DELETE CASCADE,
+    CONSTRAINT itens_carrinho_pedido_fk FOREIGN KEY (carrinho_fk) REFERENCES carrinho(id_carrinho) ON DELETE CASCADE,
     CONSTRAINT endereco_pedido_fk FOREIGN KEY (endereco_entrega_fk) REFERENCES endereco(id_endereco)
 );
+

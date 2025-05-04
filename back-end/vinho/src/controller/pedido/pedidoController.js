@@ -77,9 +77,9 @@ endpoints.get("/pedido/:id", async (req, resp) => {
     }
 });
 
-endpoints.get("/pedido/vinho/:vinho", async (req, resp) => {
+endpoints.get("/pedido/busca/vinho", async (req, resp) => {
     try {
-        const idVinho = req.params.vinho;
+        const idVinho = req.query.vinho;
         const registro = await buscarPedidoPorVinhoService(idVinho);
 
         resp.send(registro);
@@ -90,9 +90,9 @@ endpoints.get("/pedido/vinho/:vinho", async (req, resp) => {
     }
 });
 
-endpoints.get("/pedido/cliente/:cliente", async (req, resp) => {
+endpoints.get("/pedido/busca/cliente", async (req, resp) => {
     try {
-        const cpfCliente = req.params.cliente;
+        const cpfCliente = req.query.cliente;
         const registro = await buscarPedidoPeloClienteService(cpfCliente);
 
         resp.send(registro);

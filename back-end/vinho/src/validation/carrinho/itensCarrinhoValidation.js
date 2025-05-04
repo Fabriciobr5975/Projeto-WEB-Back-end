@@ -6,7 +6,13 @@ export function validarEntradaParaBuscaPorItensCarrinho(entrada) {
 
 export function validarCamposObrigatoriosItensCarrinho(itens_carrinho) {
     if(!itens_carrinho.carrinho)
-        throw new Error("A identificação do carrinho é obrigátorio e deve ser único");
+        throw new Error("A identificação do carrinho é obrigátorio");
+
+    if(!itens_carrinho.vinho) 
+        throw new Error("O a identificação do vinho é obrigatório");
+
+    if(!itens_carrinho.quantidade)
+        throw new Error("A quantidade é obrigatória");
 }
 
 export function validarBuscaItensCarrinho(registros) {

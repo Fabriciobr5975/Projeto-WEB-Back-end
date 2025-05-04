@@ -9,7 +9,7 @@ import connection from "../connection.js";
  */
 export async function inserirPedido(pedido) {
     const comando = ` 
-        INSERT INTO pedido (itens_carrinho_fk, 
+        INSERT INTO pedido (carrinho_fk, 
                             endereco_entrega_fk, 
                             valor_total, 
                             status_pedido, 
@@ -18,7 +18,7 @@ export async function inserirPedido(pedido) {
         `;
 
     const [resposta] = await connection.query(comando, [
-        pedido.itens_carrinho,
+        pedido.carrinho,
         pedido.endereco_entrega,
         pedido.valor_total,
         pedido.status_pedido,
