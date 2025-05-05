@@ -4,8 +4,8 @@ use db_projeto_vinho;
 
 /* VIEW PARA A LISTAGEM DOS ENDEREÇOS DOS CLIENTES */
 CREATE VIEW view_listagem_enderecos AS 
-	SELECT c.id_cliente, CONCAT(c.nome, ' ', c.sobrenome) 'nome_completo_cliente', c.cpf, e.id_endereco, e.logradouro,
-		   e.bairro, e.localidade 'cidade', e.uf, e.cep, ec.numero, ec.complemento
+	SELECT c.id_cliente, CONCAT(c.nome, ' ', c.sobrenome) 'nome_completo_cliente', c.cpf, c.email, e.id_endereco,
+		   e.logradouro, e.bairro, e.localidade 'cidade', e.uf, e.cep, ec.numero, ec.complemento
 	FROM endereco e
 		INNER JOIN endereco_cliente ec ON ec.endereco_id = e.id_endereco
         INNER JOIN cliente c ON c.id_cliente = ec.cliente_id
@@ -25,7 +25,7 @@ CREATE VIEW view_listagem_vinho AS
 
 /* VIEW PARA A LISTAGEM DO ESTOQUE */
 CREATE VIEW view_listagem_estoque AS
-	SELECT e.id_estoque, v.id_vinho, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
+	SELECT e.id_estoque, v.id_vinho, v.nome 'vinho', v.descricao, vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
 		   v.safra 'safra_vinho', p.pais 'pais_vinho', v.preco 'preco_vinho', e.quantidade 'quantidade_estoque',
            e.status_estoque 
     FROM vinho v

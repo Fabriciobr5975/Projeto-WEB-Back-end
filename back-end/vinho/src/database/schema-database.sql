@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS cliente (
     data_nascimento DATE,
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(20) NOT NULL,
-    celular CHAR(15)
+    celular CHAR(15),
+    administrador BOOLEAN default 0
 );
 
 /* Tabela Endereco Cliente (N:N) */

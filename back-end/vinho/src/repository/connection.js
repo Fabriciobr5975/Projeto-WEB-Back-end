@@ -1,7 +1,5 @@
 import mysql from 'mysql2/promise'
 import dotenv from 'dotenv';
-//dotenv.config();
-
 
 /**
  * Criando a conexxão com o BD e realizando algumas configurações 
@@ -14,7 +12,10 @@ const connection = await mysql.createConnection({
     password: process.env.MYSQL_PASSWORD,
     multipleStatements: true,
     typeCast: function (field, next) {
-        if(field.type === 'DATE') {
+        if (field.type === "TINY" && field.length === 1) {
+            return(field.string === "1");
+
+        } else if(field.type === 'DATE') {
             const date = new Date(field.string());
             
             const dia = (`0${date.getDate() + 1}`).slice(-2);
