@@ -30,6 +30,4 @@ const tratarErro = erro => {
     }
 
     return "Não foi possível identificar o erro " + erro;
-
 }
-
