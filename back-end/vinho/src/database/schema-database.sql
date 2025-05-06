@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS vinho (
     id_vinho INT AUTO_INCREMENT PRIMARY KEY,
     imagem_vinho LONGBLOB NOT NULL,
     mimetype VARCHAR(50) NOT NULL,
+    nome_imagem VARCHAR(100) NOT NULL,
     extensao VARCHAR(10) NOT NULL,
     nome VARCHAR(100) NOT NULL,
     uva VARCHAR(100) NOT NULL,

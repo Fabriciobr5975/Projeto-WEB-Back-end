@@ -14,14 +14,14 @@ CREATE VIEW view_listagem_enderecos AS
     
 /* VIEW PARA A LISTAGEM DOS VINHO */
 CREATE VIEW view_listagem_vinho AS
-	SELECT v.id_vinho, v.imagem_vinho, v.mimetype, v.extensao, v.nome 'nome_vinho', v.classificacao 'classificacao_vinho', 
-		   vi.vinicola, v.uva 'uva_vinho', v.teor_alcolico, volume 'volume_vinho', temperatura_servir, p.pais,
-           safra 'safra_vinho', v.preco 'preco_vinho', v.descricao
+	SELECT v.id_vinho, v.imagem_vinho, v.mimetype, v.nome_imagem, v.extensao, v.nome 'nome_vinho', v.classificacao 'classificacao_vinho', 
+		   vi.vinicola, v.uva 'uva_vinho', v.teor_alcolico, volume 'volume_vinho', temperatura_servir, p.pais, safra 'safra_vinho',
+           v.preco 'preco_vinho', v.descricao
     FROM vinho v
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
 	ORDER BY 'nome_vinho';
-    
+
 
 /* VIEW PARA A LISTAGEM DO ESTOQUE */
 CREATE VIEW view_listagem_estoque AS
@@ -80,7 +80,7 @@ CREATE VIEW view_listagem_itens_carrinho AS
 CREATE VIEW view_listagem_pedidos AS
 	SELECT pe.id_pedido, v.id_vinho , v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
 		   p.pais 'pais_vinho', v.preco 'preco_vinho', v.descricao, ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', 
-           e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, 
+           cl.celular, e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, 
 		   pe.valor_total 'preco_total_pedido', pe.data_pedido, pe.status_pedido
 	FROM pedido pe
 		INNER JOIN carrinho c ON c.id_carrinho = pe.carrinho_fk

@@ -6,10 +6,10 @@ export function validarEntradaParaBuscaPorVinho(entrada) {
 
 export function validarCamposObrigatoriosVinho(vinho) {
     if (!vinho.imagem_vinho)
-        throw new Error("O a imagem do vinho é obrigatória");
+        throw new Error("A imagem do vinho é obrigatória");
 
     if (!vinho.nome)
-        throw new Error("O nome do vinhoé obrigatório");
+        throw new Error("O nome do vinho é obrigatório");
 
     if (!vinho.uva)
         throw new Error("O a uva do vinho é obrigatório");

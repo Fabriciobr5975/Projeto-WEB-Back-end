@@ -25,18 +25,21 @@ endpoints.post("/vinho", upload.single("imagem_vinho"),  async (req, resp) => {
         const vinho = req.body;        
         
         // Para salvar a extensão e o tipo de arquivo;
+        const imagem = req.file?.buffer;
         const mimetype = req.file?.mimetype;
+        const nomeImagem = req.file?.filename;
         const extensao = req.file?.originalname.split('.').pop();
         
         // Adicionando as informações das imagens no JSON que será inserido
-        vinho.imagem_vinho = req.file?.buffer;
+        vinho.imagem_vinho = imagem;
         vinho.mimetype = mimetype;
+        vinho.nome_imagem = nomeImagem;
         vinho.extensao = extensao;
 
         const resposta = await inserirVinhoService(vinho);
 
         resp.send({
-            id_inserido: resposta
+            resposta: resposta
         });
     } catch (err) {
         resp.status(404).send({
@@ -51,14 +54,17 @@ endpoints.put("/vinho/:id", upload.single("imagem_vinho"), async (req, resp) => 
         const vinho = req.body;
 
         // Para salvar a extensão e o tipo de arquivo;
+        const imagem = req.file?.buffer;
         const mimetype = req.file?.mimetype;
+        const nomeImagem = req.file?.filename;
         const extensao = req.file?.originalname.split('.').pop();
         
         // Adicionando as informações das imagens no JSON que será inserido
-        vinho.imagem_vinho = req.file?.buffer;
+        vinho.imagem_vinho = imagem;
         vinho.mimetype = mimetype;
+        vinho.nome_imagem = nomeImagem;
         vinho.extensao = extensao;
-
+        
         const resposta = await alterarVinhoService(idVinho, vinho);
 
         resp.send({ resposta });

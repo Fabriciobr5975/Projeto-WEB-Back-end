@@ -9,13 +9,14 @@ import connection from "../connection.js";
  */
 export async function inserirVinho(vinho) {
     const comando = `
-       CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+       CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
             (SELECT id_pais FROM pais WHERE pais = ?));`;
 
     const [resposta] = await connection.query(comando, [
         vinho.imagem_vinho,
         vinho.mimetype,
+        vinho.nome_imagem,
         vinho.extensao,
         vinho.nome,
         vinho.uva,
@@ -50,6 +51,7 @@ export async function alterarVinho(idVinho, vinho) {
             SET 
                 imagem_vinho = ?,
                 mimetype = ?,
+                nome_imagem = ?,
                 extensao = ?,
                 nome = ?,
                 uva = ?,
@@ -68,6 +70,7 @@ export async function alterarVinho(idVinho, vinho) {
     const [resposta] = await connection.query(comando, [
         vinho.imagem_vinho,
         vinho.mimetype,
+        vinho.nome_imagem,
         vinho.extensao,
         vinho.nome,
         vinho.uva,

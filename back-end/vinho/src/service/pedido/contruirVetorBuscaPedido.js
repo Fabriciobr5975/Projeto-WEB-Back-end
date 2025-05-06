@@ -6,6 +6,7 @@ export default function agruparPedidos(pedidos) {
                 id_pedido: pedido.id_pedido,
                 nome_completo: pedido.nome_completo,
                 cpf: pedido.cpf,
+                celular: pedido.celular,
                 endereco: pedido.endereco,
                 numero: pedido.numero,
                 complemento: pedido.complemento,
