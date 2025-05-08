@@ -2,13 +2,13 @@
 
 use db_projeto_vinho;
 
-/* PROCEDURE para o cadastro dos vinhos */
-
+/* PROCEDURE para o cadastro de vinhos */
 DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_vinho(
     imagem_vinho MEDIUMBLOB,
+    nome_imagem VARCHAR(100),
     mimetype VARCHAR(50),
     extensao VARCHAR(10),
     nome VARCHAR(100),
@@ -21,7 +21,7 @@ CREATE PROCEDURE
     preco DECIMAL(10,2),
     descricao TEXT,
     vinicola_fk INT,
-    pais_fk INT)
+    pais_fk INT) 
 BEGIN
     DECLARE exists_vinho INT;
     DECLARE valid_vinicola INT;
@@ -47,8 +47,8 @@ BEGIN
 
     IF exists_vinho = 0 AND valid_vinicola = 1 AND valid_pais = 1 THEN
         -- Inserção do Vinho
-        INSERT INTO vinho (imagem_vinho, mimetype, extensao, nome, uva, teor_alcolico, classificacao, volume, safra, temperatura_servir, preco, descricao, vinicola_fk, pais_fk)
-			VALUES (imagem_vinho, mimetype, extensao, nome, uva, teor_alcolico, classificacao, volume, safra, temperatura_servir, preco, descricao, vinicola_fk, pais_fk);
+        INSERT INTO vinho (imagem_vinho, nome_imagem, mimetype, extensao, nome, uva, teor_alcolico, classificacao, volume, safra, temperatura_servir, preco, descricao, vinicola_fk, pais_fk)
+			VALUES (imagem_vinho, nome_imagem, mimetype, extensao, nome, uva, teor_alcolico, classificacao, volume, safra, temperatura_servir, preco, descricao, vinicola_fk, pais_fk);
     COMMIT;
         SELECT CONCAT('Inserção Realizada com Sucesso! ID gerado: ',  LAST_INSERT_ID()) AS mensagem; 
     ELSE 
@@ -59,7 +59,10 @@ END;$$
 
 DELIMITER ;
 
+
 /* PROCEDURE para a inserção de clientes, endereço e endereco_cliente */
+
+DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_usuario(
@@ -169,3 +172,4 @@ BEGIN
 END;$$
 
 DELIMITER ;
+

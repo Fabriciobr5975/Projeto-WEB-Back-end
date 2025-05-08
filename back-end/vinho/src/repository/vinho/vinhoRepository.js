@@ -15,8 +15,8 @@ export async function inserirVinho(vinho) {
 
     const [resposta] = await connection.query(comando, [
         vinho.imagem_vinho,
-        vinho.mimetype,
         vinho.nome_imagem,
+        vinho.mimetype,
         vinho.extensao,
         vinho.nome,
         vinho.uva,
@@ -50,8 +50,8 @@ export async function alterarVinho(idVinho, vinho) {
         UPDATE vinho 
             SET 
                 imagem_vinho = ?,
-                mimetype = ?,
                 nome_imagem = ?,
+                mimetype = ?,
                 extensao = ?,
                 nome = ?,
                 uva = ?,
@@ -69,8 +69,8 @@ export async function alterarVinho(idVinho, vinho) {
 
     const [resposta] = await connection.query(comando, [
         vinho.imagem_vinho,
-        vinho.mimetype,
         vinho.nome_imagem,
+        vinho.mimetype,
         vinho.extensao,
         vinho.nome,
         vinho.uva,
