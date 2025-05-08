@@ -9,7 +9,7 @@ import connection from "../connection.js";
  * @returns Retorna o id do itens no carrinho, caso ele seja inserido
  */
 export async function inserirItensCarrinho(itens_carrinho) {
-    const comando = ` INSERT INTO itens_carrinho (carrinho_fk, vinho_fk, quantidade) 
+    const comando = `INSERT INTO itens_carrinho (carrinho_fk, vinho_fk, quantidade) 
                         VALUES (?, ?, ?)`;
 
     const [resposta] = await connection.query(comando, [

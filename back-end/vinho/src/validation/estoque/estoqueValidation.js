@@ -16,7 +16,7 @@ export function validarCamposObrigatoriosEstoque(estoque) {
 }
 
 export function validarBuscaEstoque(registros) {
-    if(registros.length === 0)
+    if(registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o estoque");
 }
 

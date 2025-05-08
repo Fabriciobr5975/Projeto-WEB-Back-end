@@ -3,9 +3,14 @@ import { validarEntradaParaBuscaPorVinho, validarBuscaVinho } from '../../valida
 
 export default async function buscarVinhoPorTeorAlcoolicoService(teorAlcoolico) {
     validarEntradaParaBuscaPorVinho(teorAlcoolico);
-    
+
     const registro = await buscarVinhoPorTeorAlcoolico(teorAlcoolico);
     validarBuscaVinho(registro);
 
-    return registro;
+    const registroComImage = registros.map(vinho => {
+        const imagem = vinho.imagem_vinho.toString("base64");
+        return { ...vinho, imagem_vinho: `data:image/${vinho.extensao};base64,${imagem}` };
+    });
+
+    return registroComImage;
 }

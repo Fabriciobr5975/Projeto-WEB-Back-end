@@ -8,7 +8,6 @@ export default async function buscarVinhoPorIdService(idVinho) {
     validarBuscaVinho(registro);
 
     const imagem = registro.imagem_vinho.toString("base64");
-    
     const registroComImage = { ...registro, imagem_vinho: `data:image/${registro.extensao};base64,${imagem}` };
 
     return registroComImage;

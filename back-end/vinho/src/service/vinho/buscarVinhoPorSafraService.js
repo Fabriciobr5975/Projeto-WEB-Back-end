@@ -7,5 +7,9 @@ export default async function buscarVinhoPorSafraService(safra) {
     const registro = await buscarVinhoPorSafra(safra);
     validarBuscaVinho(registro);
 
-    return registro;
+    const registroComImage = registros.map(vinho => {
+        const imagem = vinho.imagem_vinho.toString("base64");
+        return { ...vinho, imagem_vinho: `data:image/${vinho.extensao};base64,${imagem}` };
+    });
+    return registroComImage;
 }

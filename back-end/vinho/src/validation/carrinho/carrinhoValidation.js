@@ -10,7 +10,7 @@ export function validarCamposObrigatoriosCarrinho(carrinho) {
 }
 
 export function validarBuscaCarrinho(registros) {
-    if(registros.length === 0)
+    if(registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o carrinho");
 }
 

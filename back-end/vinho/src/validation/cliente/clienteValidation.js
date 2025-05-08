@@ -22,7 +22,7 @@ export function validarCamposObrigatoriosCliente(cliente) {
 }
 
 export function validarBuscaCliente(registros) {
-    if (registros.length === 0)
+    if (registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o cliente");
 }
 

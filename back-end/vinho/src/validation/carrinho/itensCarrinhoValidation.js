@@ -16,7 +16,7 @@ export function validarCamposObrigatoriosItensCarrinho(itens_carrinho) {
 }
 
 export function validarBuscaItensCarrinho(registros) {
-    if(registros.length === 0)
+    if(registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o itens do carrinho");
 }
 

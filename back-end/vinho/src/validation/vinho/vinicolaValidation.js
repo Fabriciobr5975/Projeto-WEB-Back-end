@@ -13,7 +13,7 @@ export function validarCamposObrigatoriosVinicola(vinicola) {
 }
 
 export function validarBuscaVinicola(registros) {
-    if (registros.length === 0)
+    if (registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para a vinícola");
 }
 

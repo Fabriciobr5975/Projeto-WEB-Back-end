@@ -19,7 +19,7 @@ export function validarCamposObrigatoriosEnderecoCliente(enderecoCliente) {
 }
 
 export function validarBuscaEnderecoCliente(registros) {
-    if (registros.length === 0)
+    if (registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o endereço do cliente");
 }
 

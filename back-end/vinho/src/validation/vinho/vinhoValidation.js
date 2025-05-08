@@ -37,7 +37,7 @@ export function validarCamposObrigatoriosVinho(vinho) {
 }
 
 export function validarBuscaVinho(registros) {
-    if (registros.length === 0)
+    if (registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o vinho");
 }
 

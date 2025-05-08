@@ -9,7 +9,7 @@ export function validarCamposObrigatoriosEnderecoParaInsercao(endereco) {
     if (!endereco.cep)
         throw new Error("O cep é obrigatório e deve ser único");
 
-    validarCEP(String(endereco.cep)) 
+    validarCEP(String(endereco.cep))
 }
 
 export function validarCamposObrigatoriosEndereco(endereco) {
@@ -28,11 +28,11 @@ export function validarCamposObrigatoriosEndereco(endereco) {
     if (!endereco.cep)
         throw new Error("O cep é obrigatório e deve ser único");
 
-    validarCEP(endereco.cep) 
+    validarCEP(endereco.cep)
 }
 
 export function validarBuscaEndereco(registros) {
-    if (registros.length === 0)
+    if (registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o endereço");
 }
 

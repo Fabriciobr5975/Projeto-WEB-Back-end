@@ -27,13 +27,11 @@ endpoints.post("/vinho", upload.single("imagem_vinho"),  async (req, resp) => {
         // Para salvar a extensão e o tipo de arquivo;
         const imagem = req.file?.buffer;
         const mimetype = req.file?.mimetype;
-        const nomeImagem = req.file?.filename;
         const extensao = req.file?.originalname.split('.').pop();
         
         // Adicionando as informações das imagens no JSON que será inserido
         vinho.imagem_vinho = imagem;
         vinho.mimetype = mimetype;
-        vinho.nome_imagem = nomeImagem;
         vinho.extensao = extensao;
 
         const resposta = await inserirVinhoService(vinho);
@@ -56,13 +54,11 @@ endpoints.put("/vinho/:id", upload.single("imagem_vinho"), async (req, resp) => 
         // Para salvar a extensão e o tipo de arquivo;
         const imagem = req.file?.buffer;
         const mimetype = req.file?.mimetype;
-        const nomeImagem = req.file?.filename;
         const extensao = req.file?.originalname.split('.').pop();
         
         // Adicionando as informações das imagens no JSON que será inserido
         vinho.imagem_vinho = imagem;
         vinho.mimetype = mimetype;
-        vinho.nome_imagem = nomeImagem;
         vinho.extensao = extensao;
         
         const resposta = await alterarVinhoService(idVinho, vinho);
