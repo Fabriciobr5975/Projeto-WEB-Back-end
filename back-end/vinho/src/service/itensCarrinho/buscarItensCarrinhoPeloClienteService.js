@@ -4,8 +4,13 @@ import { validarEntradaParaBuscaPorItensCarrinho, validarBuscaItensCarrinho } fr
 export default async function buscarItensCarrinhoPeloClienteService(cpfCliente) {
     validarEntradaParaBuscaPorItensCarrinho(cpfCliente);
 
-    const resposta = await buscarItensCarrinhoPeloCliente(cpfCliente);
-    validarBuscaItensCarrinho(resposta);
+    const registro = await buscarItensCarrinhoPeloCliente(cpfCliente);
+    validarBuscaItensCarrinho(registro);
 
-    return resposta;
+    const registroComImage = registro.map(vinho => {
+        const imagem = vinho.imagem_vinho.toString("base64");
+        return { ...vinho, imagem_vinho: `data:image/${vinho.extensao};base64,${imagem}` };
+    });
+
+    return registroComImage;
 }

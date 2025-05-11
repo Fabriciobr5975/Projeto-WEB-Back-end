@@ -16,7 +16,7 @@ endpoints.post("/itenscarrinho", async (req, resp) => {
         const resposta = await inserirItensCarrinhoService(itens_carrinho);
 
         resp.send({
-            id_inserido: resposta
+            resposta: resposta
         });
     } catch (err) {
         resp.status(404).send({
@@ -79,8 +79,8 @@ endpoints.get("/itenscarrinho/:id", async (req, resp) => {
 
 endpoints.get("/itenscarrinho/busca/cliente", async (req, resp) => {
     try {
-        const clienteItensCarrinho = req.query.cliente;
-        const registro = await buscarItensCarrinhoPeloClienteService(clienteItensCarrinho);
+        const cpfCliente = req.query.cliente;
+        const registro = await buscarItensCarrinhoPeloClienteService(cpfCliente);
 
         resp.send(registro);
     } catch (err) {
@@ -92,8 +92,8 @@ endpoints.get("/itenscarrinho/busca/cliente", async (req, resp) => {
 
 endpoints.get("/itenscarrinho/busca/vinho", async (req, resp) => {
     try {
-        const vinhoItensCarrinho = req.query.vinho;
-        const registro = await buscarItensCarrinhoPorVinhoService(vinhoItensCarrinho);
+        const idVinho = req.query.vinho;
+        const registro = await buscarItensCarrinhoPorVinhoService(idVinho);
 
         resp.send(registro);
     } catch (err) {

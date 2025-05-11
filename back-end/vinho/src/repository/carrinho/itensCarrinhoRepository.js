@@ -9,15 +9,21 @@ import connection from "../connection.js";
  * @returns Retorna o id do itens no carrinho, caso ele seja inserido
  */
 export async function inserirItensCarrinho(itens_carrinho) {
-    const comando = `INSERT INTO itens_carrinho (carrinho_fk, vinho_fk, quantidade) 
-                        VALUES (?, ?, ?)`;
+    try {
+        const comando = `CALL insercao_itens_carrinho ((SELECT id_carrinho FROM carrinho WHERE cliente_fk = ?), ?, ?)`;
 
-    const [resposta] = await connection.query(comando, [
-        itens_carrinho.carrinho,
-        itens_carrinho.vinho,
-        itens_carrinho.quantidade
-    ]);
-    return resposta.insertId;
+        const [resposta] = await connection.query(comando, [
+            itens_carrinho.carrinho,
+            itens_carrinho.vinho,
+            itens_carrinho.quantidade
+        ]);
+        
+        const mensagem = resposta[0][0]?.mensagem;
+        return mensagem;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -40,7 +46,7 @@ export async function alterarItensCarrinho(idItensCarrinho, itens_carrinho) {
     const [resposta] = await connection.query(comando, [
         itens_carrinho.carrinho,
         itens_carrinho.vinho,
-        itens_carrinho.quantidade, 
+        itens_carrinho.quantidade,
         idItensCarrinho
     ]);
     return resposta.affectedRows;

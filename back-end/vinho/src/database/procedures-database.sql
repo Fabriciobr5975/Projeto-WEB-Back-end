@@ -173,3 +173,36 @@ END;$$
 
 DELIMITER ;
 
+/* Procedure para a inserção do item no carrinho do usuário */
+DELIMITER $$
+
+CREATE PROCEDURE 
+    insercao_itens_carrinho(
+    carrinho_fk INT,
+    vinho_fk INT,
+    quantidade INT) 
+BEGIN
+    DECLARE exists_item_carrinho INT;
+
+    START TRANSACTION;
+
+    -- Verificando se o Item já está no carrinho
+	SELECT EXISTS(
+		SELECT 1 
+        FROM itens_carrinho ic
+        WHERE ic.carrinho_fk = carrinho_fk AND ic.vinho_fk = vinho_fk
+	) INTO exists_item_carrinho;
+    
+    IF exists_item_carrinho = 0 THEN
+        -- Inserção do Vinho
+        INSERT INTO itens_carrinho (carrinho_fk, vinho_fk, quantidade)
+			VALUES (carrinho_fk, vinho_fk, quantidade);
+    COMMIT;
+        SELECT CONCAT('O Item foi adicionado no carrinho com sucesso! ID da operação: ',  LAST_INSERT_ID()) AS mensagem; 
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro, esse vinho já foi adicionado ao carrinho!' AS mensagem;
+    END IF;
+END;$$
+
+DELIMITER ;
