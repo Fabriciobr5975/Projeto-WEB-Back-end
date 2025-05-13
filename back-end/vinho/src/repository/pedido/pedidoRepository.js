@@ -10,17 +10,15 @@ import connection from "../connection.js";
 export async function inserirPedido(pedido) {
     const comando = ` 
         INSERT INTO pedido (carrinho_fk, 
-                            endereco_entrega_fk, 
-                            valor_total, 
+                            endereco_entrega_fk,  
                             status_pedido, 
                             data_pedido) 
-            VALUES (?, (SELECT id_endereco FROM endereco WHERE cep = ?), ?, ?, ?)
+            VALUES (?, (SELECT id_endereco FROM endereco WHERE cep = ?), ?, ?)
         `;
 
     const [resposta] = await connection.query(comando, [
         pedido.carrinho,
         pedido.endereco_entrega,
-        pedido.valor_total,
         pedido.status_pedido,
         pedido.data_pedido
     ]);
@@ -39,18 +37,12 @@ export async function inserirPedido(pedido) {
 export async function alterarPedido(idPedido, pedido) {
     const comando = `
         UPDATE pedido 
-            SET itens_carrinho_fk = ?, 
-                endereco_entrega_fk = (SELECT id_endereco FROM endereco WHERE cep = ?), 
-                valor_total = ?, 
-                status_pedido = ?, 
+            SET status_pedido = ?, 
                 data_pedido = ?
         WHERE id_pedido = ?
     `;
 
     const [resposta] = await connection.query(comando, [
-        pedido.itens_carrinho,
-        pedido.endereco_entrega,
-        pedido.valor_total,
         pedido.status_pedido,
         pedido.data_pedido,
         idPedido
@@ -88,15 +80,15 @@ export async function listarPedido() {
 /**
  * Função para buscar um pedido pelo seu id
  * 
- * @param {Number} idCarrinho - Recebe o id do pedido que será usado na busca 
+ * @param {Number} idPedido - Recebe o id do pedido que será usado na busca 
  * 
  * @returns Retorna um objeto JSON, contendo o pedido que foi buscado 
  */
-export async function buscarPedidoPorId(idCarrinho) {
+export async function buscarPedidoPorId(idPedido) {
     const comando = `SELECT * FROM view_listagem_pedidos 
                      WHERE id_pedido = ?`;
 
-    const [registro] = await connection.query(comando, [idCarrinho]);
+    const [registro] = await connection.query(comando, [idPedido]);
     return registro[0];
 }
 

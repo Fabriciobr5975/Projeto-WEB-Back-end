@@ -11,9 +11,14 @@ export function validarCamposObrigatoriosPedido(pedido) {
     if (!pedido.endereco_entrega)
         throw new Error("O endereço da entrega é obrigatório");
 
-    if (!pedido.valor_total)
-        throw new Error("O valor total é obrigatório");
+    if (!pedido.status_pedido)
+        throw new Error("O status do pedido é obrigatório");
 
+    if (!pedido.data_pedido)
+        throw new Error("A data do pedido é obrigatório");
+}
+
+export function validarCamposObrigatoriosPedidoParaAlteracao(pedido) {
     if (!pedido.status_pedido)
         throw new Error("O status do pedido é obrigatório");
 
@@ -43,7 +48,7 @@ export function verificarSePedidoFoiRemovido(linhasAfetadas) {
 
 export function verificarSePedidosSãoIguais(registro, pedido) {
     registro.forEach(itens => {
-        if(itens.carrinho === pedido.carrinho) {
+        if (itens.carrinho === pedido.carrinho) {
             throw new Error("Esse pedido já foi inserido");
         }
     });
