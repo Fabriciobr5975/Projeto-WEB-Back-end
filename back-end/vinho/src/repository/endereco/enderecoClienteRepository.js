@@ -7,7 +7,7 @@ import connection from "../connection.js";
  * 
  * @returns Retorna o id que foi foi gerado
  */
-export async function inserirEnderecoCliente(enderecoCliente) {
+export async function  inserirEnderecoCliente(enderecoCliente) {
     try {
         const comando = `INSERT INTO endereco_cliente (endereco_id, 
                                                        cliente_id, 
