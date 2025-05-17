@@ -7,26 +7,28 @@ import connection from "../connection.js";
  * 
  * @returns Retorna o id que foi foi gerado
  */
-export async function  inserirEnderecoCliente(enderecoCliente) {
+export async function inserirEnderecoCliente(enderecoCliente) {
     try {
-        const comando = `INSERT INTO endereco_cliente (endereco_id, 
-                                                       cliente_id, 
-                                                       numero, 
-                                                       complemento)
-                            VALUES((SELECT id_endereco FROM endereco WHERE cep = ?), 
-                                    (SELECT id_cliente FROM cliente WHERE cpf = ?), ?, ?);`;
+        const comando = `CALL cadastro_endereco_cliente(?, ?, ?, ?, ?, ?, ?, ?, 
+                            (SELECT id_endereco FROM endereco WHERE cep = ?), 
+                            (SELECT id_cliente FROM cliente WHERE cpf = ?))`
 
         await connection.query(comando, [
+            enderecoCliente?.logradouro,
+            enderecoCliente?.bairro,
+            enderecoCliente?.localidade,
+            enderecoCliente?.uf,
+            enderecoCliente?.cep,
+            enderecoCliente.numero,
+            enderecoCliente.complemento,
+            enderecoCliente.apelido_endereco,
             enderecoCliente.endereco,
             enderecoCliente.cliente,
-            enderecoCliente.numero,
-            enderecoCliente.complemento
         ]);
 
-        return {
-            cep_inserido: enderecoCliente.endereco,
-            cpf_inserido: enderecoCliente.cliente
-        };
+        const mensagem = resposta[0][0]?.mensagem;
+
+        return mensagem;
 
     } catch (err) {
         throw new Error(criarErro(err.message));
@@ -46,6 +48,7 @@ export async function alterarEnderecoCliente(endereco, cliente, enderecoCliente)
                                                       cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?),
                                                       numero = ?,
                                                       complemento = ?
+                                                      apelido_endereco = ?,
                             WHERE (endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?) 
                                 AND cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?))`;
 
@@ -54,6 +57,7 @@ export async function alterarEnderecoCliente(endereco, cliente, enderecoCliente)
             enderecoCliente.cliente,
             enderecoCliente.numero,
             enderecoCliente.complemento,
+            enderecoCliente.apelido_endereco,
             endereco,
             cliente
         ]);

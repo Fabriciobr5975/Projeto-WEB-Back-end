@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS endereco_cliente (
     cliente_id INT NOT NULL,
     numero VARCHAR(10) NOT NULL,
     complemento VARCHAR(50),
+    apelido_endereco VARCHAR(100),
     PRIMARY KEY(endereco_id, cliente_id),
 	CONSTRAINT endereco_fk FOREIGN KEY (endereco_id) REFERENCES endereco(id_endereco),
     CONSTRAINT cliente_fk FOREIGN KEY (cliente_id) REFERENCES cliente(id_cliente) ON DELETE CASCADE

@@ -5,7 +5,7 @@ use db_projeto_vinho;
 /* VIEW PARA A LISTAGEM DOS ENDEREÇOS DOS CLIENTES */
 CREATE VIEW view_listagem_enderecos AS 
 	SELECT c.id_cliente, CONCAT(c.nome, ' ', c.sobrenome) 'nome_completo_cliente', c.cpf, c.email, e.id_endereco,
-		   e.logradouro, e.bairro, e.localidade 'cidade', e.uf, e.cep, ec.numero, ec.complemento
+		   e.logradouro, e.bairro, e.localidade 'cidade', e.uf, e.cep, ec.apelido_endereco, ec.numero, ec.complemento
 	FROM endereco e
 		INNER JOIN endereco_cliente ec ON ec.endereco_id = e.id_endereco
         INNER JOIN cliente c ON c.id_cliente = ec.cliente_id

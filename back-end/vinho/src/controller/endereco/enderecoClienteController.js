@@ -15,7 +15,7 @@ endpoints.post("/enderecoCliente", async (req, resp) => {
         const resposta = await inserirEnderecoClienteService(enderecoCliente);
 
         resp.send({
-            id_inserido: resposta
+            resposta: resposta
         });
     } catch (err) {
         resp.status(404).send({

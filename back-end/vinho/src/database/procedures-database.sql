@@ -206,3 +206,86 @@ BEGIN
 END;$$
 
 DELIMITER ;
+
+
+/* PROCEDURE para a inserção de novos endereço, associando aos clientes */
+
+DELIMITER $$
+
+CREATE PROCEDURE 
+    cadastro_endereco_cliente(
+		logradouro VARCHAR(100),
+		bairro VARCHAR(50),
+		localidade VARCHAR(50),
+		uf CHAR(2),
+		cep CHAR(9),
+		numero VARCHAR(10),
+		complemento VARCHAR(50),
+        apelido_endereco VARCHAR(100),
+		endereco_id INT,
+		cliente_id INT)
+    
+BEGIN
+	/* Variáveis para validar se os itens abaixo existem ou não */
+    DECLARE exists_cliente INT;
+    DECLARE exists_endereco INT;
+    DECLARE exist_endereco_cliente INT;
+
+    START TRANSACTION;
+
+    -- Verificando se o Cliente já existe
+    SELECT COUNT(*) INTO exists_cliente 
+    FROM cliente c
+    WHERE c.id_cliente = cliente_id;
+
+    -- Validando se o Endereço já existe
+    SELECT COUNT(*) INTO exists_endereco
+    FROM endereco e 
+    WHERE e.cep = cep;
+    
+    -- Validando se o cliente já tem esse endereço
+    SELECT COUNT(*) INTO exist_endereco_cliente
+    FROM endereco_cliente ec
+    WHERE ec.cliente_id = cliente_id;
+
+	IF exists_cliente = 0 THEN
+		ROLLBACK; 
+        SELECT 'Erro: Esse cliente não existe' AS mensagem;
+        
+	ELSEIF exist_endereco_cliente = 1 THEN
+		ROLLBACK; 
+        SELECT 'Erro: Esse cliente já contem os dados do endereço' AS mensagem;
+
+	ELSEIF exists_cliente = 1 AND exists_endereco = 0 AND exist_endereco_cliente = 0 THEN
+        -- Inserção do endereço
+        INSERT INTO endereco (logradouro, bairro, localidade, uf, cep)
+			VALUES (logradouro, bairro, localidade, uf, cep);
+            
+		-- ID gerado do cliente
+		SET @last_id_endereco = last_insert_id();
+        
+        -- Inserção do Endereço dos Clientes
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
+			VALUES (@last_id_endereco, cliente_id, numero, complemento, apelido_endereco);
+        
+		COMMIT;
+        SELECT 'Endereço adicionado com sucesso!' AS mensagem; 
+    
+    ELSEIF exists_cliente = 1 AND exists_endereco = 1 AND exist_endereco_cliente = 0 THEN
+        -- Busca pelo Endereço
+        SET @id_endereco = (SELECT e.id_endereco FROM endereco e WHERE e.cep = cep);
+            
+        -- Inserção do Endereço dos Clientes
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
+			VALUES (@id_endereco, cliente_id, numero, complemento, apelido_endereco);
+            
+		COMMIT;
+		SELECT 'Endereço adicionado com sucesso!' AS mensagem; 
+        
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;
+    END IF;
+END;$$
+
+DELIMITER ;
