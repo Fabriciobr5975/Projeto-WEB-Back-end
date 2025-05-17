@@ -29,11 +29,8 @@ CREATE TRIGGER trigger_atualizar_estoque_apos_alteracao
 	AFTER UPDATE ON itens_carrinho
 	FOR EACH ROW
 BEGIN
-	DECLARE quantidade_atual INT;
-	SELECT quantidade INTO quantidade_atual FROM estoque WHERE vinho_fk = NEW.vinho_fk; 
-
-	IF quantidade_atual >= NEW.quantidade THEN
-        IF NEW.quantidade > OLD.quantidade THEN
+	IF (SELECT quantidade FROM estoque WHERE vinho_fk = NEW.vinho_fk) >= (NEW.quantidade - OLD.quantidade) THEN
+		IF NEW.quantidade > OLD.quantidade THEN
 			UPDATE estoque
 				SET quantidade = quantidade - (NEW.quantidade - OLD.quantidade)
 			WHERE vinho_fk = NEW.vinho_fk;
@@ -56,18 +53,9 @@ CREATE TRIGGER trigger_atualizar_estoque_apos_remocao
 	AFTER DELETE ON itens_carrinho
 	FOR EACH ROW
 BEGIN
-	DECLARE quantidade_atual INT;
-	SELECT quantidade INTO quantidade_atual FROM estoque WHERE vinho_fk = OLD.vinho_fk; 
-    
-	IF quantidade_atual >= OLD.quantidade THEN
-		UPDATE estoque
+	UPDATE estoque
 		SET quantidade = quantidade + OLD.quantidade
 	WHERE vinho_fk = OLD.vinho_fk;
-    
-    ELSE 
-    SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Ocorreu um erro ao atualizar a quantidade do estoque';
-	END IF;
 END$$;
 DELIMITER ;
 

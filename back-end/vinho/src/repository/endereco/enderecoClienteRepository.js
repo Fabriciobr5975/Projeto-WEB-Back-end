@@ -13,7 +13,7 @@ export async function inserirEnderecoCliente(enderecoCliente) {
                             (SELECT id_endereco FROM endereco WHERE cep = ?), 
                             (SELECT id_cliente FROM cliente WHERE cpf = ?))`
 
-        await connection.query(comando, [
+        const [resposta] = await connection.query(comando, [
             enderecoCliente?.logradouro,
             enderecoCliente?.bairro,
             enderecoCliente?.localidade,
@@ -44,13 +44,14 @@ export async function inserirEnderecoCliente(enderecoCliente) {
  */
 export async function alterarEnderecoCliente(endereco, cliente, enderecoCliente) {
     try {
-        const comando = ` UPDATE endereco_cliente SET endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?), 
-                                                      cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?),
-                                                      numero = ?,
-                                                      complemento = ?
-                                                      apelido_endereco = ?,
-                            WHERE (endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?) 
-                                AND cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?))`;
+        const comando = ` UPDATE endereco_cliente 
+                            SET endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?), 
+                                cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?),
+                                numero = ?,
+                                complemento = ?,
+                                apelido_endereco = ?
+                            WHERE endereco_id = (SELECT id_endereco FROM endereco WHERE cep = ?) 
+                                AND cliente_id = (SELECT id_cliente FROM cliente WHERE cpf = ?)`;
 
         const [resposta] = await connection.query(comando, [
             enderecoCliente.endereco,

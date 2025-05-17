@@ -14,6 +14,9 @@ export function validarCamposObrigatoriosEnderecoCliente(enderecoCliente) {
     if (!enderecoCliente.cliente)
         throw new Error("O cpf do usuário é obrigatório");
 
+    if (!enderecoCliente.complemento)
+        throw new Error("O complemento é obrigatório");
+
     if (!enderecoCliente.numero)
         throw new Error("O número é obrigatório");
 }
