@@ -11,6 +11,9 @@ const connection = await mysql.createConnection({
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     multipleStatements: true,
+    ssl: {
+        rejectUnauthorized: true
+    },
     typeCast: function (field, next) {
         if (field.type === "TINY" && field.length === 1) {
             return(field.string() === "1");
