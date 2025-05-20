@@ -301,9 +301,6 @@ DELIMITER ;
 
 
 /* PROCEDURE para a inserção de novos endereço, associando aos clientes */
-
-DELIMITER $$
-
 CREATE PROCEDURE 
     cadastro_endereco_cliente(
 		logradouro VARCHAR(100),
@@ -338,7 +335,7 @@ BEGIN
     -- Validando se o cliente já tem esse endereço
     SELECT COUNT(*) INTO exist_endereco_cliente
     FROM endereco_cliente ec
-    WHERE ec.cliente_id = cliente_id;
+    WHERE ec.cliente_id = cliente_id AND ec.endereco_id = endereco_id; 
 
 	IF exists_cliente = 0 THEN
 		ROLLBACK; 
@@ -378,6 +375,4 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;
     END IF;
-END;$$
-
-DELIMITER ;
+END;
