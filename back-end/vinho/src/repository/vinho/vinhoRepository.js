@@ -9,7 +9,7 @@ import connection from "../connection.js";
  */
 export async function inserirVinho(vinho) {
     const comando = `
-       CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+       CALL cadastro_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
             (SELECT id_pais FROM pais WHERE pais = ?));`;
 
@@ -27,6 +27,8 @@ export async function inserirVinho(vinho) {
         vinho.temperatura_servir,
         vinho.preco,
         vinho.descricao,
+        vinho.quantidade,
+        vinho.status_estoque,
         vinho.vinicola,
         vinho.pais
     ]);
@@ -45,8 +47,8 @@ export async function inserirVinho(vinho) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do estoque
  */
 export async function alterarVinho(idVinho, vinho) {
-    // imagem_vinho = ?,
-    const comando = `
+    /**
+     * const comandoAlteracaoVinho = `
         UPDATE vinho 
             SET 
                 imagem_vinho = ?,
@@ -64,10 +66,17 @@ export async function alterarVinho(idVinho, vinho) {
                 descricao = ?,
                 vinicola_fk = (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
                 pais_fk = (SELECT id_pais FROM pais WHERE pais = ?)
-        WHERE id_vinho = ?    
-`;
+        WHERE id_vinho = ?`;
 
-    const [resposta] = await connection.query(comando, [
+    const comandoAlteracaoEstoque = `
+        UPDATE estoque
+			SET vinho_fk = ?,
+				quantidade = ?,
+                status_estoque = ?
+		WHERE vinho_fk = ?;
+    `;
+
+    const [resposta01] = await connection.query(comandoAlteracaoVinho, [
         vinho.imagem_vinho,
         vinho.nome_imagem,
         vinho.mimetype,
@@ -86,7 +95,44 @@ export async function alterarVinho(idVinho, vinho) {
         idVinho
     ]);
 
-    return resposta.affectedRows;
+    const [resposta02] = await connection.query(comandoAlteracaoEstoque, [
+        idVinho,
+        vinho.quantidade,
+        vinho.status_estoque,
+        idVinho
+    ]);
+
+    return "Alteração do vinho: " + resposta01.affectedRows + " " +  resposta02.affectedRows;
+     */
+    const comando = `
+       CALL alterar_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
+            (SELECT id_pais FROM pais WHERE pais = ?), ?);`;
+
+    const [resposta] = await connection.query(comando, [
+        vinho.imagem_vinho,
+        vinho.nome_imagem,
+        vinho.mimetype,
+        vinho.extensao,
+        vinho.nome,
+        vinho.uva,
+        vinho.teor_alcolico,
+        vinho.classificacao,
+        vinho.volume,
+        vinho.safra,
+        vinho.temperatura_servir,
+        vinho.preco,
+        vinho.descricao,
+        vinho.quantidade,
+        vinho.status_estoque,
+        vinho.vinicola,
+        vinho.pais,
+        idVinho
+    ]);
+
+    const mensagem = resposta[0][0]?.mensagem;
+
+    return mensagem;
 }
 
 /**

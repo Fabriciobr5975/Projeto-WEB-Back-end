@@ -15,7 +15,7 @@ export function validarCamposObrigatoriosVinho(vinho) {
         throw new Error("O a uva do vinho é obrigatório");
 
     if (!vinho.vinicola)
-        throw new Error("O identificação da vinicola é obrigatório");
+        throw new Error("A identificação da vinicola é obrigatório");
 
     if (!vinho.teor_alcolico)
         throw new Error("O teor alcoólico é obrigatório");
@@ -28,6 +28,12 @@ export function validarCamposObrigatoriosVinho(vinho) {
 
     if (!vinho.safra)
         throw new Error("A safra do vinho é obrigatório");
+
+    if(!vinho.quantidade || isNaN(vinho.quantidade))
+        throw new Error("A quantidade é obrigatória");
+
+    if(!vinho.status_estoque)
+        throw new Error("O status do estoque é obrigatório");
 
     if (!vinho.pais)
         throw new Error("A identificação do pais do vinho é obrigatório");

@@ -1,5 +1,17 @@
 import mysql from 'mysql2/promise'
-import dotenv from 'dotenv';
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+/**
+ * Criando a conexxão com o BD e realizando algumas configurações 
+ * no typeCast
+ */
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const sslCertPath = path.join(__dirname, '..', 'database', 'DigiCertGlobalRootG2.crt.pem');
 
 /**
  * Criando a conexxão com o BD e realizando algumas configurações 
@@ -12,7 +24,8 @@ const connection = await mysql.createConnection({
     password: process.env.MYSQL_PASSWORD,
     multipleStatements: true,
     ssl: {
-        rejectUnauthorized: true
+        ca: fs.readFileSync(sslCertPath),
+        rejectUnauthorized: false
     },
     typeCast: function (field, next) {
         if (field.type === "TINY" && field.length === 1) {

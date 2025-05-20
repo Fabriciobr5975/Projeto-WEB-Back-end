@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS vinho (
     uva VARCHAR(100) NOT NULL,
     vinicola_fk INT NOT NULL,
     teor_alcolico VARCHAR(10) NOT NULL,
-    classificacao ENUM('Suave', 'Seco', 'Demi-Sec', 'Espumante', 'Frisante', 'Sem Classificação') NOT NULL DEFAULT "Sem Classificação",
+    classificacao ENUM('Suave', 'Seco', 'Demi-Sec', 'Espumante', 'Frisante','Rosé', 'Sem Classificação') NOT NULL DEFAULT "Sem Classificação",
     volume VARCHAR(50) NOT NULL,
     safra YEAR NOT NULL,
     temperatura_servir VARCHAR(10),

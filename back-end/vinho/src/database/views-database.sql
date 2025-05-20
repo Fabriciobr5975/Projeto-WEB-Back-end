@@ -14,9 +14,9 @@ CREATE VIEW view_listagem_enderecos AS
     
 /* VIEW PARA A LISTAGEM DOS VINHO */
 CREATE VIEW view_listagem_vinho AS
-	SELECT v.id_vinho, v.imagem_vinho, v.mimetype, v.nome_imagem, v.extensao, v.nome 'nome_vinho', v.classificacao 'classificacao_vinho', 
+	SELECT v.id_vinho, v.imagem_vinho, v.mimetype , v.nome_imagem, v.extensao, v.nome 'nome_vinho', v.classificacao 'classificacao_vinho', 
 		   vi.vinicola, v.uva 'uva_vinho', v.teor_alcolico, volume 'volume_vinho', temperatura_servir, p.pais, safra 'safra_vinho',
-           v.preco 'preco_vinho', v.descricao, e.quantidade 'quantidade_disponivel'
+           v.preco 'preco_vinho', v.descricao, e.quantidade 'quantidade_disponivel', e.status_estoque
     FROM vinho v
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
@@ -38,8 +38,10 @@ CREATE VIEW view_listagem_estoque AS
 /* VIEW PARA A LISTAGEM DOS CLIENTES COM SEUS ENDEREÇOS */
 CREATE VIEW view_listagem_cliente AS
 	SELECT c.id_cliente, CONCAT(c.nome, ' ', c.sobrenome) 'nome_completo', c.cpf, 
-		   c.data_nascimento, c.email, c.senha, c.celular, e.logradouro 'endereco', ec.numero,
-		   ec.complemento, e.bairro, e.localidade, e.uf, e.cep
+		   c.data_nascimento, c.email, c.senha, c.celular, COALESCE(e.logradouro, 'Sem informação de endereço') 'endereco', 
+           COALESCE(ec.numero, 'Sem informação do número') 'numero', COALESCE(ec.complemento, 'Sem informação de complemento') 'complemento',
+           COALESCE(e.bairro, 'Sem informação de bairro') 'bairro', COALESCE(e.localidade, 'Sem informação de localidade') 'localidade',
+           COALESCE(e.uf, 'Sem informação de uf') 'uf', COALESCE(e.cep, 'Sem informação de cep') 'cep'
     FROM cliente c
 		INNER JOIN endereco_cliente ec ON ec.cliente_id = c.id_cliente
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
@@ -81,7 +83,7 @@ CREATE VIEW view_listagem_pedidos AS
 	SELECT pe.id_pedido, v.id_vinho , v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
 		   p.pais 'pais_vinho', v.preco 'preco_vinho', v.descricao, ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', 
            cl.celular, e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, 
-		   pe.valor_total 'preco_total_pedido', pe.data_pedido, pe.status_pedido
+		   SUM(v.preco * ic.quantidade) 'preco_total_pedido', pe.data_pedido, pe.status_pedido
 	FROM pedido pe
 		INNER JOIN carrinho c ON c.id_carrinho = pe.carrinho_fk
         INNER JOIN itens_carrinho ic ON ic.carrinho_fk = c.id_carrinho
@@ -92,3 +94,4 @@ CREATE VIEW view_listagem_pedidos AS
         INNER JOIN endereco_cliente ec ON ec.cliente_id = cl.id_cliente
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
 	ORDER BY pe.data_pedido;
+
