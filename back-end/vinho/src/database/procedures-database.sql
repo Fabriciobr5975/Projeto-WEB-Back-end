@@ -14,12 +14,14 @@ CREATE PROCEDURE
     nome VARCHAR(100),
     uva VARCHAR(100),
     teor_alcolico VARCHAR(10),
-    classificacao ENUM('Suave', 'Doce', 'Sem Classificação'),
+    classificacao ENUM('Suave', 'Seco', 'Demi-Sec', 'Espumante', 'Frisante','Rosé', 'Sem Classificação'),
     volume VARCHAR(50),
     safra YEAR,
     temperatura_servir VARCHAR(10),
     preco DECIMAL(10,2),
     descricao TEXT,
+    quantidade INT, 
+    status_estoque ENUM('Cheio', 'Normal', 'Baixo', 'Vazio', 'Sem Informação'),
     vinicola_fk INT,
     pais_fk INT) 
 BEGIN
@@ -49,7 +51,15 @@ BEGIN
         -- Inserção do Vinho
         INSERT INTO vinho (imagem_vinho, nome_imagem, mimetype, extensao, nome, uva, teor_alcolico, classificacao, volume, safra, temperatura_servir, preco, descricao, vinicola_fk, pais_fk)
 			VALUES (imagem_vinho, nome_imagem, mimetype, extensao, nome, uva, teor_alcolico, classificacao, volume, safra, temperatura_servir, preco, descricao, vinicola_fk, pais_fk);
-    COMMIT;
+        
+        -- ID gerado do vinho
+		SET @last_id_vinho = last_insert_id();
+	
+		-- Inserção do estoque do vinho
+		INSERT INTO estoque (vinho_fk, quantidade, status_estoque)
+			VALUES (@last_id_vinho, quantidade, status_estoque);
+  
+  COMMIT;
         SELECT CONCAT('Inserção Realizada com Sucesso! ID gerado: ',  LAST_INSERT_ID()) AS mensagem; 
     ELSE 
         ROLLBACK; 
@@ -72,7 +82,7 @@ CREATE PROCEDURE
     _nome VARCHAR(100),
     _uva VARCHAR(100),
     _teor_alcolico VARCHAR(10),
-    _classificacao ENUM('Suave', 'Doce', 'Sem Classificação'),
+    _classificacao ENUM('Suave', 'Seco', 'Demi-Sec', 'Espumante', 'Frisante','Rosé', 'Sem Classificação'),
     _volume VARCHAR(50),
     _safra YEAR,
     _temperatura_servir VARCHAR(10),
