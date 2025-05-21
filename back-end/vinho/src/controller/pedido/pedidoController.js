@@ -16,7 +16,7 @@ endpoints.post("/pedido", async (req, resp) => {
         const resposta = await inserirPedidoService(pedido);
 
         resp.send({
-            id_inserido: resposta
+            resposta
         });
     } catch (err) {
         resp.status(404).send({
@@ -31,7 +31,7 @@ endpoints.put("/pedido/:id", async (req, resp) => {
         const pedido = req.body;
         const resposta = await alterarPedidoService(idPedido, pedido);
 
-        resp.send({resposta});
+        resp.send({ resposta });
     } catch (err) {
         resp.status(404).send({
             erro: err.message
@@ -44,7 +44,7 @@ endpoints.delete("/pedido/:id", async (req, resp) => {
         const idPedido = req.params.id;
         const resposta = await removerPedidoService(idPedido);
 
-        resp.send({resposta});
+        resp.send({ resposta });
     } catch (err) {
         resp.status(404).send({
             erro: err.message

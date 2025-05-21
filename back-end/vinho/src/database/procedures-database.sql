@@ -376,3 +376,70 @@ BEGIN
         SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;
     END IF;
 END;
+
+/* PROCEDURE para a inserção de novas vinícolas */
+
+DELIMITER $$
+
+CREATE PROCEDURE 
+    cadastro_vinicola(
+		vinicola VARCHAR(100),
+		rotulo VARCHAR(100))
+    
+BEGIN
+	/* Variável para validar se a vinícola já foi criada */
+    DECLARE exists_vinicola INT;
+
+    START TRANSACTION;
+
+    -- Verificando se a vinícola já existe
+    SELECT COUNT(*) INTO exists_vinicola 
+    FROM vinicola v
+    WHERE v.vinicola = vinicola;
+
+	IF exists_vinicola = 0 THEN
+		INSERT INTO vinicola (vinicola, rotulo)
+			VALUES(vinicola, rotulo);
+		COMMIT;
+		SELECT CONCAT('Inserção da Vinícola realizada com Sucesso! ID gerado: ',  LAST_INSERT_ID()) AS mensagem; 
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro na inserção da Vinícola' AS mensagem;
+    END IF;
+END;$$
+
+DELIMITER ;
+
+
+/* PROCEDURE para a inserção de novos países */
+
+DELIMITER $$
+
+CREATE PROCEDURE 
+    cadastro_pais(
+		pais VARCHAR(100),
+		sigla CHAR(3))
+    
+BEGIN
+	/* Variável para validar se a vinícola já foi criada */
+    DECLARE exists_pais INT;
+
+    START TRANSACTION;
+
+    -- Verificando se a vinícola já existe
+    SELECT COUNT(*) INTO exists_pais 
+    FROM pais p
+    WHERE p.pais = pais;
+
+	IF exists_pais = 0 THEN
+		INSERT INTO pais (pais, sigla)
+			VALUES(pais, sigla);
+		COMMIT;
+		SELECT CONCAT('Inserção do Pais realizado com Sucesso! ID gerado: ',  LAST_INSERT_ID()) AS mensagem; 
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro na inserção do Pais' AS mensagem;
+    END IF;
+END;$$
+
+DELIMITER ;

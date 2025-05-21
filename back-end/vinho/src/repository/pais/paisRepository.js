@@ -9,14 +9,12 @@ import connection from '../connection.js'
  */
 export async function inserirPais(pais) {
     try {
-        const comando = `
-        INSERT INTO pais (pais, sigla)
-            VALUES (?, ?);
-    `;
+        const comando = `CALL cadastro_pais (?, ?)`;
 
         const [resposta] = await connection.query(comando, [pais.pais, pais.sigla]);
-        return resposta.insertId;
 
+        return resposta[0][0]?.mensagem;
+        
     } catch (err) {
         throw new Error(criarErro(err.message));
     }

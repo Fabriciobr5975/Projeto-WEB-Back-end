@@ -9,11 +9,12 @@ import connection from "../connection.js";
  */
 export async function inserirVinicola(vinicola) {
     try {
-        const comando = `INSERT INTO vinicola (vinicola, rotulo) VALUES (?, ?)`;
+        const comando = `CALL cadastro_vinicola (?, ?)`;
 
         const [resposta] = await connection.query(comando, [vinicola.vinicola, vinicola.rotulo]);
-        return resposta.insertId;
-
+        
+        return resposta[0][0]?.mensagem;
+        
     } catch (err) {
         throw new Error(criarErro(err.message));
     }

@@ -15,7 +15,7 @@ endpoints.post("/vinicola", async (req, resp) => {
         const resposta = await inserirVinicolaService(vinicola);
 
         resp.send({
-            id_inserido: resposta
+            resposta
         });
     } catch (err) {
         resp.status(404).send({

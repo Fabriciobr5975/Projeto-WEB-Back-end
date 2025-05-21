@@ -11,6 +11,9 @@ export function validarCamposObrigatoriosPedido(pedido) {
     if (!pedido.endereco_entrega)
         throw new Error("O endereço da entrega é obrigatório");
 
+    if (!pedido.valor_total)
+        throw new Error("O valor total do pedido é obrigatório");
+
     if (!pedido.status_pedido)
         throw new Error("O status do pedido é obrigatório");
 

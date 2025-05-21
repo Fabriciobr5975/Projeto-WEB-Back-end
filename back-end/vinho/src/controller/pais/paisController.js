@@ -16,7 +16,7 @@ endpoints.post("/pais", async (req, resp) => {
         const resposta = await inserirPaisService(pais);
 
         resp.send({
-            id_inserido: resposta
+            resposta
         });
     } catch (err) {
         resp.status(404).send({
