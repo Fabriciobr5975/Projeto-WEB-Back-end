@@ -1,5 +1,6 @@
 import { buscarPedidoPorId } from '../../repository/pedido/pedidoRepository.js'
 import { validarEntradaParaBuscaPorPedido, validarBuscaPedido } from '../../validation/pedido/pedidoValidation.js'
+import agruparPedidos from './contruirVetorBuscaPedido.js';
 
 export default async function buscarPedidoPorIdService(idPedido) {
     validarEntradaParaBuscaPorPedido(idPedido);
@@ -7,5 +8,5 @@ export default async function buscarPedidoPorIdService(idPedido) {
     const registro = await buscarPedidoPorId(idPedido);
     validarBuscaPedido(registro);
 
-    return registro;
+     return agruparPedidos(registro);
 }

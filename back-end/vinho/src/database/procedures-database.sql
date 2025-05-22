@@ -3,7 +3,6 @@
 use db_projeto_vinho;
 
 /* PROCEDURE para o cadastro de vinhos */
-DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_vinho(
@@ -14,7 +13,7 @@ CREATE PROCEDURE
     nome VARCHAR(100),
     uva VARCHAR(100),
     teor_alcolico VARCHAR(10),
-    classificacao ENUM('Suave', 'Seco', 'Demi-Sec', 'Espumante', 'Frisante','Rosé', 'Sem Classificação'),
+	classificacao ENUM('Suave', 'Seco', 'Demi-Sec', 'Espumante', 'Frisante','Rosé', 'Sem Classificação'),
     volume VARCHAR(50),
     safra YEAR,
     temperatura_servir VARCHAR(10),
@@ -65,13 +64,10 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Vinho' AS mensagem;
     END IF;
-END;$$
-
-DELIMITER ;
+END;
 
 
-/* PROCEDURE para a alteração de vinhos e do estoque */
-DELIMITER $$
+/* PROCEDURE para o alterar os dados dos vinhos */
 
 CREATE PROCEDURE 
     alterar_vinho(
@@ -147,14 +143,10 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na alteração dos dados do Vinho' AS mensagem;
     END IF;
-END;$$
-
-DELIMITER ;
+END;
 
 
 /* PROCEDURE para a inserção de clientes, endereço e endereco_cliente */
-
-DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_usuario(
@@ -232,8 +224,8 @@ BEGIN
 		SET @last_id_endereco = last_insert_id();
         
         -- Inserção do Endereço dos Clientes
-        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
-			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento);
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
+			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento, CONCAT(logradouro, ' ', numero, ' - ', cep, ', ', numero, ' ', localidade));
         
 		COMMIT;
         SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
@@ -251,8 +243,8 @@ BEGIN
         SET @id_endereco = (SELECT e.id_endereco FROM endereco e WHERE e.cep = cep);
             
         -- Inserção do Endereço dos Clientes
-        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
-			VALUES (@id_endereco, @last_id_cliente, numero, complemento);
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
+			VALUES (@id_endereco, @last_id_cliente, numero, complemento, CONCAT(logradouro, ' ', numero, ' - ', cep, ', ', numero, ' ', localidade));
             
 		COMMIT;
 		SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
@@ -261,12 +253,11 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;
     END IF;
-END;$$
+END;
 
-DELIMITER ;
 
 /* Procedure para a inserção do item no carrinho do usuário */
-DELIMITER $$
+
 
 CREATE PROCEDURE 
     insercao_itens_carrinho(
@@ -295,12 +286,11 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro, esse vinho já foi adicionado ao carrinho!' AS mensagem;
     END IF;
-END;$$
-
-DELIMITER ;
+END;
 
 
 /* PROCEDURE para a inserção de novos endereço, associando aos clientes */
+
 CREATE PROCEDURE 
     cadastro_endereco_cliente(
 		logradouro VARCHAR(100),
@@ -377,9 +367,40 @@ BEGIN
     END IF;
 END;
 
-/* PROCEDURE para a inserção de novas vinícolas */
 
-DELIMITER $$
+/* Procedure para a inserção dos itens no carrinho do cliente */
+
+CREATE PROCEDURE 
+    insercao_itens_carrinho(
+    carrinho_fk INT,
+    vinho_fk INT,
+    quantidade INT) 
+BEGIN
+    DECLARE exists_item_carrinho INT;
+
+    START TRANSACTION;
+
+    -- Verificando se o Item já está no carrinho
+	SELECT EXISTS(
+		SELECT 1 
+        FROM itens_carrinho ic
+        WHERE ic.carrinho_fk = carrinho_fk AND ic.vinho_fk = vinho_fk
+	) INTO exists_item_carrinho;
+    
+    IF exists_item_carrinho = 0 THEN
+        -- Inserção do Vinho
+        INSERT INTO itens_carrinho (carrinho_fk, vinho_fk, quantidade)
+			VALUES (carrinho_fk, vinho_fk, quantidade);
+    COMMIT;
+        SELECT CONCAT('O Item foi adicionado no carrinho com sucesso! ID da operação: ',  LAST_INSERT_ID()) AS mensagem; 
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro, esse vinho já foi adicionado ao carrinho!' AS mensagem;
+    END IF;
+END;
+
+
+/* PROCEDURE para a inserção de novas vinícolas */
 
 CREATE PROCEDURE 
     cadastro_vinicola(
@@ -406,19 +427,15 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção da Vinícola' AS mensagem;
     END IF;
-END;$$
-
-DELIMITER ;
+END;
 
 
 /* PROCEDURE para a inserção de novos países */
 
-DELIMITER $$
-
 CREATE PROCEDURE 
     cadastro_pais(
-		pais VARCHAR(100),
-		sigla CHAR(3))
+	pais VARCHAR(100),
+	sigla CHAR(3))
     
 BEGIN
 	/* Variável para validar se a vinícola já foi criada */
@@ -440,6 +457,45 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção do Pais' AS mensagem;
     END IF;
-END;$$
+END;
 
-DELIMITER ;
+
+/* PROCEDURE para a inserção dos pedidos dos clientes */
+
+CREATE PROCEDURE 
+    insercao_pedido(
+		carrinho_fk INT,
+		endereco_entrega_fk INT,
+        valor_total DECIMAL(10, 2),
+        status_pedido ENUM('PENDENTE', 'EM ANDAMENTO', 'ENVIADO', 'ENTREGUE'),
+        data_pedido DATE)
+BEGIN
+	/* Variável para validar o pedido */
+    DECLARE exists_carrinho INT;
+    DECLARE exists_endereco_entrega INT;
+
+    START TRANSACTION;
+
+    SELECT COUNT(*) INTO exists_carrinho 
+    FROM carrinho c
+    WHERE c.id_carrinho = carrinho_fk;
+
+	SELECT COUNT(*) INTO exists_endereco_entrega 
+    FROM endereco e
+    WHERE e.id_endereco = endereco_entrega_fk;
+
+	IF exists_carrinho = 1 AND exists_endereco_entrega = 1 THEN
+		INSERT INTO pedido (carrinho_fk, endereco_entrega_fk, valor_total, status_pedido, data_pedido)
+			VALUES(carrinho_fk, endereco_entrega_fk, valor_total, status_pedido, data_pedido);
+		
+            UPDATE itens_carrinho ic 
+				SET ic.item_esta_no_pedido = 1
+			WHERE ic.carrinho_fk = carrinho_fk; 
+            
+		COMMIT;
+		SELECT CONCAT('Pedido gerado com sucesso!: Identificação do pedido: ',  LAST_INSERT_ID()) AS mensagem; 
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro na criação do pedido' AS mensagem;
+    END IF;
+END;

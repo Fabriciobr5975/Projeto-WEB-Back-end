@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     administrador BOOLEAN default 0
 );
 
+
 /* Tabela Endereco Cliente (N:N) */
 CREATE TABLE IF NOT EXISTS endereco_cliente (
 	endereco_id INT NOT NULL,
@@ -101,12 +102,14 @@ CREATE TABLE IF NOT EXISTS itens_carrinho (
     carrinho_fk INT NOT NULL,
     vinho_fk INT NOT NULL,
     quantidade INT NOT NULL default 0,
+    item_esta_no_pedido BOOLEAN NOT NULL DEFAULT 0,
     CHECK(quantidade >= 0),
     UNIQUE(carrinho_fk, vinho_fk), 
     CONSTRAINT carrinho_itens_carrinho_fk FOREIGN KEY (carrinho_fk) REFERENCES carrinho(id_carrinho)
 		ON DELETE CASCADE,
 	CONSTRAINT carrinho_itens_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
 );
+
 
 /* Tabela Pedido */
 CREATE TABLE IF NOT EXISTS pedido (

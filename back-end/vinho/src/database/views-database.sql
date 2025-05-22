@@ -21,19 +21,19 @@ CREATE VIEW view_listagem_vinho AS
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN estoque e ON e.vinho_fk = v.id_vinho
-	ORDER BY 'nome_vinho';
+	ORDER BY v.id_vinho;
 
 
 /* VIEW PARA A LISTAGEM DO ESTOQUE */
 CREATE VIEW view_listagem_estoque AS
 	SELECT e.id_estoque, v.id_vinho, v.imagem_vinho, v.extensao, v.nome 'vinho', v.descricao, vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
-		   v.safra 'safra_vinho', p.pais 'pais_vinho', v.preco 'preco_vinho', e.quantidade 'quantidade_estoque',
-           e.status_estoque 
+		   v.safra 'safra_vinho', p.pais 'pais_vinho', v.preco 'preco_vinho', e.quantidade 'quantidade_estoque', e.status_estoque 
     FROM vinho v
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN estoque e ON e.vinho_fk = v.id_vinho
-	ORDER BY v.nome;
+	ORDER BY v.id_vinho;
+
 
 /* VIEW PARA A LISTAGEM DOS CLIENTES COM SEUS ENDEREÇOS */
 CREATE VIEW view_listagem_cliente AS
@@ -66,7 +66,7 @@ CREATE VIEW view_listagem_carrinho AS
 
 /* VIEW PARA A LISTAGEM DOS ITENS DO CARRINHO */
 CREATE VIEW view_listagem_itens_carrinho AS
-	SELECT ic.id_itens_carrinho, v.id_vinho , v.imagem_vinho, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
+	SELECT ic.id_itens_carrinho, c.id_carrinho, v.id_vinho , v.imagem_vinho, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
 		   v.descricao, p.pais 'pais_vinho', v.preco 'preco_vinho', cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo',
            ic.quantidade
 	FROM itens_carrinho ic
@@ -75,15 +75,16 @@ CREATE VIEW view_listagem_itens_carrinho AS
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN cliente cl ON cl.id_cliente = c.cliente_fk
-	ORDER BY 'vinho';
+	WHERE ic.item_esta_no_pedido = 0
+    ORDER BY vinho;
 
  
 /* VIEW PARA A LISTAGEM DOS PEDIDOS*/
 CREATE VIEW view_listagem_pedidos AS
 	SELECT pe.id_pedido, v.id_vinho , v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
 		   p.pais 'pais_vinho', v.preco 'preco_vinho', v.descricao, ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', 
-           cl.celular, e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, 
-		   SUM(v.preco * ic.quantidade) 'preco_total_pedido', pe.data_pedido, pe.status_pedido
+           cl.celular, e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, pe.valor_total, 'preco_total_pedido',
+           pe.data_pedido, pe.status_pedido
 	FROM pedido pe
 		INNER JOIN carrinho c ON c.id_carrinho = pe.carrinho_fk
         INNER JOIN itens_carrinho ic ON ic.carrinho_fk = c.id_carrinho
@@ -94,4 +95,3 @@ CREATE VIEW view_listagem_pedidos AS
         INNER JOIN endereco_cliente ec ON ec.cliente_id = cl.id_cliente
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
 	ORDER BY pe.data_pedido;
-

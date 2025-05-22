@@ -8,7 +8,7 @@ import connection from "../connection.js";
  * @returns Retorna o id do pedido, caso ele seja inserido 
  */
 export async function inserirPedido(pedido) {
-    const comando = `CALL insercao_pedido (?, (SELECT id_endereco FROM endereco WHERE cep = ?), ?, ?, ?)`;
+    const comando = `CALL insercao_pedido (?, ?, ?, ?, ?)`;
 
     const [resposta] = await connection.query(comando, [
         pedido.carrinho,
@@ -17,7 +17,7 @@ export async function inserirPedido(pedido) {
         pedido.status_pedido,
         pedido.data_pedido
     ]);
-    
+
     return resposta[0][0]?.mensagem;
 }
 
@@ -84,7 +84,7 @@ export async function buscarPedidoPorId(idPedido) {
                      WHERE id_pedido = ?`;
 
     const [registro] = await connection.query(comando, [idPedido]);
-    return registro[0];
+    return registro;
 }
 
 /**
