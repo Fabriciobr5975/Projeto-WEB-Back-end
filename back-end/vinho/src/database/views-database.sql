@@ -94,3 +94,5 @@ CREATE VIEW view_listagem_pedidos AS
         INNER JOIN endereco_cliente ec ON ec.cliente_id = cl.id_cliente
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
 	ORDER BY pe.data_pedido;
+
+	select * from pedido;
