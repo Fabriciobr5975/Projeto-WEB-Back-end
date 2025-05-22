@@ -3,7 +3,7 @@
 use db_projeto_vinho;
 
 /* Trigger para a atualização do estoque após a inserção do item do carrinho */
-DELIMITER $$
+
 CREATE TRIGGER trigger_atualizar_estoque_apos_insercao
 	AFTER INSERT ON itens_carrinho
 	FOR EACH ROW
@@ -19,12 +19,11 @@ BEGIN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Ocorreu um erro ao atualizar a quantidade do estoque. Estoque insuficiente';
 	END IF;
-END$$;
-DELIMITER ;
+END;
 
 
 /* Trigger para a atualização do estoque após a alteração do item do carrinho */
-DELIMITER $$
+
 CREATE TRIGGER trigger_atualizar_estoque_apos_alteracao
 	AFTER UPDATE ON itens_carrinho
 	FOR EACH ROW
@@ -43,12 +42,11 @@ BEGIN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Ocorreu um erro ao atualizar a quantidade do estoque. Estoque insuficiente';
 	END IF;
-END$$;
-DELIMITER ;
+END;
 
 
 /* Trigger para a atualização do estoque após a remoção do item do carrinho */
-DELIMITER $$
+
 CREATE TRIGGER trigger_atualizar_estoque_apos_remocao
 	AFTER DELETE ON itens_carrinho
 	FOR EACH ROW
@@ -56,16 +54,14 @@ BEGIN
 	UPDATE estoque
 		SET quantidade = quantidade + OLD.quantidade
 	WHERE vinho_fk = OLD.vinho_fk;
-END$$;
-DELIMITER ;
+END;
 
 
 /* Trigger para a criação do carrinho do cliente após a criação do mesmo */
-DELIMITER $$
+
 CREATE TRIGGER trigger_criar_carrinho_usuario
 	AFTER INSERT ON cliente
 	FOR EACH ROW
 BEGIN
 	INSERT carrinho (cliente_fk) VALUE (NEW.id_cliente);
-END$$;
-DELIMITER ;
+END;

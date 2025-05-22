@@ -77,7 +77,6 @@ CREATE VIEW view_listagem_itens_carrinho AS
         INNER JOIN cliente cl ON cl.id_cliente = c.cliente_fk
 	WHERE ic.item_esta_no_pedido = 0
     ORDER BY vinho;
-
  
 /* VIEW PARA A LISTAGEM DOS PEDIDOS*/
 CREATE VIEW view_listagem_pedidos AS

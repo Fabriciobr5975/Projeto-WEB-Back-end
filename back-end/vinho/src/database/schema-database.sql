@@ -1,6 +1,6 @@
  /* CRIAÇÃO DAS TABELAS DO BANCO DE DADOS */ 
 
-CREATE DATABASE IF NOT EXISTS db_projeto_vinho; 
+CREATE DATABASE IF NOT EXISTS db_projeto_vinho;  
  
 use db_projeto_vinho;
 
@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS pais (
     sigla CHAR(3) NOT NULL UNIQUE
 );
 
-DROP TABLE vinho;
 
 /* Tabela Vinho */
 CREATE TABLE IF NOT EXISTS vinho (
@@ -110,11 +109,10 @@ CREATE TABLE IF NOT EXISTS itens_carrinho (
 	CONSTRAINT carrinho_itens_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
 );
 
-
 /* Tabela Pedido */
 CREATE TABLE IF NOT EXISTS pedido (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    carrinho_fk INT NOT NULL UNIQUE,
+    carrinho_fk INT NOT NULL,
     endereco_entrega_fk INT NOT NULL,
     valor_total DECIMAL(10, 2) NOT NULL,
     status_pedido ENUM('PENDENTE', 'EM ANDAMENTO', 'ENVIADO', 'ENTREGUE') NOT NULL DEFAULT "PENDENTE",
@@ -124,3 +122,4 @@ CREATE TABLE IF NOT EXISTS pedido (
     CONSTRAINT endereco_pedido_fk FOREIGN KEY (endereco_entrega_fk) REFERENCES endereco(id_endereco)
 );
 
+select * from itens_carrinho;

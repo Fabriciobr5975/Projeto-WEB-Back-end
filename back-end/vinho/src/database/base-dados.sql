@@ -53,12 +53,8 @@ INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
 
 /* Inserção de alguns cliente */
 INSERT INTO cliente (nome, sobrenome, cpf, data_nascimento, email, senha, celular, administrador)
-	VALUES ('Fabrício', 'Araújo', '39541417019', '2005-02-28', 'fabricioaraujo@teste.com', '7458', '(11) 91234-5678', 0),
-		   ('Administrador', 'adm', '24441939035', '1990-05-02', 'administrador@teste.com', 'adm12345', '(11) 91111-1111', 1),
-           ('João', 'Santana', '21123529035', '2000-12-25', 'joaosantanta@teste.com', '12345', '(11) 97458-8090', 0),
-           ('Francisco', 'Alves', '40460023012', '1971-04-30', 'franciscoalves@teste.com', '12345', '(11) 98700-5461', 0),
-           ('Maria', 'Nilda', '89860375054', '1960-04-20', 'marianilda@teste.com', '12345', '(11) 9514-6117', 0),
-           ('Ana', 'Carla', '92787217001', '1990-08-18', 'anacarla@teste.com', '12345', '(11) 91331-1221', 0);
+	VALUES 
+		   ('Administrador', 'adm', '24441939035', '1990-05-02', 'administrador@teste.com', 'adm12345', '(11) 91111-1111', 1);
            
            
 /* Inserção do carrinho (caso necessário) */
