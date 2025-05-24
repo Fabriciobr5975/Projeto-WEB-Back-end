@@ -2,9 +2,19 @@
 <p align="justify">Repositório para os arquivos referentes ao Back-End do projeto <strong>Vinho</strong>. O projeto está vendo construido em NodeJs, usando o Framework ReactJs, com um sistema de gerenciamente de banco de dados MySQL.</p>
 
 ## Objetivo 🎯 
-<p align="justify">O objetivo principal é armazenar os arquivos necessários para a contrução da parte do Back-End do nosso projeto, <b>Viana Vinhos</b>. Quando o projeto estiver quase pronto, com as telas validadas e o Back-End funcionando bem, iremos integrar o Front ao Back, e assim finalizar esse projeto. </p>
+<p align="justify">Este projeto full stack teve como proposito a construção de uma plataforma online de reserva de produtos, no caso vinhos, com o intuito de automatizar e facilitar na execução de processos administrativos e operacionais.</p>
 
-## Uma Breve Explicação Sobre a Nossa Aplicação 📕
+## Funcionalidades 📕
+- Vinho:
+  - Cadastro, Alteração, Remoção e vários tipos de busca e listagens (CRUD)
+  - Permite a associação entre tabelas, ou seja, o que é retornado pelos end-points são os dados de várias tabelas
+  - Permite aos usuários inserir, vinhos em seus carrinhos, alterar a quantidade entre outros
+  - Controle e verificações, para que o cliente saiba dos erros que ocorram
+
+-Usuarios:
+  - Cadastro, Alteração, Remoção e vários tipos de busca e listagens (CRUD)
+  - Permite adicionar endereços, que são buscados através de uma API [viacep](https://viacep.com.br/)
+  - Permite que os usuários tenha mais de um endereço
 
 ## Informações Complementares 🧩
 - O sistema foi validado e tenta tratar todas as possíveis exceções que são geradas
@@ -28,6 +38,6 @@
 </sub>
 
 ## 
-<h5 align="center">Feito por <a tex href="https://github.com/Fabriciobr5975"> Fabrício de Araújo Santana</a>, <a tex href="https://github.com/geovannanovais"> Geovanna Novais</a>, <a href="https://github.com/MarcusVPRocha">Marcus Vinícius Pereira Rocha</a> e <a href="https://github.com/Ruanlv"> Ruan Lopes Viana</a></h4>
+<h5 align="center">Feito por <a href="https://github.com/Fabriciobr5975"> Fabrício de Araújo Santana</a>, <a href="https://github.com/geovannanovais"> Geovanna Novais</a>, <a href="https://github.com/MarcusVPRocha">Marcus Vinícius Pereira Rocha</a> e <a href="https://github.com/Ruanlv"> Ruan Lopes Viana</a></h4>
 
 
