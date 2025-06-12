@@ -77,6 +77,20 @@ CREATE VIEW view_listagem_itens_carrinho AS
         INNER JOIN cliente cl ON cl.id_cliente = c.cliente_fk
 	WHERE ic.item_esta_no_pedido = 0
     ORDER BY vinho;
+
+
+/* VIEW PARA A LISTAGEM DOS ITENS DO PEDIDO */
+CREATE VIEW view_listagem_itens_pedido AS
+	SELECT ip.id_itens_pedido, pe.id_pedido, v.id_vinho , v.imagem_vinho, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
+		   v.descricao, p.pais 'pais_vinho', v.preco 'preco_vinho', cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', ip.quantidade
+	FROM itens_pedido ip
+		INNER JOIN pedido pe ON pe.id_pedido = ip.pedido_fk
+        INNER JOIN vinho v ON v.id_vinho = ip.vinho_fk
+		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
+        INNER JOIN pais p ON p.id_pais = v.pais_fk
+        INNER JOIN cliente cl ON cl.id_cliente = pe.cliente_fk
+    ORDER BY vinho;
+
  
 /* VIEW PARA A LISTAGEM DOS PEDIDOS*/
 CREATE VIEW view_listagem_pedidos AS

@@ -6,6 +6,7 @@ import enderecoClienteController from './controller/endereco/enderecoClienteCont
 import estoqueController from './controller/estoque/estoqueController.js'
 import paisController from './controller/pais/paisController.js'
 import pedidoController from './controller/pedido/pedidoController.js'
+import itensPedidoController from './controller/pedido/itensPedidoController.js'
 import vinhoController from './controller/vinho/vinhoController.js'
 import vinicolaController from './controller/vinho/vinicolaController.js'
 
@@ -25,4 +26,5 @@ export default function adicionarRotas(servidor) {
     servidor.use(pedidoController);
     servidor.use(vinhoController);
     servidor.use(vinicolaController);
+    servidor.use(itensPedidoController);
 }

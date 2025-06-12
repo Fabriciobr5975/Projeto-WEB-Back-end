@@ -22,7 +22,7 @@ export async function inserirPedido(pedido) {
 }
 
 /**
- * Função para alterar um estoque que já tenha sido inserido no banco de dados
+ * Função para alterar um pedido que já tenha sido inserido no banco de dados
  * 
  * @param {Number} idPedido - Recebe o id do pedido que será alterado
  * @param {JSON} pedido - Objeto que terá os atributos necessários para alteração do pedido
@@ -47,7 +47,7 @@ export async function alterarPedido(idPedido, pedido) {
 }
 
 /**
- * Função para remover um estoque salvo no banco de dados
+ * Função para remover um pedido salvo no banco de dados
  * 
  * @param {Number} idPedido - Recebe o id do pedido que será removido
  * 
