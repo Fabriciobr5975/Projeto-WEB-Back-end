@@ -81,18 +81,15 @@ CREATE VIEW view_listagem_itens_carrinho AS
 /* VIEW PARA A LISTAGEM DOS PEDIDOS*/
 CREATE VIEW view_listagem_pedidos AS
 	SELECT pe.id_pedido, v.id_vinho , v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
-		   p.pais 'pais_vinho', v.preco 'preco_vinho', v.descricao, ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', 
+		   p.pais 'pais_vinho', v.preco 'preco_vinho', ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', 
            cl.celular, e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, pe.valor_total, 'preco_total_pedido',
-           pe.data_pedido, pe.status_pedido
+           DATE_FORMAT(pe.data_pedido, "%d/%m%/%Y") as 'data_pedido', pe.status_pedido
 	FROM pedido pe
-		INNER JOIN carrinho c ON c.id_carrinho = pe.carrinho_fk
-        INNER JOIN itens_carrinho ic ON ic.carrinho_fk = c.id_carrinho
+        INNER JOIN itens_pedido ic ON ic.pedido_fk = pe.id_pedido
         INNER JOIN vinho v ON v.id_vinho = ic.vinho_fk
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
-        INNER JOIN cliente cl ON cl.id_cliente = c.cliente_fk
+        INNER JOIN cliente cl ON cl.id_cliente = pe.cliente_fk
         INNER JOIN endereco_cliente ec ON ec.cliente_id = cl.id_cliente
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
-	ORDER BY pe.data_pedido;
-
-	select * from pedido;
+	ORDER BY pe.id_pedido;

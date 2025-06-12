@@ -11,7 +11,7 @@ export async function inserirPedido(pedido) {
     const comando = `CALL insercao_pedido (?, ?, ?, ?, ?)`;
 
     const [resposta] = await connection.query(comando, [
-        pedido.carrinho,
+        pedido.cliente,
         pedido.endereco_entrega,
         pedido.valor_total,
         pedido.status_pedido,

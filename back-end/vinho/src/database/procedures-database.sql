@@ -464,7 +464,7 @@ END;
 
 CREATE PROCEDURE 
     insercao_pedido(
-		carrinho_fk INT,
+		cliente_fk INT,
 		endereco_entrega_fk INT,
         valor_total DECIMAL(10, 2),
         status_pedido ENUM('PENDENTE', 'EM ANDAMENTO', 'ENVIADO', 'ENTREGUE'),
@@ -478,20 +478,33 @@ BEGIN
 
     SELECT COUNT(*) INTO exists_carrinho 
     FROM carrinho c
-    WHERE c.id_carrinho = carrinho_fk;
+    WHERE c.cliente_fk = cliente_fk;
 
 	SELECT COUNT(*) INTO exists_endereco_entrega 
     FROM endereco e
     WHERE e.id_endereco = endereco_entrega_fk;
 
 	IF exists_carrinho = 1 AND exists_endereco_entrega = 1 THEN
-		INSERT INTO pedido (carrinho_fk, endereco_entrega_fk, valor_total, status_pedido, data_pedido)
-			VALUES(carrinho_fk, endereco_entrega_fk, valor_total, status_pedido, data_pedido);
-		
-            UPDATE itens_carrinho ic 
-				SET ic.item_esta_no_pedido = 1
-			WHERE ic.carrinho_fk = carrinho_fk; 
+		INSERT INTO pedido (cliente_fk, endereco_entrega_fk, valor_total, status_pedido, data_pedido)
+			VALUES(cliente_fk, endereco_entrega_fk, valor_total, status_pedido, data_pedido);
+        
+			/* Pegando o último id do pedido gerado para a criação dos itens do pedidos*/
+			SET @last_id_pedido = last_insert_id();
             
+            /* Criando os itens do pedido apartir do itens do carrinho */
+            INSERT INTO itens_pedido (pedido_fk, vinho_fk, quantidade) 
+                SELECT @last_id_pedido, vinho_fk, quantidade
+                FROM itens_carrinho ic
+                WHERE ic.carrinho_fk = (SELECT c.id_carrinho
+										FROM carrinho c
+										WHERE c.cliente_fk = cliente_fk);
+            
+            /* Deletando os itens do carrinho do cliente */
+            DELETE FROM itens_carrinho
+			WHERE carrinho_fk = (SELECT c.id_carrinho 
+								 FROM carrinho c
+                                 WHERE c.cliente_fk = cliente_fk);
+
 		COMMIT;
 		SELECT CONCAT('Pedido gerado com sucesso!: Identificação do pedido: ',  LAST_INSERT_ID()) AS mensagem; 
     ELSE 

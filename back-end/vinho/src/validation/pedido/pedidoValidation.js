@@ -5,8 +5,8 @@ export function validarEntradaParaBuscaPorPedido(entrada) {
 }
 
 export function validarCamposObrigatoriosPedido(pedido) {
-    if (!pedido.carrinho)
-        throw new Error("A identificação dos itens do carrinho vinho é obrigátoria é deve ser única");
+    if (!pedido.cliente)
+        throw new Error("A identificação do cliente é obrigatória");
 
     if (!pedido.endereco_entrega)
         throw new Error("O endereço da entrega é obrigatório");
@@ -47,12 +47,4 @@ export function verificarSePedidoFoiAlterado(linhasAfetadas) {
 export function verificarSePedidoFoiRemovido(linhasAfetadas) {
     if (linhasAfetadas === 0)
         throw new Error("O pedido não foi removido");
-}
-
-export function verificarSePedidosSãoIguais(registro, pedido) {
-    registro.forEach(itens => {
-        if (itens.carrinho === pedido.carrinho) {
-            throw new Error("Esse pedido já foi inserido");
-        }
-    });
 }

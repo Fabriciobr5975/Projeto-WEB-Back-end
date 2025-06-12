@@ -109,17 +109,40 @@ CREATE TABLE IF NOT EXISTS itens_carrinho (
 	CONSTRAINT carrinho_itens_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
 );
 
+/* Tabela que armazena os vinhos dos clientes no carrinho */
+CREATE TABLE IF NOT EXISTS itens_carrinho (
+    id_itens_carrinho INT AUTO_INCREMENT PRIMARY KEY,
+    carrinho_fk INT NOT NULL,
+    vinho_fk INT NOT NULL,
+    quantidade INT NOT NULL default 0,
+    CHECK(quantidade >= 0),
+    UNIQUE(carrinho_fk, vinho_fk), 
+    CONSTRAINT carrinho_itens_carrinho_fk FOREIGN KEY (carrinho_fk) REFERENCES carrinho(id_carrinho)
+		ON DELETE CASCADE,
+	CONSTRAINT carrinho_itens_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
+);
+
+/* Tabela que armazena os vinhos dos clientes no pedido */
+CREATE TABLE IF NOT EXISTS itens_pedido (
+    id_itens_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_fk INT NOT NULL ,
+    vinho_fk INT NOT NULL,
+    quantidade INT NOT NULL DEFAULT 0,
+    CHECK(quantidade >= 0),
+    CONSTRAINT itens_pedido_pedido_fk FOREIGN KEY (pedido_fk) REFERENCES pedido(id_pedido) 
+		ON DELETE CASCADE,
+    CONSTRAINT itens_pedido_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
+);
+
 /* Tabela Pedido */
 CREATE TABLE IF NOT EXISTS pedido (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    carrinho_fk INT NOT NULL,
+    cliente_fk INT NOT NULL,
     endereco_entrega_fk INT NOT NULL,
     valor_total DECIMAL(10, 2) NOT NULL,
     status_pedido ENUM('PENDENTE', 'EM ANDAMENTO', 'ENVIADO', 'ENTREGUE') NOT NULL DEFAULT "PENDENTE",
     data_pedido DATE NOT NULL,
     CHECK(valor_total >= 0),
-    CONSTRAINT itens_carrinho_pedido_fk FOREIGN KEY (carrinho_fk) REFERENCES carrinho(id_carrinho) ON DELETE CASCADE,
+	CONSTRAINT cliente_pedido_fk FOREIGN KEY (cliente_fk) REFERENCES cliente(id_cliente),
     CONSTRAINT endereco_pedido_fk FOREIGN KEY (endereco_entrega_fk) REFERENCES endereco(id_endereco)
 );
-
-select * from itens_carrinho;
