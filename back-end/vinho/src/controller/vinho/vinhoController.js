@@ -2,6 +2,7 @@ import inserirVinhoService from '../../service/vinho/inserirVinhoService.js';
 import alterarVinhoService from '../../service/vinho/alterarVinhoService.js';
 import removerVinhoService from '../../service/vinho/removerVinhoService.js';
 import listarVinhosService from '../../service/vinho/listarVinhosService.js';
+import listarVinhosMaisCompradosService from '../../service/vinho/listarVinhosMaisCompradosService.js';
 import buscarVinhoPorClassificacaoService from '../../service/vinho/buscarVinhoPorClassificacaoService.js';
 import buscarVinhoPorIdService from '../../service/vinho/buscarVinhoPorIdService.js';
 import buscarVinhoPorNomeService from '../../service/vinho/buscarVinhoPorNomeService.js';
@@ -16,19 +17,19 @@ import multer from 'multer';
 
 // Para salvar a imagem na memória (Buffer)
 const storage = multer.memoryStorage();
-const upload = multer({storage});
+const upload = multer({ storage });
 
 const endpoints = Router();
 
-endpoints.post("/vinho", upload.single("imagem_vinho"),  async (req, resp) => {
+endpoints.post("/vinho", upload.single("imagem_vinho"), async (req, resp) => {
     try {
-        const vinho = req.body;        
-        
+        const vinho = req.body;
+
         // Para salvar a extensão e o tipo de arquivo;
         const imagem = req.file?.buffer;
         const mimetype = req.file?.mimetype;
         const extensao = req.file?.originalname.split('.').pop();
-        
+
         // Adicionando as informações das imagens no JSON que será inserido
         vinho.imagem_vinho = imagem;
         vinho.mimetype = mimetype;
@@ -55,12 +56,12 @@ endpoints.put("/vinho/:id", upload.single("imagem_vinho"), async (req, resp) => 
         const imagem = req.file?.buffer;
         const mimetype = req.file?.mimetype;
         const extensao = req.file?.originalname.split('.').pop();
-        
+
         // Adicionando as informações das imagens no JSON que será inserido
         vinho.imagem_vinho = imagem;
         vinho.mimetype = mimetype;
         vinho.extensao = extensao;
-        
+
         const resposta = await alterarVinhoService(idVinho, vinho);
 
         resp.send({ resposta });
@@ -87,6 +88,19 @@ endpoints.delete("/vinho/:id", async (req, resp) => {
 endpoints.get("/vinho", async (req, resp) => {
     try {
         const registros = await listarVinhosService();
+
+        resp.send(registros);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
+
+
+endpoints.get("/vinhos/maisvendidos", async (req, resp) => {
+    try {
+        const registros = await listarVinhosMaisCompradosService();
 
         resp.send(registros);
     } catch (err) {

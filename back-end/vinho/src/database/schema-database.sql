@@ -52,6 +52,15 @@ CREATE TABLE IF NOT EXISTS estoque (
     CONSTRAINT vinho_estoque_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho) ON DELETE CASCADE
 );
 
+/* Tabela para armazenar o vinho e a respectiva quantidade de vendas */
+CREATE TABLE IF NOT EXISTS quantidade_venda_vinhos (
+	id_qtd_venda_vinhos INT AUTO_INCREMENT PRIMARY KEY,
+    vinho_fk INT NOT NULL UNIQUE,
+    quantidade BIGINT NOT NULL,
+    CHECK(quantidade >= 0),
+    CONSTRAINT vinho_qtd_venda_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho) ON DELETE CASCADE
+);
+
 /* Tabela Endereço */
 CREATE TABLE IF NOT EXISTS endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,

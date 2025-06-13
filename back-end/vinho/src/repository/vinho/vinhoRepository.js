@@ -162,6 +162,18 @@ export async function listarVinhos() {
 }
 
 /**
+ * Função para listar os 10 vinhos mais vendidos que estão salvos no banco de dados
+ * 
+ * @returns Retorna os 10 vinhos mais vendidos que foram encontrados
+ */
+export async function listarMaisComprados() {
+    const comando = `SELECT * FROM view_listagem_vinhos_mais_vendidos LIMIT 10`;
+
+    const [registros] = await connection.query(comando);
+    return registros;
+}
+
+/**
  * Função para buscar um estoque pelo seu id
  * 
  * @param {Number} idVinho - Recebe o id do vinho que será buscado

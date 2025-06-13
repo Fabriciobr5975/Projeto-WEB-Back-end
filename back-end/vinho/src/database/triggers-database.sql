@@ -65,3 +65,14 @@ CREATE TRIGGER trigger_criar_carrinho_usuario
 BEGIN
 	INSERT carrinho (cliente_fk) VALUE (NEW.id_cliente);
 END;
+
+
+/* Trigger para a criação do carrinho do cliente após a criação do mesmo */
+CREATE TRIGGER trigger_aumentar_qtd_vendas_vinho
+	AFTER INSERT ON itens_carrinho
+	FOR EACH ROW
+BEGIN
+	UPDATE quantidade_venda_vinhos
+		SET quantidade = quantidade + NEW.quantidade
+	WHERE vinho_fk = NEW.vinho_fk;
+END;
