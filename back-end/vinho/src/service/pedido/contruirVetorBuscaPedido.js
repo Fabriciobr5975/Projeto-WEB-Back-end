@@ -23,6 +23,7 @@ export default function agruparPedidos(pedidos) {
 
         vetor[pedido.id_pedido].itens.push({
             id_vinho: pedido.id_vinho,
+            imagem_vinho: pedido.imagem_vinho,
             vinho: pedido.vinho,
             vinicola_vinho: pedido.vinicola_vinho,
             pais_vinho: pedido.pais_vinho,

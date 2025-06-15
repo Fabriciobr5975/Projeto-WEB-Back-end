@@ -107,9 +107,9 @@ CREATE VIEW view_listagem_itens_pedido AS
  
 /* VIEW PARA A LISTAGEM DOS PEDIDOS*/
 CREATE VIEW view_listagem_pedidos AS
-	SELECT pe.id_pedido, v.id_vinho , v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
-		   p.pais 'pais_vinho', v.preco 'preco_vinho', ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', 
-           cl.celular, e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, pe.valor_total, 'preco_total_pedido',
+	SELECT pe.id_pedido, v.id_vinho, v.imagem_vinho, v.mimetype, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
+		   p.pais 'pais_vinho', v.preco 'preco_vinho', ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', cl.celular,
+           e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, pe.valor_total 'preco_total_pedido',
            DATE_FORMAT(pe.data_pedido, "%d/%m%/%Y") as 'data_pedido', pe.status_pedido
 	FROM pedido pe
         INNER JOIN itens_pedido ic ON ic.pedido_fk = pe.id_pedido
