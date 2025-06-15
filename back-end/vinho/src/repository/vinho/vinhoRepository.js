@@ -223,9 +223,9 @@ export async function buscarVinhoPorUva(uva) {
  * @returns Retorna um objeto JSON, contendo um ou mais vinhos que foram buscado
  */
 export async function buscarVinhoPorTeorAlcoolico(teorAlcoolico) {
-    const comando = `SELECT * FROM view_listagem_vinho WHERE teor_alcolico = ? `;
+    const comando = `SELECT * FROM view_listagem_vinho WHERE teor_alcolico LIKE ? `;
 
-    const [registros] = await connection.query(comando, [teorAlcoolico]);
+    const [registros] = await connection.query(comando, [`%${teorAlcoolico}%`]);
     return registros;
 }
 

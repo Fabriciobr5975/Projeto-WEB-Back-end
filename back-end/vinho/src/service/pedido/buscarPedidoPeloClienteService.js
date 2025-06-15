@@ -1,6 +1,7 @@
 import { buscarPedidoPeloCliente} from '../../repository/pedido/pedidoRepository.js';
 import { validarEntradaParaBuscaPorPedido, validarBuscaPedido } from '../../validation/pedido/pedidoValidation.js';
 import agruparPedidos from './contruirVetorBuscaPedido.js';
+import tranformarImagemBase64 from '../../utils/tranformarImagemBase64.js';
 
 export default async function buscarPedidoPeloClienteService(cpfCliente) {
     validarEntradaParaBuscaPorPedido(cpfCliente);
@@ -8,10 +9,7 @@ export default async function buscarPedidoPeloClienteService(cpfCliente) {
     const registros = await buscarPedidoPeloCliente(cpfCliente);
     validarBuscaPedido(registros);
 
-    const registroComImage = registros.map(vinho => {
-        const imagem = vinho.imagem_vinho.toString("base64");
-        return { ...vinho, imagem_vinho: `data:image/${vinho.extensao};base64,${imagem}` };
-    });
+    const registroComImage = tranformarImagemBase64(registros);
 
     return agruparPedidos(registroComImage);
 }
