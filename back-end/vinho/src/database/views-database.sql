@@ -51,7 +51,7 @@ CREATE VIEW view_listagem_estoque AS
 /* VIEW PARA A LISTAGEM DOS CLIENTES COM SEUS ENDEREÇOS */
 CREATE VIEW view_listagem_cliente AS
 	SELECT c.id_cliente, CONCAT(c.nome, ' ', c.sobrenome) 'nome_completo', c.cpf, 
-		   c.data_nascimento, c.email, c.senha, c.celular, COALESCE(e.logradouro, 'Sem informação de endereço') 'endereco', 
+		   c.data_nascimento, c.email, c.celular, COALESCE(e.logradouro, 'Sem informação de endereço') 'endereco', 
            COALESCE(ec.numero, 'Sem informação do número') 'numero', COALESCE(ec.complemento, 'Sem informação de complemento') 'complemento',
            COALESCE(e.bairro, 'Sem informação de bairro') 'bairro', COALESCE(e.localidade, 'Sem informação de localidade') 'localidade',
            COALESCE(e.uf, 'Sem informação de uf') 'uf', COALESCE(e.cep, 'Sem informação de cep') 'cep'
@@ -59,6 +59,7 @@ CREATE VIEW view_listagem_cliente AS
 		INNER JOIN endereco_cliente ec ON ec.cliente_id = c.id_cliente
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
 	ORDER BY 'nome_completo';
+
 
 
 /* VIEW PARA A LISTAGEM DOS CLIENTES */

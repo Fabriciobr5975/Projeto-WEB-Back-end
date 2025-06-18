@@ -7,5 +7,8 @@ export default async function buscarClientePorIdService(idCliente) {
     const registro = await buscarClientesPorId(idCliente);
     validarBuscaCliente(registro);
 
+    // Removendo a senha do cliente;
+    registro[0].senha = undefined;
+
     return registro;
 }

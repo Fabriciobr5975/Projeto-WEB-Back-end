@@ -154,7 +154,7 @@ CREATE PROCEDURE
     sobrenome VARCHAR(30),
     cpf CHAR(11),
     email VARCHAR(100),
-    senha VARCHAR(20),
+    senha VARCHAR(255),
     celular CHAR(15),
     logradouro VARCHAR(100),
     bairro VARCHAR(50),
@@ -224,8 +224,8 @@ BEGIN
 		SET @last_id_endereco = last_insert_id();
         
         -- Inserção do Endereço dos Clientes
-        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
-			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento, CONCAT(logradouro, ' ', numero, ' - ', cep, ', ', numero, ' ', localidade));
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
+			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento);
         
 		COMMIT;
         SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
@@ -243,8 +243,8 @@ BEGIN
         SET @id_endereco = (SELECT e.id_endereco FROM endereco e WHERE e.cep = cep);
             
         -- Inserção do Endereço dos Clientes
-        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
-			VALUES (@id_endereco, @last_id_cliente, numero, complemento, CONCAT(logradouro, ' ', numero, ' - ', cep, ', ', numero, ' ', localidade));
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
+			VALUES (@id_endereco, @last_id_cliente, numero, complemento);
             
 		COMMIT;
 		SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 

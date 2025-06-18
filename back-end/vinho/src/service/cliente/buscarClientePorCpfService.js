@@ -13,5 +13,8 @@ export default async function buscarClientesPorCpfService(cpf) {
     const registro = await buscarClientesPorCpf(cpfLimpo);
     validarBuscaCliente(registro);
 
+    // Removendo a senha do cliente;
+    registro[0].senha = undefined;
+
     return registro;
 }

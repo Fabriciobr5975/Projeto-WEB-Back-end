@@ -1,6 +1,17 @@
 import { mensagemCampoUnicoDuplicado, mensagemCampoReferencialInexistente } from './mensagemPersonalizadasExcecoes.js'
 
 /**
+ * 
+ */
+global.criarLogDateTimeSistema = () =>  {
+    return new Date().toLocaleDateString("pt-br", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    }) + " " + new Date().toLocaleTimeString("pt-br");
+} 
+
+/**
  * Função global que tem como objetivo criar as mensagens de erros que vem do banco  
  * de dados de forma personalizadas
  * 

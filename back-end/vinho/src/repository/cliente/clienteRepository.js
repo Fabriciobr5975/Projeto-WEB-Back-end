@@ -79,7 +79,7 @@ export async function inserirClienteComEndereco(cliente) {
 /**
  * Função para alterar um cliente que já tenha sido inserido no banco de dados
  * 
- * @param {Number} idCliente - ID (PF) do cliente que será alterado 
+ * @param {Number} idCliente - ID (PK) do cliente que será alterado 
  * @param {JSON} cliente - Objeto com os dados necessários para alterar um cliente
  * 
  * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do cliente 
@@ -90,10 +90,8 @@ export async function alterarCliente(idCliente, cliente) {
         UPDATE cliente 
             SET nome = ?,
                 sobrenome = ?,
-                cpf = ?,
                 data_nascimento = ?,
                 email = ?,
-                senha = ?,
                 celular = ?
         WHERE id_cliente = ?
     `;
@@ -101,11 +99,35 @@ export async function alterarCliente(idCliente, cliente) {
         const [resposta] = await connection.query(comando, [
             cliente.nome,
             cliente.sobrenome,
-            cliente.cpf,
             cliente.data_nascimento,
             cliente.email,
-            cliente.senha,
             cliente.celular,
+            idCliente
+        ]);
+
+        return resposta.affectedRows;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
+}
+
+/**
+ * Função para alterar a senha de um cliente que já tenha sido inserido no banco de dados
+ * 
+ * @param {Number} idCliente - ID (PK) do cliente que terá a senha alterada 
+ * @param {String} novaSenha - Recebe a nova senha que será usada para alterar a senha do cliente
+ * 
+ * @returns Retorna a quantidade de linhas que foram alteradas após a alteração da senha do cliente 
+ */
+export async function alterarSenhaCliente(idCliente, novaSenha) {
+    try {
+        const comando = `UPDATE cliente 
+                            SET senha = ?
+                         WHERE id_cliente = ?`;
+
+        const [resposta] = await connection.query(comando, [
+            novaSenha,
             idCliente
         ]);
 

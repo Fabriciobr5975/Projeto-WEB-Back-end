@@ -79,11 +79,10 @@ CREATE TABLE IF NOT EXISTS cliente (
     cpf CHAR(11) NOT NULL UNIQUE,
     data_nascimento DATE,
     email VARCHAR(100) NOT NULL UNIQUE,
-    senha VARCHAR(20) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     celular CHAR(15),
     administrador BOOLEAN default 0
 );
-
 
 /* Tabela Endereco Cliente (N:N) */
 CREATE TABLE IF NOT EXISTS endereco_cliente (

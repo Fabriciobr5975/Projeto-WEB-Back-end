@@ -1,4 +1,5 @@
 import alterarClienteService from '../../service/cliente/alterarClienteService.js';
+import alterarSenhaClienteService from '../../service/cliente/alterarSenhaClienteService.js';
 import inserirClienteComEnderecoService from '../../service/cliente/inserirClienteComEnderecoService.js';
 import inserirClienteSemEnderecoService from '../../service/cliente/inserirClienteSemEnderecoService.js';
 import removerClienteService from '../../service/cliente/removerClienteService.js';
@@ -9,12 +10,16 @@ import buscarClientePorIdService from '../../service/cliente/buscarClientePorIdS
 import buscarClientePorNomeService from '../../service/cliente/buscarClientePorNomeService.js';
 
 import { Router } from "express";
+import bcrypt from 'bcryptjs';
 
 const endpoints = Router();
+const saltRounds = 10;
 
 endpoints.post("/cliente", async (req, resp) => {
     try {
         const cliente = req.body;
+        const hash = await bcrypt.hash(cliente.senha, saltRounds);
+        cliente.senha = hash;
         let resposta = undefined;
 
         if(!cliente.cep || cliente.cep === "") {
@@ -47,6 +52,20 @@ endpoints.put("/cliente/:id", async (req, resp) => {
         });
     }
 }); 
+
+endpoints.put("/cliente/senha/:id", async (req, resp) => {
+    try {
+        const idCliente = req.params.id;
+        const cliente = req.body;
+        const resposta = await alterarSenhaClienteService(idCliente, cliente);
+
+        resp.send({resposta});
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
 
 endpoints.delete("/cliente/:id", async (req, resp) => {
     try {
@@ -91,6 +110,12 @@ endpoints.get("/cliente/busca/nome", async (req, resp) => {
         const nomeCliente = req.query.nome;
         const registro = await buscarClientePorNomeService(nomeCliente);
 
+        const isMatch = await bcrypt.compare(passwordInput, passwordStoredHash);
+
+        if (isMatch) {
+            throw new Error("Senha incorreta!");
+        }
+
         resp.send(registro);
     } catch (err) {
         resp.status(404).send({
@@ -115,7 +140,8 @@ endpoints.get("/cliente/busca/cpf", async (req, resp) => {
 endpoints.get("/cliente/busca/email", async (req, resp) => {
     try {
         const emailCliente = req.query.email;
-        const registro = await buscarClientePorEmailService(emailCliente);
+        const senhaCliente = req.query.senha;
+        const registro = await buscarClientePorEmailService(emailCliente, senhaCliente);
 
         resp.send(registro);
     } catch (err) {
