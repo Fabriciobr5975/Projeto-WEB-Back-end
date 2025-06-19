@@ -48,7 +48,7 @@ export async function inserirClienteSemEndereco(cliente) {
 export async function inserirClienteComEndereco(cliente) {
     try {
         const comando = `
-            CALL cadastro_usuario (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            CALL cadastro_usuario (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
 
         const [resposta] = await connection.query(comando, [
@@ -63,6 +63,7 @@ export async function inserirClienteComEndereco(cliente) {
             cliente.localidade,
             cliente.uf,
             cliente.cep,
+            cliente.apelido_endereco,
             cliente.numero,
             cliente.complemento
         ]);
@@ -165,6 +166,23 @@ export async function removerCliente(idCliente) {
 export async function listarClientes() {
     try {
         const comando = `SELECT * FROM view_cliente`;
+
+        const [registros] = await connection.query(comando);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
+}
+
+/**
+ * Função para listar todos os clientes e seus pedidos para análises futuras 
+ * 
+ * @returns Retorna um objeto JSON contendo os clientes todos os clientes e seus pedidos, mesmo que não tenham pedidos
+ */
+export async function listarPedidosClientes() {
+    try {
+        const comando = `SELECT * FROM view_listagem_cliente_pedido`;
 
         const [registros] = await connection.query(comando);
         return registros;

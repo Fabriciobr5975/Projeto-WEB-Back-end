@@ -4,6 +4,7 @@ import inserirClienteComEnderecoService from '../../service/cliente/inserirClien
 import inserirClienteSemEnderecoService from '../../service/cliente/inserirClienteSemEnderecoService.js';
 import removerClienteService from '../../service/cliente/removerClienteService.js';
 import listarClientesService from '../../service/cliente/listarClientesService.js';
+import listarPedidosClientesService from '../../service/cliente/listarPedidosClientesService.js';
 import buscarClientePorCpfService from '../../service/cliente/buscarClientePorCpfService.js';
 import buscarClientePorEmailService from '../../service/cliente/buscarClientePorEmailService.js';
 import buscarClientePorIdService from '../../service/cliente/buscarClientePorIdService.js';
@@ -142,6 +143,18 @@ endpoints.get("/cliente/busca/email", async (req, resp) => {
         const emailCliente = req.query.email;
         const senhaCliente = req.query.senha;
         const registro = await buscarClientePorEmailService(emailCliente, senhaCliente);
+
+        resp.send(registro);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+}); 
+
+endpoints.get("/cliente/lista/pedidos", async (req, resp) => {
+    try { 
+        const registro = await listarPedidosClientesService();
 
         resp.send(registro);
     } catch (err) {

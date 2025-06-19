@@ -1,4 +1,4 @@
-import { mensagemCampoUnicoDuplicado, mensagemCampoReferencialInexistente } from './mensagemPersonalizadasExcecoes.js'
+import { mensagemCampoUnicoDuplicado, mensagemCampoReferencialInexistente, mensagemEstoqueInsuficiente } from './mensagemPersonalizadasExcecoes.js'
 
 /**
  * 
@@ -38,6 +38,9 @@ const tratarErro = erro => {
     
     } else if (erro.includes("teste")) {
         return mensagemCampoReferencialInexistente(erro);
+    
+    } else if (erro.includes("Ocorreu um erro ao atualizar a quantidade do estoque. Estoque insuficiente")) {
+        return mensagemEstoqueInsuficiente(erro);
     }
 
     return "Não foi possível identificar o erro " + erro;

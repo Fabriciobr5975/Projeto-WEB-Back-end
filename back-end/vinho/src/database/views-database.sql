@@ -109,7 +109,7 @@ CREATE VIEW view_listagem_itens_pedido AS
 /* VIEW PARA A LISTAGEM DOS PEDIDOS*/
 CREATE VIEW view_listagem_pedidos AS
 	SELECT pe.id_pedido, v.id_vinho, v.imagem_vinho, v.mimetype, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
-		   p.pais 'pais_vinho', v.preco 'preco_vinho', ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', cl.celular,
+		   p.pais 'pais_vinho', v.preco 'preco_vinho', ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', cl.email, cl.celular,
            e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, pe.valor_total 'preco_total_pedido',
            DATE_FORMAT(pe.data_pedido, "%d/%m%/%Y") as 'data_pedido', pe.status_pedido
 	FROM pedido pe
@@ -118,6 +118,16 @@ CREATE VIEW view_listagem_pedidos AS
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN cliente cl ON cl.id_cliente = pe.cliente_fk
-        INNER JOIN endereco_cliente ec ON ec.cliente_id = cl.id_cliente
+        INNER JOIN endereco_cliente ec ON ec.cliente_id = cl.id_cliente AND ec.endereco_id = pe.endereco_entrega_fk
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
+	GROUP BY ic.id_itens_pedido
 	ORDER BY pe.id_pedido;
+
+
+/* VIEW PARA A LISTAGEM DOS CLIENTES E SEUS PEDIDOS */
+CREATE VIEW view_listagem_cliente_pedido AS
+	SELECT cl.id_cliente, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', cl.email, cl.celular, 
+		   COALESCE(pe.id_pedido, 0) 'id_pedido', COALESCE(pe.valor_total, 0) 'preco_total_pedido'
+	FROM cliente cl
+		LEFT JOIN pedido pe ON pe.cliente_fk = cl.id_cliente
+	ORDER BY 'preco_total_pedido' DESC;	 

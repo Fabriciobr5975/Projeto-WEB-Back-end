@@ -161,9 +161,9 @@ CREATE PROCEDURE
     localidade VARCHAR(50),
     uf CHAR(2),
     cep CHAR(9),
+    apelido_endereco VARCHAR(100),
     numero VARCHAR(10),
     complemento VARCHAR(50))
-    
 BEGIN
 	/* Variáveis para validar se os itens abaixo existem ou não */
     DECLARE exists_cliente INT;
@@ -224,8 +224,8 @@ BEGIN
 		SET @last_id_endereco = last_insert_id();
         
         -- Inserção do Endereço dos Clientes
-        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
-			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento);
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
+			VALUES (@last_id_endereco, @last_id_cliente, numero, complemento, apelido_endereco);
         
 		COMMIT;
         SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
@@ -243,8 +243,8 @@ BEGIN
         SET @id_endereco = (SELECT e.id_endereco FROM endereco e WHERE e.cep = cep);
             
         -- Inserção do Endereço dos Clientes
-        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento)
-			VALUES (@id_endereco, @last_id_cliente, numero, complemento);
+        INSERT INTO endereco_cliente (endereco_id, cliente_id, numero, complemento, apelido_endereco)
+			VALUES (@id_endereco, @last_id_cliente, numero, complemento, apelido_endereco);
             
 		COMMIT;
 		SELECT CONCAT('Inserção Realizada com Sucesso! ID Cliente: ',  @last_id_cliente) AS mensagem; 
@@ -462,7 +462,7 @@ END;
 
 /* PROCEDURE para a inserção dos pedidos dos clientes */
 
-CREATE PROCEDURE 
+CREATE PROCEDURE CREATE PROCEDURE 
     insercao_pedido(
 		cliente_fk INT,
 		endereco_entrega_fk INT,
@@ -506,7 +506,7 @@ BEGIN
                                  WHERE c.cliente_fk = cliente_fk);
 
 		COMMIT;
-		SELECT CONCAT('Pedido gerado com sucesso!: Identificação do pedido: ',  LAST_INSERT_ID()) AS mensagem; 
+		SELECT CONCAT('Pedido gerado com sucesso!: Identificação do pedido: ',  @last_id_pedido) AS mensagem; 
     ELSE 
         ROLLBACK; 
         SELECT 'Erro na criação do pedido' AS mensagem;
