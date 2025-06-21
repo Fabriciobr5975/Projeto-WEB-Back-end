@@ -24,6 +24,18 @@ CREATE VIEW view_listagem_vinho AS
 	ORDER BY v.id_vinho;
 
 
+/* VIEW PARA A LISTAGEM DOS VINHO, MAS SEM SUAS IMAGENS */
+CREATE VIEW view_listagem_vinho_sem_imagem AS
+	SELECT v.id_vinho, v.nome 'nome_vinho', v.classificacao 'classificacao_vinho', vi.vinicola, v.uva 'uva_vinho', v.teor_alcolico,
+		   volume 'volume_vinho', temperatura_servir, p.pais, safra 'safra_vinho', v.preco 'preco_vinho', v.descricao,
+           e.quantidade 'quantidade_disponivel', e.status_estoque
+    FROM vinho v
+		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
+        INNER JOIN pais p ON p.id_pais = v.pais_fk
+        INNER JOIN estoque e ON e.vinho_fk = v.id_vinho
+	ORDER BY v.id_vinho;
+
+
 /* VIEW PARA A LISTAGEM DOS VINHO MAIS VENDIDOS */
 CREATE VIEW view_listagem_vinhos_mais_vendidos AS
 	SELECT v.id_vinho, v.imagem_vinho, v.mimetype , v.nome_imagem, v.extensao, v.nome 'nome_vinho', v.classificacao 'classificacao_vinho', 

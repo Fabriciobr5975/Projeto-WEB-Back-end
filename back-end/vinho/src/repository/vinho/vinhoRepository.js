@@ -47,63 +47,6 @@ export async function inserirVinho(vinho) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do estoque
  */
 export async function alterarVinho(idVinho, vinho) {
-    /**
-     * const comandoAlteracaoVinho = `
-        UPDATE vinho 
-            SET 
-                imagem_vinho = ?,
-                nome_imagem = ?,
-                mimetype = ?,
-                extensao = ?,
-                nome = ?,
-                uva = ?,
-                teor_alcolico = ?,
-                classificacao = ?,
-                volume = ?,
-                safra = ?,
-                temperatura_servir = ?,
-                preco = ?,
-                descricao = ?,
-                vinicola_fk = (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
-                pais_fk = (SELECT id_pais FROM pais WHERE pais = ?)
-        WHERE id_vinho = ?`;
-
-    const comandoAlteracaoEstoque = `
-        UPDATE estoque
-			SET vinho_fk = ?,
-				quantidade = ?,
-                status_estoque = ?
-		WHERE vinho_fk = ?;
-    `;
-
-    const [resposta01] = await connection.query(comandoAlteracaoVinho, [
-        vinho.imagem_vinho,
-        vinho.nome_imagem,
-        vinho.mimetype,
-        vinho.extensao,
-        vinho.nome,
-        vinho.uva,
-        vinho.teor_alcolico,
-        vinho.classificacao,
-        vinho.volume,
-        vinho.safra,
-        vinho.temperatura_servir,
-        vinho.preco,
-        vinho.descricao,
-        vinho.vinicola,
-        vinho.pais,
-        idVinho
-    ]);
-
-    const [resposta02] = await connection.query(comandoAlteracaoEstoque, [
-        idVinho,
-        vinho.quantidade,
-        vinho.status_estoque,
-        idVinho
-    ]);
-
-    return "Alteração do vinho: " + resposta01.affectedRows + " " +  resposta02.affectedRows;
-     */
     const comando = `
        CALL alterar_vinho(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
@@ -136,6 +79,42 @@ export async function alterarVinho(idVinho, vinho) {
 }
 
 /**
+ * Função para alterar um vinho que já tenha sido inserido no banco de dados
+ * 
+ * @param {Number} idVinho - Recebe o id do vinho que será alterado
+ * @param {JSON} vinho - Objeto que terá os atributos necessários para a alteração do estoque
+ * 
+ * @returns Retorna a quantidade de linhas que foram alteradas após a alteração do estoque
+ */
+export async function alterarVinhoSemImagem(idVinho, vinho) {
+    const comando = `
+       CALL alterar_vinho_sem_imagem(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            (SELECT id_vinicola FROM vinicola WHERE vinicola = ?),
+            (SELECT id_pais FROM pais WHERE pais = ?), ?);`;
+
+    const [resposta] = await connection.query(comando, [
+        vinho.nome,
+        vinho.uva,
+        vinho.teor_alcolico,
+        vinho.classificacao,
+        vinho.volume,
+        vinho.safra,
+        vinho.temperatura_servir,
+        vinho.preco,
+        vinho.descricao,
+        vinho.quantidade,
+        vinho.status_estoque,
+        vinho.vinicola,
+        vinho.pais,
+        idVinho
+    ]);
+
+    const mensagem = resposta[0][0]?.mensagem;
+
+    return mensagem;
+}
+
+/**
  * Função para remover um estoque salvo no banco de dados
  * 
  * @param {Number} idVinho - Recebe o id do vinho que será removido
@@ -143,10 +122,14 @@ export async function alterarVinho(idVinho, vinho) {
  * @returns Retorna a quantidade de linhas que foram alteradas após a remoção do vinho
  */
 export async function removerVinho(idVinho) {
-    const comando = `DELETE FROM vinho WHERE id_vinho = ?`;
+    try {
+        const comando = `DELETE FROM vinho WHERE id_vinho = ?`;
 
-    const [resposta] = await connection.query(comando, [idVinho]);
-    return resposta.affectedRows;
+        const [resposta] = await connection.query(comando, [idVinho]);
+        return resposta.affectedRows;
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
 }
 
 /**
@@ -186,6 +169,22 @@ export async function buscarVinhoPorId(idVinho) {
     const [registro] = await connection.query(comando, [idVinho]);
     return registro[0];
 }
+
+
+/**
+ * Função para buscar um estoque pelo seu id
+ * 
+ * @param {Number} idVinho - Recebe o id do vinho que será buscado
+ * 
+ * @returns Retorna um objeto JSON, contendo o vinho que foi buscado
+ */
+export async function buscarVinhoSemImagemPorId(idVinho) {
+    const comando = `SELECT * FROM view_listagem_vinho_sem_imagem WHERE id_vinho = ?`;
+
+    const [registro] = await connection.query(comando, [idVinho]);
+    return registro[0];
+}
+
 
 /**
  * Função para buscar um estoque pelo seu nome

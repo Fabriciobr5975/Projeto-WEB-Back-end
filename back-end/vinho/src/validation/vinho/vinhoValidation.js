@@ -42,6 +42,41 @@ export function validarCamposObrigatoriosVinho(vinho) {
         throw new Error("A descrição do vinho é obrigatório");
 }
 
+export function validarCamposObrigatoriosVinhoSemImagem(vinho) {
+    if (!vinho.nome)
+        throw new Error("O nome do vinho é obrigatório");
+
+    if (!vinho.uva)
+        throw new Error("O a uva do vinho é obrigatório");
+
+    if (!vinho.vinicola)
+        throw new Error("A identificação da vinicola é obrigatório");
+
+    if (!vinho.teor_alcolico)
+        throw new Error("O teor alcoólico é obrigatório");
+
+    if (!vinho.classificacao)
+        throw new Error("A classificação do vinho é obrigatório");
+
+    if (!vinho.volume)
+        throw new Error("O volume é obrigatório");
+
+    if (!vinho.safra)
+        throw new Error("A safra do vinho é obrigatório");
+
+    if(!vinho.quantidade || isNaN(vinho.quantidade))
+        throw new Error("A quantidade é obrigatória");
+
+    if(!vinho.status_estoque)
+        throw new Error("O status do estoque é obrigatório");
+
+    if (!vinho.pais)
+        throw new Error("A identificação do pais do vinho é obrigatório");
+
+    if (!vinho.descricao)
+        throw new Error("A descrição do vinho é obrigatório");
+}
+
 export function validarBuscaVinho(registros) {
     if (registros?.length === 0 || !registros)
         throw new Error("Não foram encontrado registros para o vinho");

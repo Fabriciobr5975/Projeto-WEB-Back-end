@@ -146,6 +146,77 @@ BEGIN
 END;
 
 
+CREATE PROCEDURE 
+    alterar_vinho_sem_imagem(
+    _nome VARCHAR(100),
+    _uva VARCHAR(100),
+    _teor_alcolico VARCHAR(10),
+    _classificacao ENUM('Suave', 'Seco', 'Demi-Sec', 'Espumante', 'Frisante','Rosé', 'Sem Classificação'),
+    _volume VARCHAR(50),
+    _safra YEAR,
+    _temperatura_servir VARCHAR(10),
+    _preco DECIMAL(10,2),
+    _descricao TEXT,
+    _quantidade INT, 
+    _status_estoque ENUM('Cheio', 'Normal', 'Baixo', 'Vazio', 'Sem Informação'),
+    _vinicola_fk INT,
+    _pais_fk INT,
+    _id_vinho INT) 
+BEGIN
+    DECLARE exists_vinho INT;
+    DECLARE valid_vinicola INT;
+    DECLARE valid_pais INT;
+
+    START TRANSACTION;
+
+    -- Verificando se o Vinho já existe
+    SELECT COUNT(*) INTO exists_vinho 
+	FROM vinho v
+	WHERE id_vinho = _id_vinho;
+
+    -- Validando a entrada da Vinícola
+    SELECT COUNT(*) INTO valid_vinicola
+    FROM vinicola 
+    WHERE id_vinicola = _vinicola_fk;
+    
+    -- Validando a entrada do Pais
+    SELECT COUNT(*) INTO valid_pais
+    FROM pais
+    WHERE id_pais = _pais_fk;
+
+    IF exists_vinho = 1 AND valid_vinicola = 1 AND valid_pais = 1 THEN
+        -- Alteração do Vinho
+        UPDATE vinho 
+			SET nome = _nome, 
+                uva = _uva,
+                teor_alcolico = _teor_alcolico, 
+                classificacao = _classificacao, 
+                volume = _volume,
+                safra = _safra,
+                temperatura_servir = _temperatura_servir,
+                preco = _preco,
+                descricao = _descricao,
+                vinicola_fk = _vinicola_fk,
+                pais_fk = _pais_fk
+		WHERE id_vinho = _id_vinho;
+			
+		UPDATE estoque
+			SET vinho_fk = _id_vinho,
+				quantidade = _quantidade,
+                status_estoque = _status_estoque
+			WHERE vinho_fk = _id_vinho;
+        
+  COMMIT;
+        SELECT 'Alteração Realizada com Sucesso!' AS mensagem; 
+    ELSE 
+        ROLLBACK; 
+        SELECT 'Erro na alteração dos dados do Vinho' AS mensagem;
+    END IF;
+END;$$
+
+DELIMITER ;
+
+
 /* PROCEDURE para a inserção de clientes, endereço e endereco_cliente */
 
 CREATE PROCEDURE 

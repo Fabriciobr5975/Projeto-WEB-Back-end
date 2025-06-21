@@ -1,10 +1,12 @@
 import inserirVinhoService from '../../service/vinho/inserirVinhoService.js';
 import alterarVinhoService from '../../service/vinho/alterarVinhoService.js';
+import alterarVinhoSemImagemService from '../../service/vinho/alterarVinhoSemImagemService.js';
 import removerVinhoService from '../../service/vinho/removerVinhoService.js';
 import listarVinhosService from '../../service/vinho/listarVinhosService.js';
 import listarVinhosMaisCompradosService from '../../service/vinho/listarVinhosMaisCompradosService.js';
 import buscarVinhoPorClassificacaoService from '../../service/vinho/buscarVinhoPorClassificacaoService.js';
 import buscarVinhoPorIdService from '../../service/vinho/buscarVinhoPorIdService.js';
+import buscarVinhoSemImagemPorIdService from '../../service/vinho/buscarVinhoSemImagemPorIdService.js';
 import buscarVinhoPorNomeService from '../../service/vinho/buscarVinhoPorNomeService.js';
 import buscarVinhoPorPais from '../../service/vinho/buscarVinhoPorPais.js';
 import buscarVinhoPorPrecoService from '../../service/vinho/buscarVinhoPorPrecoService.js';
@@ -72,6 +74,21 @@ endpoints.put("/vinho/:id", upload.single("imagem_vinho"), async (req, resp) => 
     }
 });
 
+endpoints.put("/vinho/semimagem/:id", async (req, resp) => {
+    try {
+        const idVinho = req.params.id;
+        const vinho = req.body;
+
+        const resposta = await alterarVinhoSemImagemService(idVinho, vinho);
+
+        resp.send({ resposta });
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
+
 endpoints.delete("/vinho/:id", async (req, resp) => {
     try {
         const idVinho = req.params.id;
@@ -114,6 +131,19 @@ endpoints.get("/vinho/:id", async (req, resp) => {
     try {
         const idVinho = req.params.id;
         const registro = await buscarVinhoPorIdService(idVinho);
+
+        resp.send(registro);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
+
+endpoints.get("/vinho/busca/semimagem/:id", async (req, resp) => {
+    try {
+        const idVinho = req.params.id;
+        const registro = await buscarVinhoSemImagemPorIdService(idVinho);
 
         resp.send(registro);
     } catch (err) {

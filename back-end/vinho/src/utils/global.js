@@ -3,13 +3,13 @@ import { mensagemCampoUnicoDuplicado, mensagemCampoReferencialInexistente, mensa
 /**
  * 
  */
-global.criarLogDateTimeSistema = () =>  {
+global.criarLogDateTimeSistema = () => {
     return new Date().toLocaleDateString("pt-br", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric"
     }) + " " + new Date().toLocaleTimeString("pt-br");
-} 
+}
 
 /**
  * Função global que tem como objetivo criar as mensagens de erros que vem do banco  
@@ -35,12 +35,15 @@ global.criarErro = function criarErro(mensagem) {
 const tratarErro = erro => {
     if (erro.includes("Duplicate entry")) {
         return mensagemCampoUnicoDuplicado(erro);
-    
+
     } else if (erro.includes("teste")) {
         return mensagemCampoReferencialInexistente(erro);
-    
+
     } else if (erro.includes("Ocorreu um erro ao atualizar a quantidade do estoque. Estoque insuficiente")) {
         return mensagemEstoqueInsuficiente(erro);
+
+    } else if (erro.includes("Cannot delete or update a parent row")) {
+        return "O banco de dados impediu essa operação devio as retrições internas!";
     }
 
     return "Não foi possível identificar o erro " + erro;
