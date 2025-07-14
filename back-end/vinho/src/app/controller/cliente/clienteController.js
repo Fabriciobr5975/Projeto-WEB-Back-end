@@ -5,6 +5,7 @@ import inserirClienteSemEnderecoService from '../../service/cliente/inserirClien
 import removerClienteService from '../../service/cliente/removerClienteService.js';
 import listarClientesService from '../../service/cliente/listarClientesService.js';
 import listarPedidosClientesService from '../../service/cliente/listarPedidosClientesService.js';
+import listarPedidosClientesPorFiltroService from '../../service/cliente/listarPedidosClientesPorFiltroService.js';
 import buscarClientePorCpfService from '../../service/cliente/buscarClientePorCpfService.js';
 import buscarClientePorEmailService from '../../service/cliente/buscarClientePorEmailService.js';
 import buscarClientePorIdService from '../../service/cliente/buscarClientePorIdService.js';
@@ -111,12 +112,6 @@ endpoints.get("/cliente/busca/nome", async (req, resp) => {
         const nomeCliente = req.query.nome;
         const registro = await buscarClientePorNomeService(nomeCliente);
 
-        const isMatch = await bcrypt.compare(passwordInput, passwordStoredHash);
-
-        if (isMatch) {
-            throw new Error("Senha incorreta!");
-        }
-
         resp.send(registro);
     } catch (err) {
         resp.status(404).send({
@@ -163,5 +158,18 @@ endpoints.get("/cliente/lista/pedidos", async (req, resp) => {
         });
     }
 }); 
- 
+
+endpoints.get("/cliente/lista/pedidos/filtro", async (req, resp) => {
+    try { 
+        const filtro = req.query.filtro;
+        const registro = await listarPedidosClientesPorFiltroService(filtro);
+
+        resp.send(registro);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
+
 export default endpoints;

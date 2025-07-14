@@ -16,15 +16,11 @@ export default function agruparPedidos(pedidos) {
                 nome_completo: pedido.nome_completo,
                 email: pedido.email,
                 celular: pedido.celular,
-                quantidade_pedidos: 0,
-                preco_total_pedido: 0,
-                itens: []
+                quantidade_pedidos: pedido.quantidade_pedidos,
+                preco_total_pedido: pedido.preco_total_pedido,
+                ticket_medio: pedido.ticket_medio,
             };
         }
-        
-        vetor[pedido.id_cliente].quantidade_pedidos += Number(pedido.id_pedido !== 0) || 0;
-        vetor[pedido.id_cliente].preco_total_pedido += Number(pedido.preco_total_pedido) || 0;
-
         return vetor;
     }, {});
 };

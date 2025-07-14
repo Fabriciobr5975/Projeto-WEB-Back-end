@@ -131,3 +131,35 @@ export async function buscarPedidoPorPrecoTotal(quantidade) {
     const [registro] = await connection.query(comando, [quantidade]);
     return registro;
 }
+/**
+ * Função para buscar o último pedido de um cliente
+ * 
+ * @param {Number} cpfCliente - Recebe o cpf do cliente que será usado na busca
+ * 
+ * @returns Retorna o último pedido do cliente
+ */
+export async function buscarUltimoPedidoCliente(cpfCliente) {
+    const comando = `SELECT * FROM view_listagem_pedidos
+                     WHERE cpf = ?  
+                     ORDER BY id_pedido DESC LIMIT 1`;
+
+    const [registro] = await connection.query(comando, [cpfCliente]);
+    return registro;
+}
+
+/**
+ * Função para buscar pedidos por filtro de data
+ * 
+ * @param {*} cpfCliente - Recebe o cpf do cliente que será usado na busca
+ * @param {*} dataInicial - Recebe a data inicial que será usada na busca
+ * @param {*} dataFinal - Recebe a data final que será usada na busca
+ * 
+ * @returns Retorna os pedidos filtrados por data
+ */
+export async function buscarPedidosPorFiltroData(cpfCliente, dataInicial, dataFinal) {
+    const comando = `SELECT * FROM view_listagem_pedidos
+                     WHERE cpf = ? AND data_sem_formatacao BETWEEN ? AND ?`;
+
+    const [registro] = await connection.query(comando, [cpfCliente, dataInicial, dataFinal]);
+    return registro;
+}

@@ -193,6 +193,27 @@ export async function listarPedidosClientes() {
 }
 
 /**
+ * /**
+ * Função para listar todos os clientes e seus pedidos para análises futuras, usando um filtro 
+ * 
+ * @param {Number} filtro - Filtro para buscar os pedidos dos clientes pelo valor total gasto ou pelo ticket médio
+ * 
+ * @returns Retorna um objeto JSON contendo os clientes todos os clientes e seus pedidos, mesmo que não tenham pedidos 
+ */
+export async function listarPedidosClientesPorFiltro(filtro) {
+    try {
+        const comando = `SELECT * FROM view_listagem_cliente_pedido 
+                         WHERE CONCAT(preco_total_pedido, ticket_medio) LIKE ?`;
+
+        const [registros] = await connection.query(comando, [`%${filtro}%`]);
+        return registros;
+
+    } catch (err) {
+        throw new Error(criarErro(err.message));
+    }
+}
+
+/**
  * Função para buscar um cliente salvo pelo seu id
  * 
  * @param {JSON} idCliente - ID (PK) do carrinho que está sendo buscado
@@ -220,7 +241,7 @@ export async function buscarClientesPorId(idCliente) {
  */
 export async function buscarClientesPorNome(nome) {
     try {
-        const comando = `SELECT * FROM view_cliente WHERE nome_completo LIKE ?`;
+        const comando = `SELECT * FROM view_cliente WHERE primeiro_nome LIKE ?`;
 
         const [registros] = await connection.query(comando, [`%${nome}%`]);
         return registros;

@@ -1,14 +1,15 @@
 {
-  "name": "vinho",
+  "name": "projeto-vinho-back-end",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API para o site \"Viana Vinhos Finos\"",
+  "main": "./src/configuration/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./src/configuration/server.js"
+    "dev": "nodemon ./src/configuration/server.js",
+    "start": "node ./src/configuration/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Fabrício de Araújo Santana, Geovanna Novais, Marcus Vinícius Pereira Rocha e Ruan Lopes Viana",
   "license": "ISC",
   "type": "module",
   "dependencies": {

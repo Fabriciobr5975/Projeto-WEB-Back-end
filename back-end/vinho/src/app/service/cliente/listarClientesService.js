@@ -5,5 +5,8 @@ export default async function listarClienteService() {
     const registros = await listarClientes();
     validarBuscaCliente(registros);
 
+    // Removendo a senha do cliente;
+    registros[0].senha = undefined;
+
     return registros;
 }

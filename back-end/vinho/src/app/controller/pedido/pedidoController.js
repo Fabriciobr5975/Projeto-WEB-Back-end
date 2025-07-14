@@ -5,6 +5,7 @@ import listarPedidoService from '../../service/pedido/listarPedidoService.js';
 import buscarPedidoPorIdService from '../../service/pedido/buscarPedidoPorIdService.js';
 import buscarPedidoPorVinhoService from '../../service/pedido/buscarPedidoPorVinhoService.js';
 import buscarPedidoPeloClienteService from '../../service/pedido/buscarPedidoPeloClienteService.js';
+import buscarPedidoPeloPorFiltroService from '../../service/pedido/buscarPedidoPorFiltroService.js';
 
 import { Router } from "express";
 
@@ -94,6 +95,20 @@ endpoints.get("/pedido/busca/cliente", async (req, resp) => {
     try {
         const cpfCliente = req.query.cliente;
         const registro = await buscarPedidoPeloClienteService(cpfCliente);
+
+        resp.send(registro);
+    } catch (err) {
+        resp.status(404).send({
+            erro: err.message
+        });
+    }
+});
+
+endpoints.get("/pedido/busca/data", async (req, resp) => {
+    try {
+        const cpfCliente = req.query.cliente;
+        const filtro = req.query.filtro;
+        const registro = await buscarPedidoPeloPorFiltroService(cpfCliente, filtro);
 
         resp.send(registro);
     } catch (err) {

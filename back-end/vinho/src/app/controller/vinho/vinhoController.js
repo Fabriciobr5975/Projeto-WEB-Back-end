@@ -23,8 +23,6 @@ const upload = multer({ storage });
 
 const endpoints = Router();
 
-const cache = [];
-
 endpoints.post("/vinho", upload.single("imagem_vinho"), async (req, resp) => {
     try {
         const vinho = req.body;
@@ -132,14 +130,7 @@ endpoints.get("/vinhos/maisvendidos", async (req, resp) => {
 endpoints.get("/vinho/:id", async (req, resp) => {
     try {
         const idVinho = req.params.id; 
-        
-        if (cache[idVinho]) {
-            return resp.send(cache[idVinho]);
-        }
-
         const registro = await buscarVinhoPorIdService(idVinho);
-        cache[idVinho] = registro;
-
         resp.send(registro);
     } catch (err) {
         resp.status(404).send({

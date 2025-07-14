@@ -49,6 +49,7 @@ export async function alterarItensCarrinho(idItensCarrinho, itens_carrinho) {
         itens_carrinho.quantidade,
         idItensCarrinho
     ]);
+    
     return resposta.affectedRows;
 }
 
