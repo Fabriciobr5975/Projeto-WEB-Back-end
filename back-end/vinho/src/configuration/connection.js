@@ -17,7 +17,7 @@ const connection = await mysql.createConnection({
         } else if(field.type === 'DATE') {
             const date = new Date(field.string());
             
-            const dia = (`0${date.getDate() + 1}`).slice(-2);
+            const dia = (`0${date.getDate()}`).slice(-2);
             const mes = (`0${date.getMonth() + 1}`).slice(-2);
             const ano = date.getFullYear();
 
