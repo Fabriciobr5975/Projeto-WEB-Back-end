@@ -1,5 +1,5 @@
 ## Projeto Viana Vinhos (Back-End) 🧑‍💻
-<p align="justify">Repositório para os arquivos referentes ao Back-End do projeto <strong>Vinho</strong>. O projeto está vendo construido em NodeJs, usando o Framework ReactJs, com um sistema de gerenciamente de banco de dados MySQL.</p>
+<p align="justify">Repositório para os arquivos referentes ao Back-End do projeto <strong>Vinho</strong>. O projeto está vendo construido em NodeJs, usando o Framework ReactJs, com um sistema de gerenciamento de banco de dados MySQL.</p>
 
 ## Objetivo 🎯 
 <p align="justify">Este projeto teve como proposito a construção de uma plataforma online de reserva de produtos, no caso vinhos, com o intuito de automatizar e facilitar na execução de processos administrativos e operacionais.</p>
