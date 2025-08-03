@@ -1,4 +1,3 @@
-//import contruirVetorListaPedidoCliente from "./contruirVetorListaPedidoCliente.js";
 import { listarPedidosClientes } from '../../repository/cliente/clienteRepository.js'
 import { validarBuscaCliente } from '../../validation/cliente/clienteValidation.js'
 
