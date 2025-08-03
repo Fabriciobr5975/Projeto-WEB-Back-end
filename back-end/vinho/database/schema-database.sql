@@ -1,25 +1,22 @@
- /* CRIAÇÃO DAS TABELAS DO BANCO DE DADOS */ 
-
-CREATE DATABASE IF NOT EXISTS db_projeto_vinho;  
+CREATE DATABASE IF NOT EXISTS db_projeto_vinho; 
  
 use db_projeto_vinho;
 
-/* Tabela Vinícola */
+/* Tabela de Vinícolas */
 CREATE TABLE IF NOT EXISTS vinicola (
     id_vinicola INT AUTO_INCREMENT PRIMARY KEY,
     vinicola VARCHAR(100) NOT NULL UNIQUE,
     rotulo VARCHAR(100) NOT NULL
 );
 
-/* Tabela Pais */
+/* Tabela de Paises */
 CREATE TABLE IF NOT EXISTS pais (
     id_pais INT AUTO_INCREMENT PRIMARY KEY,
     pais VARCHAR(100) NOT NULL UNIQUE,
     sigla CHAR(3) NOT NULL UNIQUE
 );
 
-
-/* Tabela Vinho */
+/* Tabela de Vinho */
 CREATE TABLE IF NOT EXISTS vinho (
     id_vinho INT AUTO_INCREMENT PRIMARY KEY,
     imagem_vinho LONGBLOB NOT NULL,
@@ -42,7 +39,16 @@ CREATE TABLE IF NOT EXISTS vinho (
     CONSTRAINT pais_vinho_fk FOREIGN KEY (pais_fk) REFERENCES pais(id_pais)
 ); 
 
-/* Tabela Estoque */
+/* Tabela de Quantidade de Vendas de Vinhos */
+CREATE TABLE IF NOT EXISTS quantidade_venda_vinhos (
+	id_qtd_venda_vinhos INT AUTO_INCREMENT PRIMARY KEY,
+    vinho_fk INT NOT NULL UNIQUE,
+    quantidade BIGINT NOT NULL,
+    CHECK(quantidade >= 0),
+    CONSTRAINT vinho_qtd_venda_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho) ON DELETE CASCADE
+);
+
+/* Tabela de Estoque */
 CREATE TABLE IF NOT EXISTS estoque (
     id_estoque INT AUTO_INCREMENT PRIMARY KEY,
     vinho_fk INT NOT NULL UNIQUE, 
@@ -52,16 +58,7 @@ CREATE TABLE IF NOT EXISTS estoque (
     CONSTRAINT vinho_estoque_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho) ON DELETE CASCADE
 );
 
-/* Tabela para armazenar o vinho e a respectiva quantidade de vendas */
-CREATE TABLE IF NOT EXISTS quantidade_venda_vinhos (
-	id_qtd_venda_vinhos INT AUTO_INCREMENT PRIMARY KEY,
-    vinho_fk INT NOT NULL UNIQUE,
-    quantidade BIGINT NOT NULL,
-    CHECK(quantidade >= 0),
-    CONSTRAINT vinho_qtd_venda_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho) ON DELETE CASCADE
-);
-
-/* Tabela Endereço */
+/* Tabela sem complemento e número */
 CREATE TABLE IF NOT EXISTS endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,
     logradouro VARCHAR(100) NOT NULL,
@@ -71,7 +68,7 @@ CREATE TABLE IF NOT EXISTS endereco (
     cep CHAR(9) NOT NULL UNIQUE
 );
 
-/* Tabela Cliente */
+/* Tabela com os dados do numero e complemento para o endereço */
 CREATE TABLE IF NOT EXISTS cliente (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(30) NOT NULL,
@@ -84,7 +81,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     administrador BOOLEAN default 0
 );
 
-/* Tabela Endereco Cliente (N:N) */
+/* Relacionamento N:N entre endereços e os clientes */
 CREATE TABLE IF NOT EXISTS endereco_cliente (
 	endereco_id INT NOT NULL,
     cliente_id INT NOT NULL,
@@ -96,25 +93,11 @@ CREATE TABLE IF NOT EXISTS endereco_cliente (
     CONSTRAINT cliente_fk FOREIGN KEY (cliente_id) REFERENCES cliente(id_cliente) ON DELETE CASCADE
 );
 
-/* Tabela Carrinho */
+/* Tabela dos Carrinho dos Clientes */
 CREATE TABLE IF NOT EXISTS carrinho (
     id_carrinho INT AUTO_INCREMENT PRIMARY KEY,
     cliente_fk INT UNIQUE,
     CONSTRAINT cliente_carrinho_fk FOREIGN KEY (cliente_fk) REFERENCES cliente(id_cliente)
-);
-
-/* Tabela Itens Carrinho (N:N) */
-CREATE TABLE IF NOT EXISTS itens_carrinho (
-    id_itens_carrinho INT AUTO_INCREMENT PRIMARY KEY,
-    carrinho_fk INT NOT NULL,
-    vinho_fk INT NOT NULL,
-    quantidade INT NOT NULL default 0,
-    item_esta_no_pedido BOOLEAN NOT NULL DEFAULT 0,
-    CHECK(quantidade >= 0),
-    UNIQUE(carrinho_fk, vinho_fk), 
-    CONSTRAINT carrinho_itens_carrinho_fk FOREIGN KEY (carrinho_fk) REFERENCES carrinho(id_carrinho)
-		ON DELETE CASCADE,
-	CONSTRAINT carrinho_itens_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
 );
 
 /* Tabela que armazena os vinhos dos clientes no carrinho */
@@ -130,18 +113,6 @@ CREATE TABLE IF NOT EXISTS itens_carrinho (
 	CONSTRAINT carrinho_itens_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
 );
 
-/* Tabela que armazena os vinhos dos clientes no pedido */
-CREATE TABLE IF NOT EXISTS itens_pedido (
-    id_itens_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    pedido_fk INT NOT NULL ,
-    vinho_fk INT NOT NULL,
-    quantidade INT NOT NULL DEFAULT 0,
-    CHECK(quantidade >= 0),
-    CONSTRAINT itens_pedido_pedido_fk FOREIGN KEY (pedido_fk) REFERENCES pedido(id_pedido) 
-		ON DELETE CASCADE,
-    CONSTRAINT itens_pedido_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
-);
-
 /* Tabela Pedido */
 CREATE TABLE IF NOT EXISTS pedido (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
@@ -153,4 +124,16 @@ CREATE TABLE IF NOT EXISTS pedido (
     CHECK(valor_total >= 0),
 	CONSTRAINT cliente_pedido_fk FOREIGN KEY (cliente_fk) REFERENCES cliente(id_cliente),
     CONSTRAINT endereco_pedido_fk FOREIGN KEY (endereco_entrega_fk) REFERENCES endereco(id_endereco)
+);
+
+/* Tabela que armazena os vinhos dos clientes no pedido */
+CREATE TABLE IF NOT EXISTS itens_pedido (
+    id_itens_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_fk INT NOT NULL ,
+    vinho_fk INT NOT NULL,
+    quantidade INT NOT NULL DEFAULT 0,
+    CHECK(quantidade >= 0),
+    CONSTRAINT itens_pedido_pedido_fk FOREIGN KEY (pedido_fk) REFERENCES pedido(id_pedido) 
+		ON DELETE CASCADE,
+    CONSTRAINT itens_pedido_vinho_fk FOREIGN KEY (vinho_fk) REFERENCES vinho(id_vinho)
 );

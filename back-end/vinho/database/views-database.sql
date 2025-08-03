@@ -1,16 +1,5 @@
-/* VIEWS */
-
 use db_projeto_vinho;
 
-/* VIEW PARA A LISTAGEM DOS ENDEREÇOS DOS CLIENTES */
-CREATE VIEW view_listagem_enderecos AS 
-	SELECT c.id_cliente, CONCAT(c.nome, ' ', c.sobrenome) 'nome_completo_cliente', c.cpf, c.email, e.id_endereco,
-		   e.logradouro, e.bairro, e.localidade 'cidade', e.uf, e.cep, ec.apelido_endereco, ec.numero, ec.complemento
-	FROM endereco e
-		INNER JOIN endereco_cliente ec ON ec.endereco_id = e.id_endereco
-        INNER JOIN cliente c ON c.id_cliente = ec.cliente_id
-	ORDER BY 'cidade';
-    
     
 /* VIEW PARA A LISTAGEM DOS VINHO */
 CREATE VIEW view_listagem_vinho AS
@@ -34,7 +23,7 @@ CREATE VIEW view_listagem_vinho_sem_imagem AS
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN estoque e ON e.vinho_fk = v.id_vinho
 	ORDER BY v.id_vinho;
-
+    
 
 /* VIEW PARA A LISTAGEM DOS VINHO MAIS VENDIDOS */
 CREATE VIEW view_listagem_vinhos_mais_vendidos AS
@@ -47,6 +36,7 @@ CREATE VIEW view_listagem_vinhos_mais_vendidos AS
         INNER JOIN estoque e ON e.vinho_fk = v.id_vinho
         INNER JOIN quantidade_venda_vinhos qtd_vendida ON qtd_vendida.vinho_fk = v.id_vinho
 	ORDER BY qtd_vendida.quantidade DESC;
+    
 
 
 /* VIEW PARA A LISTAGEM DO ESTOQUE */
@@ -58,6 +48,16 @@ CREATE VIEW view_listagem_estoque AS
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN estoque e ON e.vinho_fk = v.id_vinho
 	ORDER BY v.id_vinho;
+    
+    
+/* VIEW PARA A LISTAGEM DOS ENDEREÇOS DOS CLIENTES */    
+CREATE VIEW view_listagem_enderecos AS 
+	SELECT c.id_cliente, CONCAT(c.nome, ' ', c.sobrenome) 'nome_completo_cliente', c.cpf, c.email, e.id_endereco,
+		   e.logradouro, e.bairro, e.localidade 'cidade', e.uf, e.cep, ec.apelido_endereco, ec.numero, ec.complemento
+	FROM endereco e
+		INNER JOIN endereco_cliente ec ON ec.endereco_id = e.id_endereco
+        INNER JOIN cliente c ON c.id_cliente = ec.cliente_id
+	ORDER BY 'cidade';
 
 
 /* VIEW PARA A LISTAGEM DOS CLIENTES COM SEUS ENDEREÇOS */
@@ -71,7 +71,6 @@ CREATE VIEW view_listagem_cliente AS
 		INNER JOIN endereco_cliente ec ON ec.cliente_id = c.id_cliente
         INNER JOIN endereco e ON e.id_endereco = ec.endereco_id
 	ORDER BY 'nome_completo';
-
 
 
 /* VIEW PARA A LISTAGEM DOS CLIENTES */
@@ -92,23 +91,22 @@ CREATE VIEW view_listagem_carrinho AS
 
 /* VIEW PARA A LISTAGEM DOS ITENS DO CARRINHO */
 CREATE VIEW view_listagem_itens_carrinho AS
-	SELECT ic.id_itens_carrinho, c.id_carrinho, v.id_vinho , v.imagem_vinho, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
-		   v.descricao, p.pais 'pais_vinho', v.preco 'preco_vinho', cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo',
-           ic.quantidade
+	SELECT ic.id_itens_carrinho, c.id_carrinho, v.id_vinho , v.imagem_vinho, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificacao_vinho',
+		   v.descricao, p.pais 'pais_vinho', v.preco 'preco_vinho', cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', ic.quantidade
 	FROM itens_carrinho ic
 		INNER JOIN carrinho c ON c.id_carrinho = ic.carrinho_fk
         INNER JOIN vinho v ON v.id_vinho = ic.vinho_fk
 		INNER JOIN vinicola vi ON vi.id_vinicola = v.vinicola_fk
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN cliente cl ON cl.id_cliente = c.cliente_fk
-	WHERE ic.item_esta_no_pedido = 0
     ORDER BY vinho;
-
-
+    
+    
 /* VIEW PARA A LISTAGEM DOS ITENS DO PEDIDO */
 CREATE VIEW view_listagem_itens_pedido AS
-	SELECT ip.id_itens_pedido, pe.id_pedido, v.id_vinho , v.imagem_vinho, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
-		   v.descricao, p.pais 'pais_vinho', v.preco 'preco_vinho', cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', ip.quantidade
+	SELECT ip.id_itens_pedido, pe.id_pedido, v.id_vinho , v.imagem_vinho, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', 
+		   v.classificacao 'classificao_vinho', v.descricao, p.pais 'pais_vinho', v.preco 'preco_vinho', cl.cpf,
+		   CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', ip.quantidade
 	FROM itens_pedido ip
 		INNER JOIN pedido pe ON pe.id_pedido = ip.pedido_fk
         INNER JOIN vinho v ON v.id_vinho = ip.vinho_fk
@@ -116,14 +114,14 @@ CREATE VIEW view_listagem_itens_pedido AS
         INNER JOIN pais p ON p.id_pais = v.pais_fk
         INNER JOIN cliente cl ON cl.id_cliente = pe.cliente_fk
     ORDER BY vinho;
-
+    
  
 /* VIEW PARA A LISTAGEM DOS PEDIDOS*/
 CREATE VIEW view_listagem_pedidos AS
 	SELECT pe.id_pedido, v.id_vinho, v.imagem_vinho, v.mimetype, v.extensao, v.nome 'vinho', vi.vinicola 'vinicola_vinho', v.classificacao 'classificao_vinho',
 		   p.pais 'pais_vinho', v.preco 'preco_vinho', ic.quantidade, cl.cpf, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', cl.email, cl.celular,
            e.logradouro 'endereco', ec.numero, ec.complemento, e.bairro, e.localidade, e.uf, e.cep, pe.valor_total 'preco_total_pedido',
-           DATE_FORMAT(pe.data_pedido, "%d/%m%/%Y") as 'data_pedido', pe.status_pedido
+           pe.data_pedido as 'data_sem_formatacao', DATE_FORMAT(pe.data_pedido, "%d/%m%/%Y") as 'data_pedido', pe.status_pedido
 	FROM pedido pe
         INNER JOIN itens_pedido ic ON ic.pedido_fk = pe.id_pedido
         INNER JOIN vinho v ON v.id_vinho = ic.vinho_fk
@@ -138,8 +136,13 @@ CREATE VIEW view_listagem_pedidos AS
 
 /* VIEW PARA A LISTAGEM DOS CLIENTES E SEUS PEDIDOS */
 CREATE VIEW view_listagem_cliente_pedido AS
-	SELECT cl.id_cliente, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', cl.email, cl.celular, 
-		   COALESCE(pe.id_pedido, 0) 'id_pedido', COALESCE(pe.valor_total, 0) 'preco_total_pedido'
+	SELECT cl.id_cliente, CONCAT(cl.nome, ' ', cl.sobrenome) 'nome_completo', cl.email, cl.celular, COALESCE(pe.id_pedido, 0) 'id_pedido',
+		   COALESCE(COUNT(pe.id_pedido), 0) 'quantidade_pedidos', COALESCE(SUM(pe.valor_total), 0) 'preco_total_pedido',
+           COALESCE(SUM(pe.valor_total) / COUNT(pe.id_pedido), 0) 'ticket_medio'
 	FROM cliente cl
 		LEFT JOIN pedido pe ON pe.cliente_fk = cl.id_cliente
-	ORDER BY 'preco_total_pedido' DESC;	 
+    GROUP BY cl.id_cliente    
+	ORDER BY preco_total_pedido DESC, id_cliente;
+    
+    
+    select ROUND(ticket_medio, 2) from view_listagem_cliente_pedido;

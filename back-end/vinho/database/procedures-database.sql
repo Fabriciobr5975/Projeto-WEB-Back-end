@@ -1,8 +1,8 @@
-/* Procedures. Para chamar as procedures usamos CALL. Exemplo: CALL cadastro_vinho(parametros...)  */
-
 use db_projeto_vinho;
 
+
 /* PROCEDURE para o cadastro de vinhos */
+DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_vinho(
@@ -57,6 +57,10 @@ BEGIN
 		-- Inserção do estoque do vinho
 		INSERT INTO estoque (vinho_fk, quantidade, status_estoque)
 			VALUES (@last_id_vinho, quantidade, status_estoque);
+        
+        -- Inserção do vinho na tabela de qtd de vendas
+        INSERT INTO quantidade_venda_vinhos (vinho_fk, quantidade)
+			VALUES (@last_id_vinho, 0);
   
   COMMIT;
         SELECT CONCAT('Inserção Realizada com Sucesso! ID gerado: ',  LAST_INSERT_ID()) AS mensagem; 
@@ -64,10 +68,13 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Vinho' AS mensagem;
     END IF;
-END;
+END;$$
+
+DELIMITER ;
 
 
 /* PROCEDURE para o alterar os dados dos vinhos */
+DELIMITER $$
 
 CREATE PROCEDURE 
     alterar_vinho(
@@ -143,8 +150,13 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na alteração dos dados do Vinho' AS mensagem;
     END IF;
-END;
+END;$$
 
+DELIMITER ;
+
+
+/* PROCEDURE para o alterar os dados dos vinhos, sem trocar a imagem */
+DELIMITER $$
 
 CREATE PROCEDURE 
     alterar_vinho_sem_imagem(
@@ -218,6 +230,8 @@ DELIMITER ;
 
 
 /* PROCEDURE para a inserção de clientes, endereço e endereco_cliente */
+
+DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_usuario(
@@ -324,11 +338,14 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;
     END IF;
-END;
+END;$$
+
+DELIMITER ;
 
 
 /* Procedure para a inserção do item no carrinho do usuário */
 
+DELIMITER $$
 
 CREATE PROCEDURE 
     insercao_itens_carrinho(
@@ -357,10 +374,14 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro, esse vinho já foi adicionado ao carrinho!' AS mensagem;
     END IF;
-END;
+END;$$
+
+DELIMITER ;
 
 
 /* PROCEDURE para a inserção de novos endereço, associando aos clientes */
+
+DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_endereco_cliente(
@@ -436,10 +457,11 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção dos dados do Cliente' AS mensagem;
     END IF;
-END;
+END;$$
 
+DELIMITER ;
 
-/* Procedure para a inserção dos itens no carrinho do cliente */
+DELIMITER $$
 
 CREATE PROCEDURE 
     insercao_itens_carrinho(
@@ -468,10 +490,14 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro, esse vinho já foi adicionado ao carrinho!' AS mensagem;
     END IF;
-END;
+END;$$
+
+DELIMITER ;
 
 
 /* PROCEDURE para a inserção de novas vinícolas */
+
+DELIMITER $$
 
 CREATE PROCEDURE 
     cadastro_vinicola(
@@ -498,15 +524,19 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção da Vinícola' AS mensagem;
     END IF;
-END;
+END;$$
+
+DELIMITER ;
 
 
 /* PROCEDURE para a inserção de novos países */
 
+DELIMITER $$
+
 CREATE PROCEDURE 
     cadastro_pais(
-	pais VARCHAR(100),
-	sigla CHAR(3))
+		pais VARCHAR(100),
+		sigla CHAR(3))
     
 BEGIN
 	/* Variável para validar se a vinícola já foi criada */
@@ -528,12 +558,16 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na inserção do Pais' AS mensagem;
     END IF;
-END;
+END;$$
+
+DELIMITER ;
 
 
 /* PROCEDURE para a inserção dos pedidos dos clientes */
 
-CREATE PROCEDURE CREATE PROCEDURE 
+DELIMITER $$
+
+CREATE PROCEDURE 
     insercao_pedido(
 		cliente_fk INT,
 		endereco_entrega_fk INT,
@@ -582,4 +616,7 @@ BEGIN
         ROLLBACK; 
         SELECT 'Erro na criação do pedido' AS mensagem;
     END IF;
-END;
+END;$$
+
+DELIMITER ;
+
