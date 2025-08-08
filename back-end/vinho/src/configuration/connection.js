@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise'
+import chalk from 'chalk';
 
 /**
  * Criando a conexxão com o BD e realizando algumas configurações 
@@ -28,5 +29,5 @@ const connection = await mysql.createConnection({
     }
 });
 
-console.log(`--> Conexão ao Banco de dados realizada com sucesso`);
+console.log(">", chalk.greenBright(`Conexão ao Banco de dados realizada com sucesso`));
 export default connection;

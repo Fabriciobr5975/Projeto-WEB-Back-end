@@ -1,7 +1,8 @@
 import { mensagemCampoUnicoDuplicado, mensagemCampoReferencialInexistente, mensagemEstoqueInsuficiente } from './mensagemPersonalizadasExcecoes.js'
 
 /**
- * 
+ * Função global que forma a data e hora atual do sistema no formato brasileiro para
+ * ser usado em logs de sistema
  */
 global.criarLogDateTimeSistema = () => {
     return new Date().toLocaleDateString("pt-br", {
